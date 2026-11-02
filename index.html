@@ -143,6 +143,38 @@ input,select{font-family:inherit;font-size:inherit}
 .endph .ipacts svg{width:22px;height:22px}
 .endnote{color:rgba(255,255,255,.6);font-size:12px;text-align:center;margin-top:8px}
 @media (max-width:760px){.endv{padding:6px}.endtab .tb{width:92%}.endtab .tb table{font-size:11px}.endph .ip{width:84%;max-width:290px}.endph .ipscr{height:470px}.endph .iptime b{font-size:40px}}
+/* ===== Rescue progress card ===== */
+.overlay.progwrap{background:rgba(20,8,8,.78);align-items:center;padding:12px}
+.pc{width:100%;max-width:480px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.5);overflow:hidden;text-align:center;animation:pop .5s}
+.pc .ph{background:linear-gradient(135deg,var(--acc),#7a2325);color:#fff;padding:16px 18px 14px}
+.pc .ph .ic{width:62px;height:62px;border-radius:50%;background:#fff;color:var(--acc);display:flex;align-items:center;justify-content:center;margin:0 auto 8px;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.pc .ph .t{font-size:13px;opacity:.9}
+.pc .ph .m{font-size:20px;font-weight:900;margin-top:2px}
+.pc .body{padding:16px 20px 6px}
+.pc .lbl{display:flex;justify-content:space-between;font-size:13px;color:#777;font-weight:700;margin-bottom:6px}
+.pc .lbl b{color:#2e7d32}
+.pc .bar{position:relative;height:38px;border-radius:20px;background:#f1e8e8;overflow:hidden;border:1px solid #e5d5d5}
+.pc .bar .fill{position:absolute;top:0;bottom:0;right:0;width:0;background:linear-gradient(90deg,#2e7d32,#66bb6a);border-radius:20px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.pc .bar .segs{position:absolute;inset:0;display:flex}
+.pc .bar .segs i{flex:1;border-inline-start:2px solid rgba(255,255,255,.7)}
+.pc .bar .segs i:first-child{border:0}
+.pc .bar .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.4);font-size:15px}
+.pc .docs{display:flex;justify-content:center;gap:8px;margin:14px 0 4px}
+.pc .docs span{width:34px;height:42px;border-radius:4px;border:1.5px solid #ddd;background:#fbf7ee;position:relative;transform:rotate(var(--r));opacity:.55}
+.pc .docs span:before{content:"";position:absolute;inset:8px 6px;background:repeating-linear-gradient(0deg,#d8cfb8 0 3px,transparent 3px 7px)}
+.pc .docs span.ok{transform:none;opacity:1;background:#fff;border-color:#2e7d32}
+.pc .docs span.ok:after{content:"";position:absolute;inset-inline-end:-6px;top:-6px;width:16px;height:16px;border-radius:50%;background:#2e7d32 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/10px no-repeat}
+.pc .docs span.new{animation:land .8s .9s both}
+@keyframes land{from{transform:translateY(-30px) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+.pc .say{margin:10px 0 0;background:#fff8ee;border-inline-start:4px solid #e0a040;border-radius:8px;padding:12px 14px;text-align:right}
+.pc .say .who{font-size:12px;color:#8a5a00;font-weight:700;display:flex;align-items:center;gap:6px}
+.pc .say p{margin:4px 0 0;font-size:19px;font-weight:900;color:#5a3c00;line-height:1.6}
+.pc .stats2{display:flex;gap:8px;justify-content:center;margin:12px 0 0}
+.pc .stats2 span{background:#f5f5f5;border-radius:8px;padding:6px 12px;font-size:13px;color:#555;font-weight:700}
+.pc .stats2 b{display:block;color:var(--acc);font-size:16px}
+.pc .foot{padding:12px 20px 18px;display:flex;gap:8px}
+.pc .foot .btn{flex:1;border-radius:12px;padding:13px;font-size:17px;font-weight:800}
+.pc .foot .btn.sec{flex:0 0 auto;padding:13px 16px}
 /* ===== Missions map ===== */
 .overlay.mapwrap{background:radial-gradient(ellipse at 50% 30%,#4a2325 0%,#2a1415 55%,#160a0b 100%);padding:12px;align-items:center;overflow:auto}
 .mp{position:relative;z-index:2;width:100%;max-width:520px;background:#fff;border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,.45);overflow:hidden;text-align:right;animation:pop .5s}
@@ -330,7 +362,8 @@ table.grid tr.newrow td:first-child{color:#999;text-align:center}
 .qcol label{display:block;color:#555;margin:6px 0 2px}
 .qcol select,.qcol input{width:100%;padding:5px;border:1px solid var(--line);border-radius:4px;background:#fff}
 .qcol .chk{display:flex;gap:6px;align-items:center;margin-top:6px}
-.chal{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.chal{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chal button{font-size:16px;font-weight:800;padding:8px 18px;border-radius:20px}
 .qwiz{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;max-width:560px}
 .qq{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;color:var(--acc);background:#fff8ee;border-inline-start:4px solid #e0a040;border-radius:6px;padding:8px 10px;margin-bottom:8px}
 .qq .qok{margin-inline-start:auto;color:#2e7d32;font-size:14px}
@@ -551,7 +584,7 @@ var STATIONS = [
   {n:2,name:"الإدخال",icon:"⌨️",mission:"المديرة تنتظر البيانات اليوم — أدخليها بدقة",badge:"خبيرة الإدخال",bicon:"⌨️"},
   {n:3,name:"العلاقات",icon:"🔗",mission:"من تدرّس من؟ اربطي الجداول لتظهر الصورة",badge:"محترفة العلاقات",bicon:"🔗"},
   {n:4,name:"الاستعلامات",icon:"🔍",mission:"المديرة تسأل سؤالين… استخرجي الإجابات",badge:"محققة البيانات",bicon:"🕵️‍♀️"},
-  {n:5,name:"النماذج والتقارير",icon:"📋",mission:"جهّزي النموذج للسكرتيرة والتقرير للمديرة",badge:"مصممة التقارير",bicon:"📊"},
+  {n:5,name:"التقارير",icon:"📋",mission:"جهّزي تقرير الطالبات ودرجاتهن للمديرة",badge:"مصممة التقارير",bicon:"📊"},
   {n:6,name:"اكتشفي الخطأ",icon:"🧩",mission:"زميلتك صممت جدولًا واحدًا ضخمًا… أنقذي الموقف",badge:"منقذة قواعد البيانات",bicon:"🦸‍♀️"}
 ];
 var SCHOOL="المتوسطة الثانية والأربعون", TEACHER="أ. بثينة البرادعي", PRINCIPAL="أ. عفاف الحارثي";
@@ -641,7 +674,7 @@ function remaining(n){
     L.push([false,"الإجابة الصحيحة عن سؤال التحقق"]);
   }
   if(n===2){
-    ["students","teachers","subjects"].forEach(function(k){ var cols=S2COLS[k]; var c=S.s2.rows[k].length; L.push([c>=S2REQ,"إدخال 3 صفوف في جدول "+SCHEMA[k].title+" ("+c+"/3)"]); });
+    ["students","teachers","subjects"].forEach(function(k){ var cols=S2COLS[k]; var c=S.s2.rows[k].length; L.push([c>=S2REQ,"إدخال صفين في جدول "+SCHEMA[k].title+" ("+c+"/2)"]); });
     L.push([!!S.s2.tests[1],"الضغط على زر التجربة «طالبة رقم 9» في جدول المواد"]);
     L.push([!!S.s2.tests[2],"الضغط على زر التجربة «الدرجة = ممتاز» في جدول المواد"]);
   }
@@ -652,10 +685,8 @@ function remaining(n){
   }
   if(n===4){ CHAL.forEach(function(c,i){ L.push([!!S.s4.done[i],"التحدي "+c.t]); }); }
   if(n===5){
-    L.push([s5step>=4||S.s5.form,"إكمال معالج النماذج (الجدول، الحقول، طريقة الإدخال)"]);
-    L.push([!!S.s5.form,"حفظ سجل واحد من النموذج"]);
-    L.push([!!S.s5.report,"اختيار حقلي التقرير في معالج التقارير"]);
-    L.push([false,"الضغط على «إنهاء المحطة» بعد معاينة التقرير"]);
+    L.push([!!S.s5.report,"اختيار حقلي التقرير"]);
+    L.push([false,"الضغط على «إنهاء المهمة» بعد معاينة التقرير"]);
   }
   if(n===6){ L.push([false,"تحديد المشاكل الثلاث الصحيحة"]); L.push([false,"توزيع الحقول السبعة على جداولها"]); L.push([false,"الضغط على «تحقق»"]); }
   return L;
@@ -745,7 +776,7 @@ function renderProgress(){
   }).join("")+'<span class="pts">⭐ '+totalPts()+' / 60</span><button class="btn sm nextbtn" onclick="nextStep()">التالي ‹</button>';
 }
 function renderNav(){
-  var secs={"الجداول":["الطالبات","المعلمات","المواد"],"الاستعلامات":["استعلام1"],"النماذج":["نموذج المواد"],"التقارير":["تقرير المعلمات"]};
+  var secs={"الجداول":["الطالبات","المعلمات","المواد"],"الاستعلامات":["استعلام1"],"التقارير":["الطالبات ودرجاتهن"]};
   var html='<h3>كافة كائنات Access ⌄</h3>';
   for(var k in secs){ html+='<div class="sec"><h4>▸ '+k+'</h4>'+secs[k].map(function(o){return '<div class="obj">'+({"الجداول":"▦","الاستعلامات":"🔍","النماذج":"📋","التقارير":"📄"})[k]+' '+o+'</div>';}).join("")+'</div>'; }
   html+='<div class="sec"><h4>▸ محطات المعمل</h4>'+STATIONS.map(function(s){return '<div class="obj'+(S.cur===s.n?' on':'')+(unlocked(s.n)?'':' lock')+'" onclick="go('+s.n+')">'+(S.done[s.n]?"✅":s.icon)+' '+s.n+'. '+esc(s.name)+'</div>';}).join("")+'</div>';
@@ -760,7 +791,7 @@ function renderRibbon(){
     2:'<div class="grp"><span class="rb">➕ جديد</span><span class="rb">💾 حفظ</span><span class="rb">🗑 حذف</span></div>',
     3:'<div class="grp"><span class="rb">📐 تحرير علاقات</span><span class="rb">🧹 مسح التخطيط</span></div>',
     4:'<div class="grp"><button class="rb run" onclick="runQuery()">❗ تشغيل</button><span class="rb">📊 ورقة البيانات</span></div>',
-    5:'<div class="grp"><span class="rb">📋 معالج النماذج</span><span class="rb">📄 معالج التقارير</span></div>',
+    5:'<div class="grp"><span class="rb">📄 معالج التقارير</span></div>',
     6:'<div class="grp"><span class="rb">🧪 تحليل الجدول</span></div>'};
   $("ribbon").innerHTML=per[S.cur]+common;
 }
@@ -770,14 +801,32 @@ function complete(n){
   S.done[n]=true; S.pts[n]=pts; save();
   logRow(n,"مكتملة",pts);
   var all=Object.keys(S.done).length===6;
-  confetti();
-  var st=STATIONS[n-1];
-  if(all){ logRow(7,"أنهت المعمل",totalPts()); setTimeout(showEnding,600); renderProgress(); renderNav(); renderMnav(); return; }
-  dialog({title:"🎉 مهمة منجزة — "+n+" من 6",icon:"",html:'<div style="text-align:center"><div style="color:#b8962e;margin:4px 0">'+ico(BADGE_ICONS[n-1],56)+'</div><div class="lbl">حصلتِ على شارة</div><div style="font-weight:800;color:var(--acc);font-size:18px">«'+esc(st.badge)+'»</div>'
-    +'<div class="stats"><div class="stat"><b>+'+pts+'</b>نقاط</div><div class="stat"><b>'+totalPts()+'</b>المجموع</div><div class="stat"><b>'+elapsed()+'</b>الوقت</div></div>'
-    +(all?'<div class="msgbox" style="text-align:right">🏆 أنهيتِ كل المهام! «شكرًا '+esc(S.name)+'، أنقذتِ المدرسة. شهادتك جاهزة.» — مديرة المدرسة</div>':'<div class="lbl">المهمة التالية</div><div style="color:#444">'+esc(STATIONS[n].mission)+'</div>')+'</div>',
-    buttons:all?[{t:"🎓 شهادتي",f:showCertificate}]:[{t:"المهمة التالية ‹",f:function(){go(n+1);}},{t:"البقاء",sec:true,f:render}]});
+  if(all){ logRow(7,"أنهت المعمل",totalPts()); setTimeout(showEnding,400); renderProgress(); renderNav(); renderMnav(); return; }
+  showProgressCard(n,pts);
   renderProgress(); renderNav(); renderMnav();
+}
+var RESCUE_MSG=["","بُنيت الجداول! بدأت عملية الإنقاذ","السجلات تعود واحدة تلو الأخرى","الجداول مترابطة… نصف الطريق قُطع!","أجبتِ عن أسئلتي… اقتربتِ من الإنقاذ!","أوشكتِ على إنقاذ سجلات المدرسة! بقيت مهمة واحدة","تم الإنقاذ! سجلات المدرسة في أمان"];
+function showProgressCard(n,pts){
+  var done=Object.keys(S.done).length, pct=Math.round(done/6*100), st=STATIONS[n-1];
+  var docs=''; for(var i=1;i<=6;i++){ docs+='<span class="'+(S.done[i]?('ok'+(i===n?' new':'')):'')+'" style="--r:'+((i%2?-1:1)*(6+i))+'deg"></span>'; }
+  var o=document.createElement("div"); o.className="overlay progwrap";
+  o.innerHTML='<div class="pc"><div class="ph"><div class="ic">'+ico(MAP_ICONS[n-1],32)+'</div><div class="t">المهمة '+ORD[n]+' منجزة</div><div class="m">'+esc(st.name)+'</div></div>'
+    +'<div class="body"><div class="lbl"><span>تقدّم الإنقاذ</span><b>'+done+' من 6</b></div><div class="bar"><div class="fill" id="pfill"></div><div class="segs"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="pct">'+pct+'%</div></div>'
+    +'<div class="docs">'+docs+'</div>'
+    +'<div class="say"><div class="who">'+ico("chat",14)+'مديرة المدرسة</div><p>'+esc(RESCUE_MSG[n])+'</p></div>'
+    +'<div class="stats2"><span><b>+'+pts+'</b>نقاط</span><span><b>'+totalPts()+'</b>المجموع</span><span><b>بقيت '+(6-done)+'</b>مهمة</span></div></div>'
+    +'<div class="foot"><button class="btn" onclick="this.closest(\'.overlay\').remove();go('+(n+1)+')">المهمة التالية</button><button class="btn sec" onclick="this.closest(\'.overlay\').remove();render()">البقاء</button></div></div>';
+  $("dlgHost").appendChild(o);
+  setTimeout(function(){ var f=$("pfill"); if(f) f.style.width=pct+"%"; },80);
+}
+function saveCertImage(btn){
+  var el=document.getElementById("cert"); if(!el) return; btn.disabled=true; var old=btn.textContent; btn.textContent="جارٍ التجهيز…";
+  function go(){ html2canvas(el,{scale:2,backgroundColor:"#ffffff",useCORS:true}).then(function(cv){
+      cv.toBlob(function(blob){ var file=new File([blob],"شهادة-"+String(S&&S.name||"الطالبة").replace(/\s+/g,"-")+".png",{type:"image/png"});
+        if(navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],title:"شهادة شكر وتقدير"}).catch(function(){}).then(function(){ btn.disabled=false; btn.textContent=old; }); }
+        else { var a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=file.name; document.body.appendChild(a); a.click(); a.remove(); btn.disabled=false; btn.textContent=old; }
+      },"image/png"); }).catch(function(){ btn.disabled=false; btn.textContent=old; dialog({text:"تعذر إنشاء الصورة، استخدمي حفظ PDF.",icon:"⚠️"}); }); }
+  if(window.html2canvas) go(); else { var sc=document.createElement("script"); sc.src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"; sc.onload=go; sc.onerror=function(){ btn.disabled=false; btn.textContent=old; dialog({text:"تعذر تحميل أداة الصورة، استخدمي حفظ PDF.",icon:"⚠️"}); }; document.head.appendChild(sc); }
 }
 function certCode(){ var s=S.name+S.cls+totalPts()+Object.keys(S.done).length; var h=0; for(var i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h.toString(36).toUpperCase().slice(-4); }
 function confetti(){
@@ -812,6 +861,7 @@ Object.assign(ICONS,{
   alert:'<circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16h.01"/>',
   warn:'<path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/>',
   star:'<path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z"/>',
+  chat:'<path d="M4 4h16v12H7l-3 3z"/>',
   party:'<path d="M4 20l5-14 9 9zM13 5l1-2M18 10l2-1M16 7l3-3"/>',
   mail:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/>',
   lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
@@ -861,13 +911,13 @@ function showCertificateFor(c,withConfetti){
   +'<div class="ct">شهادة شكر وتقدير</div><div class="cs">'+esc(SCHOOL)+'</div>'
   +'<div class="cp">تتقدم إدارة المدرسة بخالص الشكر والتقدير للطالبة</div>'
   +'<div class="cn">'+esc(c.name)+'</div><div class="cp" style="color:#666">الفصل '+esc(c.cls)+'</div>'
-  +'<div class="cbody">لإسهامها في بناء قاعدة بيانات المدرسة بعد فقدان السجلات الورقية، وإجابتها عن استعلامات الإدارة، وإعدادها النماذج والتقارير بدقة واحترافية.</div>'
+  +'<div class="cbody">لإسهامها في بناء قاعدة بيانات المدرسة بعد فقدان السجلات الورقية، وإجابتها عن استعلامات الإدارة، وإعدادها التقارير بدقة واحترافية.</div>'
   +'<div class="cp">ونمنحها بكل فخر لقب</div><div class="cl">خبيرة قواعد البيانات</div>'
   +'<div class="cbadges2">'+STATIONS.map(function(s,i){return '<div><span class="bi">'+ico(BADGE_ICONS[i],26)+'</span><small>'+esc(s.badge)+'</small></div>';}).join("")+'</div>'
   +'<div class="cm">التقييم: <b>'+c.pts+'</b> / 60 &nbsp;•&nbsp; التاريخ: '+d+'</div>'
   +'<div class="csig"><div><div class="line"></div>معلمة المهارات الرقمية<br><b>'+esc(TEACHER)+'</b></div><div><div class="line"></div>مديرة المدرسة<br><b>'+esc(PRINCIPAL)+'</b></div></div>'
   +'<div class="cc">رمز التحقق: '+c.code+'</div></div></div>'
-  +'<div class="certbtns"><button class="btn" onclick="window.print()">🖨️ حفظ PDF / طباعة</button><button class="btn sec" onclick="this.closest(\'.overlay\').remove()">إغلاق</button></div>';
+  +'<div class="certbtns"><button class="btn" onclick="window.print()">🖨️ حفظ PDF / طباعة</button><button class="btn" onclick="saveCertImage(this)">🖼️ حفظ صورة</button><button class="btn sec" onclick="this.closest(\'.overlay\').remove()">إغلاق</button></div>';
   h.appendChild(o); if(withConfetti) confetti();
 }
 function showBadge(){
@@ -941,10 +991,10 @@ function s1answer(){
 var s2tab="students";
 var S2COLS={students:[["name","الاسم"],["cls","الفصل"],["dob","تاريخ الميلاد"]],teachers:[["name","الاسم"],["spec","التخصص"]],subjects:[["sub","اسم المادة"],["sid","رقم الطالبة"],["tid","رقم المعلمة"],["g","الدرجة"]]};
 var S2PK={students:"رقم الطالبة",teachers:"رقم المعلمة",subjects:"رقم المادة"};
-var S2REQ=3; // عدد الصفوف المطلوب إدخالها في كل جدول
+var S2REQ=2; // عدد الصفوف المطلوب إدخالها في كل جدول
 function s2src(k){ return D[k].slice(0,S2REQ); }
 function st2(v){
-  v.innerHTML=taskCard(2,"3 سجلات صحيحة في كل جدول",["ابدئي بـ <b>الطالبات</b> ثم <b>المعلمات</b> ثم <b>المواد</b> (3 صفوف لكل جدول).","اكتبي البيانات بنفسك (أي أسماء وقيم مناسبة) ثم <b>إضافة</b>، أو اضغطي صفًا من «بيانات مقترحة» لنسخه.","في جدول المواد جرّبي <b>زرَي التجربة</b> لترَي كيف يرفض البرنامج الخطأ."],"المهم أن تكون القيم من النوع الصحيح: التاريخ تاريخ، والدرجة رقم بين 0 و100.")
+  v.innerHTML=taskCard(2,"سجلان صحيحان في كل جدول",["ابدئي بـ <b>الطالبات</b> ثم <b>المعلمات</b> ثم <b>المواد</b> (صفان لكل جدول).","اكتبي البيانات بنفسك (أي أسماء وقيم مناسبة) ثم <b>إضافة</b>، أو اضغطي صفًا من «بيانات مقترحة» لنسخه.","في جدول المواد جرّبي <b>زرَي التجربة</b> لترَي كيف يرفض البرنامج الخطأ."],"المهم أن تكون القيم من النوع الصحيح: التاريخ تاريخ، والدرجة رقم بين 0 و100.")
   +'<div class="tabs2">'+["students","teachers","subjects"].map(function(k){return '<button class="'+(s2tab===k?'on':'')+'" onclick="s2tab=\''+k+'\';render()">▦ '+SCHEMA[k].title+' ('+S.s2.rows[k].length+')</button>';}).join("")+'</div>'
   +'<div class="wrap" id="s2grid"></div><div id="s2msg"></div>'
   +(s2tab==="subjects"?'<div class="row"><button class="btn sec" onclick="s2test(1)">🧪 جرّبي: طالبة رقم 9</button><button class="btn sec" onclick="s2test(2)">🧪 جرّبي: الدرجة = ممتاز</button><span>'+(S.s2.tests[1]?"✅":"")+(S.s2.tests[2]?"✅":"")+'</span></div>':'')
@@ -974,8 +1024,8 @@ function s2validate(vals,quiet){
     if(!val){ if(!quiet) accessError("الحقل «"+cols[i][1]+"» مطلوب ولا يمكن تركه فارغًا.",null,$("s2_"+k),"اكتبي قيمة في الحقل المظلل."); return false; }
     if(k==="dob" && isNaN(Date.parse(val))){ if(!quiet) accessError("القيمة التي أدخلتِها لا تتطابق مع نوع البيانات «تاريخ/وقت» للحقل «تاريخ الميلاد».","type",$("s2_"+k),"اختاري التاريخ من المنتقي أو اكتبيه بصيغة سنة-شهر-يوم."); return false; }
     if((k==="g"||k==="sid"||k==="tid") && !/^\d+$/.test(val)){ if(!quiet) accessError("القيمة «"+val+"» لا تتطابق مع نوع البيانات «رقم» للحقل «"+cols[i][1]+"».","type",$("s2_"+k),"اكتبي رقمًا فقط بدون حروف أو رموز."); return false; }
-    if(k==="sid" && !S.s2.rows.students[+val-1]){ if(!quiet) accessError("لا يمكنك إضافة السجل أو تغييره لأن السجل المرتبط مطلوب في الجدول «الطالبات» (لا توجد طالبة رقم "+val+").","ri",$("s2_"+k),"استخدمي رقم طالبة موجودة (1–3)، أو أضيفي الطالبة أولًا في جدول الطالبات."); return false; }
-    if(k==="tid" && !S.s2.rows.teachers[+val-1]){ if(!quiet) accessError("لا يمكنك إضافة السجل أو تغييره لأن السجل المرتبط مطلوب في الجدول «المعلمات» (لا توجد معلمة رقم "+val+").","ri",$("s2_"+k),"استخدمي رقم معلمة موجودة (1–3)، أو أضيفي المعلمة أولًا في جدول المعلمات."); return false; }
+    if(k==="sid" && !S.s2.rows.students[+val-1]){ if(!quiet) accessError("لا يمكنك إضافة السجل أو تغييره لأن السجل المرتبط مطلوب في الجدول «الطالبات» (لا توجد طالبة رقم "+val+").","ri",$("s2_"+k),"استخدمي رقم طالبة موجودة (1 أو 2)، أو أضيفي الطالبة أولًا في جدول الطالبات."); return false; }
+    if(k==="tid" && !S.s2.rows.teachers[+val-1]){ if(!quiet) accessError("لا يمكنك إضافة السجل أو تغييره لأن السجل المرتبط مطلوب في الجدول «المعلمات» (لا توجد معلمة رقم "+val+").","ri",$("s2_"+k),"استخدمي رقم معلمة موجودة (1 أو 2)، أو أضيفي المعلمة أولًا في جدول المعلمات."); return false; }
     if(k==="g" && (+val<70||+val>100)){ if(!quiet) accessError("الدرجة يجب أن تكون بين 70 و100 (قاعدة التحقق من الصحة).",null,$("s2_"+k),"اكتبي درجة من 70 إلى 100."); return false; }
   }
   return true;
@@ -1009,8 +1059,8 @@ function st3(v){
   +'<div class="relcanvas" id="relc"><svg id="relsvg"></svg>'+REL_TABLES.map(function(t){ var sc=SCHEMA[t.k];
     return '<div class="tbox" style="'+t.x+';top:'+t.y+'px" id="tb_'+t.k+'"><h5>'+sc.title+'</h5>'+sc.fields.map(function(f){return '<div data-t="'+t.k+'" data-f="'+esc(f.n)+'" onclick="s3click(this)">'+(f.pk?'<span class="k">🔑</span>':'')+esc(f.n)+'</div>';}).join("")+'</div>'; }).join("")+'</div>'
   +'<div id="s3msg" class="row">العلاقات المنشأة: '+S.s3.rels.length+' / 2</div>'
-  +'<div class="mcq" id="s3q"'+(S.s3.rels.length<2?' style="display:none"':'')+'><p>سؤال التحقق: بعد الربط، أي الطالبات تدرس عند أكثر من معلمة؟</p>'
-  +[["a","نورة وريم"],["b","لمى وجود"],["c","كل الطالبات"]].map(function(o){return '<label><input type="radio" name="s3q" value="'+o[0]+'"> '+o[1]+'</label>';}).join("")+'<button class="btn sm" onclick="s3answer()">إجابة</button></div>';
+  +'<div class="mcq" id="s3q"'+(S.s3.rels.length<2?' style="display:none"':'')+'><p>سؤال التحقق: ما الحقل الذي ربطتِ به جدول الطالبات بجدول المواد؟</p>'
+  +[["a","رقم الطالبة"],["b","اسم المادة"],["c","تاريخ الميلاد"]].map(function(o){return '<label><input type="radio" name="s3q" value="'+o[0]+'"> '+o[1]+'</label>';}).join("")+'<button class="btn sm" onclick="s3answer()">إجابة</button></div>';
   setTimeout(s3draw,50); window.onresize=function(){ if(S&&S.cur===3) s3draw(); };
 }
 function s3click(el){
@@ -1084,7 +1134,9 @@ function runQuery(){
   var okSort=!c.sort||sortv==="asc", okCrit=!c.crit||(crit&&crit.op===">"&&crit.n===90);
   var ok=okFields&&okSort&&okCrit;
   if(ok){ S.s4.done[s4cur]=true; save(); html='<div class="msg ok">إجابة صحيحة ✔'+(c.crit&&!rows.length?' (لا توجد طالبة درجتها أكبر من 90 في بياناتك، والاستعلام صحيح)':'')+'</div>'+html; renderProgress();
-    if(Object.keys(S.s4.done).length===CHAL.length){ $("s4res").innerHTML=html; complete(4); return; } }
+    if(Object.keys(S.s4.done).length===CHAL.length){ $("s4res").innerHTML=html; complete(4); return; }
+    $("s4res").innerHTML=html;
+    dialog({title:"السؤال الأول صحيح",icon:"",html:'<div class="msgbox">أحسنتِ! الآن <b>السؤال الثاني</b> من المديرة:<br>«'+esc(CHAL[1].q)+'»</div>',buttons:[{t:"إلى السؤال الثاني ‹",f:function(){ s4cur=1; render(); }}]}); return; }
   else { err(4); setStatus(null,"أخطاء هذه المحطة: "+S.errs[4]);
     var missing=c.need.filter(function(k){return fields.indexOf(k)<0;}).map(qlabel), bad=[], msg, fix;
     if(missing.length){ msg="ينقص الاستعلام الحقل: "+missing.join("، ")+"."; fix="اختاري "+missing.join(" و ")+" في الحقلين."; bad=[$("qf0"),$("qf1")]; }
@@ -1094,25 +1146,17 @@ function runQuery(){
   $("s4res").innerHTML=html;
 }
 
-/* ================= STATION 5: FORMS & REPORTS ================= */
-var s5step=1, s5form={}, s5rep={};
+/* ================= STATION 5: REPORTS ================= */
+var s5step=1;
 function st5(v){
-  var html=taskCard(5,"نموذج إدخال سهل للسكرتيرة + تقرير مرتب للمديرة",["اتبعي <b>معالج النماذج</b> خطوة بخطوة.","جرّبي النموذج وسجّلي طالبة في مادة.","اتبعي <b>معالج التقارير</b> واختاري حقل التجميع."],"النموذج للإدخال، والتقرير للعرض والطباعة.");
-  html+='<div class="steps">'+["اختيار الجدول","حقول النموذج","طريقة الإدخال","معاينة النموذج","حقول التقرير","معاينة التقرير"].map(function(s,i){return '<span class="'+(s5step===i+1?'on':'')+'">'+(i+1)+'. '+s+'</span>';}).join("")+'</div>';
-  if(s5step===1){ hint("form"); html+='<div class="mcq"><p>معالج النماذج: أي جدول يناسب نموذج «تسجيل طالبة في مادة»؟</p>'+["الطالبات","المعلمات","المواد"].map(function(t){return '<label><input type="radio" name="s5t" value="'+t+'"> ▦ '+t+'</label>';}).join("")+'<button class="btn sm" onclick="s5next1()">التالي ‹</button></div>'; }
-  if(s5step===2){ html+='<div class="mcq"><p>اختاري الحقول التي ستظهر في النموذج:</p>'+SCHEMA.subjects.fields.map(function(f){return '<label><input type="checkbox" name="s5f" value="'+esc(f.n)+'" '+(f.pk?'':'checked')+'> '+esc(f.n)+(f.pk?' (ترقيم تلقائي — لا يُدخل)':'')+'</label>';}).join("")+'<button class="btn sm" onclick="s5next2()">التالي ‹</button></div>'; }
-  if(s5step===3){ html+='<div class="mcq"><p>كيف تُدخل الطالبة «رقم الطالبة» و«رقم المعلمة» في النموذج؟</p><label><input type="radio" name="s5c" value="txt"> مربع نص: تكتب الرقم يدويًا</label><label><input type="radio" name="s5c" value="combo"> مربع تحرير وسرد: تختار الاسم من قائمة ويُخزَّن الرقم</label><button class="btn sm" onclick="s5next3()">التالي ‹</button></div>'; }
-  if(s5step===4){ html+='<div class="formprev"><div class="fh">📋 تسجيل طالبة في مادة</div><div class="fb"><div class="fr"><label>رقم المادة</label><input value="(جديد)" disabled></div><div class="fr"><label>اسم المادة</label><input id="f_sub" placeholder="اسم المادة"></div><div class="fr"><label>الطالبة</label><select id="f_sid">'+D.students.map(function(s){return '<option value="'+s.id+'">'+s.name+'</option>';}).join("")+'</select></div><div class="fr"><label>المعلمة</label><select id="f_tid">'+D.teachers.map(function(t){return '<option value="'+t.id+'">'+t.name+'</option>';}).join("")+'</select></div><div class="fr"><label>الدرجة</label><input id="f_g" type="number" min="70" max="100" placeholder="70 إلى 100"></div><div class="row"><button class="btn sm" onclick="s5save()">💾 حفظ السجل</button></div></div></div><div id="s5msg"></div>'; }
-  if(s5step===5){ hint("rep"); html+='<div class="mcq"><p>معالج التقارير: تقرير «الطالبات ودرجاتهن» — أي حقلين يحتاجهما هذا التقرير؟</p>'+[["sg","اسم الطالبة + الدرجة"],["ts","اسم المعلمة + التخصص"],["mn","اسم المادة + رقم المادة"]].map(function(o){return '<label><input type="radio" name="s5g" value="'+o[0]+'"> '+o[1]+'</label>';}).join("")+'<button class="btn sm" onclick="s5next5()">التالي ‹</button></div>'; }
-  if(s5step===6){ var rows=joined().slice().sort(function(a,b){return a.sname.localeCompare(b.sname,"ar");});
-    html+='<div class="report"><h3>الطالبات ودرجاتهن</h3><div class="r" style="font-weight:700;background:#f3f3f3"><span style="flex:1">اسم الطالبة</span><span style="flex:1">المادة</span><span>الدرجة</span></div>'+rows.map(function(r){return '<div class="r"><span style="flex:1">'+esc(r.sname)+'</span><span style="flex:1">'+esc(r.sub)+'</span><span>'+r.g+'</span></div>';}).join("")+'<div style="text-align:left;font-size:12px;color:#888;margin-top:8px">'+new Date().toLocaleDateString("ar-SA")+' — صفحة 1</div></div><div class="row"><button class="btn" onclick="complete(5)">✔ إنهاء المحطة</button></div>'; }
+  var html=taskCard(5,"تقرير مرتب للمديرة: الطالبات ودرجاتهن",["اختاري <b>الحقلين</b> اللذين يحتاجهما التقرير.","اضغطي <b>معاينة التقرير</b>.","اضغطي <b>إنهاء المهمة</b>."],"التقرير للعرض والطباعة، لا نعدّل فيه.");
+  html+='<div class="steps">'+["حقول التقرير","معاينة التقرير"].map(function(t,i){return '<span class="'+(s5step===i+1?'on':'')+'">'+(i+1)+'. '+t+'</span>';}).join("")+'</div>';
+  if(s5step===1){ hint("rep"); html+='<div class="mcq"><p>تقرير «الطالبات ودرجاتهن» — أي حقلين يحتاجهما هذا التقرير؟</p>'+[["sg","اسم الطالبة + الدرجة"],["ts","اسم المعلمة + التخصص"],["mn","اسم المادة + رقم المادة"]].map(function(o){return '<label><input type="radio" name="s5g" value="'+o[0]+'"> '+o[1]+'</label>';}).join("")+'<button class="btn sm" onclick="s5next5()">معاينة التقرير ‹</button></div>'; }
+  if(s5step===2){ var rows=joined().slice().sort(function(a,b){return a.sname.localeCompare(b.sname,"ar");});
+    html+='<div class="report"><h3>الطالبات ودرجاتهن</h3><div class="r" style="font-weight:700;background:#f3f3f3"><span style="flex:1">اسم الطالبة</span><span style="flex:1">المادة</span><span>الدرجة</span></div>'+rows.map(function(r){return '<div class="r"><span style="flex:1">'+esc(r.sname)+'</span><span style="flex:1">'+esc(r.sub)+'</span><span>'+r.g+'</span></div>';}).join("")+'<div style="text-align:left;font-size:12px;color:#888;margin-top:8px">'+new Date().toLocaleDateString("ar-SA")+' — صفحة 1</div></div><div class="row"><button class="btn" onclick="complete(5)">✔ إنهاء المهمة</button></div>'; }
   v.innerHTML=html;
 }
-function s5next1(){ var r=document.querySelector('input[name=s5t]:checked'); if(!r) return; if(r.value!=="المواد"){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("جدول «"+r.value+"» لا يحتوي الطالبة والمادة والمعلمة معًا.","mid",r.parentElement,"اختاري الجدول الذي يجمع رقم الطالبة ورقم المعلمة واسم المادة في صف واحد."); return; } s5step=2; render(); }
-function s5next2(){ var c=[].slice.call(document.querySelectorAll('input[name=s5f]:checked')).map(function(x){return x.value;}); var need=["اسم المادة","رقم الطالبة","رقم المعلمة","الدرجة"]; var ok=need.every(function(n){return c.indexOf(n)>=0;}); if(!ok){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("النموذج ينقصه حقل أو أكثر مما يُدخل يدويًا.",null,[].slice.call(document.querySelectorAll('input[name=s5f]')).filter(function(x){return need.indexOf(x.value)>=0&&!x.checked;}).map(function(x){return x.parentElement;}),"فعّلي الحقول المظللة: اسم المادة، رقم الطالبة، رقم المعلمة، الدرجة."); return; } s5step=3; render(); }
-function s5next3(){ var r=document.querySelector('input[name=s5c]:checked'); if(!r) return; if(r.value!=="combo"){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("كتابة الرقم يدويًا تسبب أخطاء (رقم خاطئ أو غير موجود).","combo",r.parentElement,"اختاري مربع التحرير والسرد: يعرض الأسماء للمستخدم ويخزن الأرقام في الجدول."); return; } hint("combo"); s5step=4; render(); }
-function s5save(){ var sub=$("f_sub").value.trim(), g=$("f_g").value; if(!sub||g===""){ accessError("النموذج غير مكتمل.",null,[!sub?$("f_sub"):null,g===""?$("f_g"):null],"املئي الحقول المظللة ثم اضغطي حفظ."); return; } S.s5.form=true; save(); $("s5msg").innerHTML='<div class="msg ok">حُفظ السجل في جدول المواد عبر النموذج ✔ (الطالبة '+esc(D.students[+$("f_sid").value-1].name)+' — المعلمة '+esc(D.teachers[+$("f_tid").value-1].name)+')</div><div class="row"><button class="btn sm" onclick="s5step=5;render()">التالي: التقرير ‹</button></div>'; }
-function s5next5(){ var r=document.querySelector('input[name=s5g]:checked'); if(!r) return; if(r.value!=="sg"){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("هذان الحقلان لا يناسبان تقرير «الطالبات ودرجاتهن».",null,r.parentElement,"اسم التقرير يدل على الحقلين: اسم الطالبة ودرجتها."); return; } S.s5.report=true; save(); s5step=6; render(); }
+function s5next5(){ var r=document.querySelector('input[name=s5g]:checked'); if(!r) return; if(r.value!=="sg"){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("هذان الحقلان لا يناسبان تقرير «الطالبات ودرجاتهن».",null,r.parentElement,"اسم التقرير يدل على الحقلين: اسم الطالبة ودرجتها."); return; } S.s5.report=true; save(); s5step=2; render(); }
 
 /* ================= STATION 6: FIND THE ERROR ================= */
 var FLAT=[["نورة","3/1","2012-03-14","المهارات الرقمية","أ. هند","مهارات رقمية",95],["ريم","3/1","2011-11-02","المهارات الرقمية","أ. هند","مهارات رقمية",88],["لمى","3/2","2012-07-21","المهارات الرقمية","أ. هند","مهارات رقمية",92],["جود","3/2","2012-01-09","الرياضيات","أ. منى","رياضيات",79],["نورة","3/1","2012-03-14","الرياضيات","أ. منى","رياضيات",97],["ريم","3/1","2011-11-02","لغتي","أ. عبير","لغة عربية",85]];
@@ -1195,12 +1239,12 @@ function figQuery(){
   +'<g class="la l2">'+miniTable(10,14,'النتيجة',['الاسم','الدرجة'],[['سارة','95'],['ريم','91']],-1)+'</g>'
   +'<text x="235" y="158" font-size="11.5" fill="#555" text-anchor="middle">سؤال: من الطالبات اللاتي درجتهن أكبر من 90؟</text></svg>';
 }
-function figForm(){
-  return '<svg viewBox="0 0 470 170" class="lfig"><g class="la l1"><rect x="250" y="12" width="200" height="130" rx="6" fill="#f3f3f3" stroke="#bbb"/><rect x="250" y="12" width="200" height="24" fill="#A4373A"/><text x="350" y="29" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">نموذج: تسجيل مادة</text>'
-  +'<g font-size="11" fill="#333"><text x="440" y="60" text-anchor="end">المادة</text><rect x="262" y="48" width="120" height="18" fill="#fff" stroke="#bbb"/><text x="440" y="88" text-anchor="end">الطالبة</text><rect x="262" y="76" width="120" height="18" fill="#fff" stroke="#bbb"/><text x="376" y="89" font-size="10" text-anchor="end">نورة ⌄</text><text x="440" y="116" text-anchor="end">الدرجة</text><rect x="262" y="104" width="120" height="18" fill="#fff" stroke="#bbb"/><text x="376" y="117" font-size="10" text-anchor="end">88</text></g><rect x="262" y="124" width="52" height="14" rx="3" fill="#A4373A"/><text x="288" y="134" font-size="9" fill="#fff" text-anchor="middle">حفظ</text></g>'
-  +'<g class="la l2"><rect x="20" y="12" width="200" height="130" rx="4" fill="#fff" stroke="#bbb"/><text x="120" y="34" font-size="12" fill="#A4373A" text-anchor="middle" font-weight="700">تقرير: الطالبات ودرجاتهن</text><line x1="30" y1="40" x2="210" y2="40" stroke="#A4373A"/>'
-  +'<g font-size="11" fill="#333"><text x="205" y="60" text-anchor="end">نورة</text><text x="130" y="60" text-anchor="middle">رقمية</text><text x="40" y="60">95</text><text x="205" y="80" text-anchor="end">ريم</text><text x="130" y="80" text-anchor="middle">رقمية</text><text x="40" y="80">88</text><text x="205" y="100" text-anchor="end">لمى</text><text x="130" y="100" text-anchor="middle">رقمية</text><text x="40" y="100">92</text></g><text x="40" y="132" font-size="9" fill="#999">صفحة 1</text></g>'
-  +'<text x="350" y="162" font-size="11.5" fill="#2e7d32" text-anchor="middle">للإدخال</text><text x="120" y="162" font-size="11.5" fill="#1e88e5" text-anchor="middle">للعرض والطباعة</text></svg>';
+function figReport(){
+  return '<svg viewBox="0 0 470 170" class="lfig"><g class="la l1">'+miniTable(290,14,'الطالبات + المواد',['الاسم','المادة','الدرجة'],[['سارة','رياضيات','95'],['هند','علوم','82'],['ريم','لغتي','91']],-1)+'</g>'
+  +'<g class="la l2"><path d="M285 70 L205 70" stroke="#1e88e5" stroke-width="2.5"/><polygon points="205,64 193,70 205,76" fill="#1e88e5"/><rect x="198" y="84" width="92" height="26" rx="6" fill="#1e88e5"/><text x="244" y="101" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">معالج التقارير</text></g>'
+  +'<g class="la l3"><rect x="10" y="12" width="180" height="136" rx="4" fill="#fff" stroke="#bbb"/><text x="100" y="34" font-size="12" fill="#A4373A" text-anchor="middle" font-weight="700">تقرير: الطالبات ودرجاتهن</text><line x1="20" y1="40" x2="180" y2="40" stroke="#A4373A"/>'
+  +'<g font-size="11" fill="#333"><text x="175" y="60" text-anchor="end">ريم</text><text x="40" y="60">91</text><text x="175" y="80" text-anchor="end">سارة</text><text x="40" y="80">95</text><text x="175" y="100" text-anchor="end">هند</text><text x="40" y="100">82</text></g><text x="30" y="138" font-size="9" fill="#999">صفحة 1</text></g>'
+  +'<text x="100" y="164" font-size="11.5" fill="#1e88e5" text-anchor="middle">للعرض والطباعة</text></svg>';
 }
 function figSplit(){
   return '<svg viewBox="0 0 470 170" class="lfig"><g class="la l1">'+miniTable(100,6,'جدول واحد كبير',['الطالبة','المعلمة','المادة','الدرجة'],[['نورة','أ. هند','رقمية','95'],['ريم','أ. هند','رقمية','88']],1)+'<rect x="360" y="20" width="100" height="22" rx="6" fill="#c62828"/><text x="410" y="35" font-size="11.5" fill="#fff" text-anchor="middle" font-weight="700">تكرار + أخطاء</text></g>'
@@ -1212,9 +1256,9 @@ var LESSONS={
     steps:["لكل حقل: اختاري "+lsel("نوع البيانات"),"لحقل الرقم: اختاري "+lsel("ترقيم تلقائي")+" ثم اضغطي "+lbtn("مفتاح",true,"key"),"اضغطي "+lbtn("تحقق من التصميم")+" ثم أجيبي عن السؤال"],
     tipTitle:"كيف أختار نوع البيانات؟",tips:[["اسم أو كلمة","نص"],["شيء نحسبه أو نقارنه","رقم"],["يوم وشهر وسنة","تاريخ"],["رقم يولّده البرنامج بنفسه","ترقيم تلقائي"]]},
   2:{title:"الإدخال",fig:figEntry,defs:[["t3","row","السجل","صف واحد = طالبة واحدة","نورة، ثالث/1، 2012-03-14"],["t2","col","نوع البيانات","البرنامج يرفض قيمة تخالف نوع الحقل","الدرجة: ممتاز ← <b>مرفوض</b>"],["t4","key","الترقيم التلقائي","لا تكتبينه، البرنامج يكتبه","رقم الطالبة ← <b>1، 2، 3</b>"]],
-    goal:"أدخلي 3 سجلات في كل جدول:<br>الطالبات، ثم المعلمات، ثم المواد",
-    steps:["اكتبي بيانات الصف ثم اضغطي "+lbtn("إضافة"),"كرري حتى يصبح في كل جدول <b>3 صفوف</b>","في جدول المواد جرّبي "+lbtn("جرّبي: طالبة رقم 9",true)+" و "+lbtn("جرّبي: الدرجة = ممتاز",true)],
-    tipTitle:"ماذا أكتب؟",tips:[["الاسم","أي اسم"],["تاريخ الميلاد","من المنتقي"],["الدرجة","من 70 إلى 100"],["رقم الطالبة في المواد","1 أو 2 أو 3"]]},
+    goal:"أدخلي سجلين في كل جدول:<br>الطالبات، ثم المعلمات، ثم المواد",
+    steps:["اكتبي بيانات الصف ثم اضغطي "+lbtn("إضافة"),"كرري حتى يصبح في كل جدول <b>صفان</b>","في جدول المواد جرّبي "+lbtn("جرّبي: طالبة رقم 9",true)+" و "+lbtn("جرّبي: الدرجة = ممتاز",true)],
+    tipTitle:"ماذا أكتب؟",tips:[["الاسم","أي اسم"],["تاريخ الميلاد","من المنتقي"],["الدرجة","من 70 إلى 100"],["رقم الطالبة في المواد","1 أو 2"]]},
   3:{title:"العلاقات",fig:figRel,defs:[["t4","key","المفتاح الأجنبي","رقم من جدول آخر نكتبه هنا بدل الاسم","رقم الطالبة داخل <b>المواد</b>"],["t1","link","العلاقة","خط يربط المفتاح الأساسي بالمفتاح الأجنبي","الطالبات ← المواد"],["t2","row","1 ← ∞","طالبة واحدة لها عدة مواد","نورة: رقمية + رياضيات"]],
     goal:"اربطي جدول المواد بجدول الطالبات وجدول المعلمات",
     steps:["اضغطي "+lsel("رقم الطالبة")+" في الطالبات ثم "+lsel("رقم الطالبة")+" في المواد","اضغطي "+lsel("رقم المعلمة")+" في المعلمات ثم "+lsel("رقم المعلمة")+" في المواد","في النافذة اضغطي "+lbtn("إنشاء")+" ثم أجيبي عن السؤال"],
@@ -1223,10 +1267,10 @@ var LESSONS={
     goal:"أجيبي عن سؤالي المديرة:<br>مادة كل معلمة (أسماء المعلمات مرتبة أبجديًا)، ومن درجتها أكبر من 90",
     steps:["اختاري <b>السؤال</b> ثم اختاري "+lsel("الحقل الأول")+" و "+lsel("الحقل الثاني"),"أضيفي "+lsel("تصاعدي")+" للسؤال الأول، أو اكتبي <b>&gt; 90</b> للسؤال الثاني","اضغطي "+lbtn("تشغيل")+" وانظري النتيجة"],
     tipTitle:"رموز المعيار والترتيب",tips:[["أكبر من 90","> 90"],["أصغر من 80","< 80"],["من أ إلى ي","تصاعدي"],["من ي إلى أ","تنازلي"]]},
-  5:{title:"النماذج والتقارير",fig:figForm,defs:[["t2","form","النموذج","شاشة سهلة لإدخال سجل جديد","تسجيل مادة لطالبة"],["t1","doc","التقرير","عرض مرتب للطباعة، لا نعدّل فيه","الطالبات ودرجاتهن"],["t4","key","القائمة المنسدلة","تختارين الاسم ويُحفظ الرقم","الطالبة: نورة ← 1"]],
-    goal:"أنشئي نموذج تسجيل مادة، ثم تقرير الطالبات ودرجاتهن",
-    steps:["اتبعي معالج النماذج واضغطي "+lbtn("التالي")+" في كل خطوة","في النموذج أدخلي مادة ودرجة ثم "+lbtn("حفظ السجل"),"اختاري حقلي التقرير ثم "+lbtn("إنهاء المحطة")],
-    tipTitle:"أيهما أستخدم؟",tips:[["أريد إدخال بيانات","النموذج"],["أريد طباعة أو عرض","التقرير"]]},
+  5:{title:"التقارير",fig:figReport,defs:[["t1","doc","التقرير","عرض مرتب للطباعة، لا نعدّل فيه","الطالبات ودرجاتهن"],["t2","col","حقول التقرير","الأعمدة التي يحتاجها القارئ فقط","اسم الطالبة + الدرجة"],["t3","row","الترتيب","الأسماء مرتبة أبجديًا","ريم، سارة، هند"]],
+    goal:"جهّزي تقرير «الطالبات ودرجاتهن» للمديرة",
+    steps:["اختاري "+lsel("اسم الطالبة + الدرجة"),"اضغطي "+lbtn("معاينة التقرير"),"اضغطي "+lbtn("إنهاء المهمة")],
+    tipTitle:"الفرق بين الاستعلام والتقرير",tips:[["الاستعلام","يجيب عن سؤال"],["التقرير","يعرض النتيجة للطباعة"]]},
   6:{title:"اكتشفي الخطأ",fig:figSplit,defs:[["t3","warn","التكرار","اسم المعلمة يتكرر في كل صف","أ. هند × 3"],["t1","split","التقسيم","جدول لكل شيء، ثم نربطها","الطالبات، المعلمات، المواد"],["t2","link","الفائدة","تعديل واحد يكفي، وأخطاء أقل","اسم المعلمة في مكان واحد"]],
     goal:"أصلحي جدول زميلتك: حددي مشاكله ووزّعي حقوله على 3 جداول",
     steps:["حددي <b>المشاكل</b> الصحيحة (كل ما ينطبق)","أمام كل حقل اختاري "+lsel("جدوله الصحيح"),"اضغطي "+lbtn("تحقق")],
@@ -1283,7 +1327,7 @@ function endPhone(){
 }
 function showEnding(){
   var h=$("dlgHost"); var o=document.createElement("div"); o.className="overlay endwrap";
-  var ach=[["table","3 جداول"],["rel","علاقتان"],["query","استعلامان"],["form","نموذج"],["report","تقرير"]].map(function(a){return '<span>'+ico(a[0],15)+esc(a[1])+' <i>✓</i></span>';}).join("");
+  var ach=[["table","3 جداول"],["rel","علاقتان"],["query","استعلامان"],["report","تقرير"]].map(function(a){return '<span>'+ico(a[0],15)+esc(a[1])+' <i>✓</i></span>';}).join("");
   o.innerHTML='<div class="scene" id="scene9"></div><div class="endv"><div class="endtab"><div class="endtag">✓ قاعدة بيانات المدرسة جاهزة</div>'
     +endTable("students",[["name","الاسم"],["cls","الفصل"]])+'<div class="con"><span>علاقة</span></div>'
     +endTable("subjects",[["sub","المادة"],["tid","المعلمة"],["g","الدرجة"]])+'<div class="con"><span>علاقة</span></div>'
