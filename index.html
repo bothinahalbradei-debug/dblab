@@ -363,6 +363,9 @@ table.grid tr.newrow td:first-child{color:#999;text-align:center}
 .qcol select,.qcol input{width:100%;padding:5px;border:1px solid var(--line);border-radius:4px;background:#fff}
 .qcol .chk{display:flex;gap:6px;align-items:center;margin-top:6px}
 .chal{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.s6hd{display:flex;align-items:center;gap:8px;background:#fdecea;border:1px solid #f5c6c2;color:#8a1c1c;border-radius:8px;padding:8px 12px;margin:0 0 10px;font-size:15px}
+tr.s6bad td{background:#fdecea!important}
+tr.s6ok td{background:#e6f4e8!important}
 .chal button{font-size:16px;font-weight:800;padding:8px 18px;border-radius:20px}
 .qwiz{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;max-width:560px}
 .qq{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;color:var(--acc);background:#fff8ee;border-inline-start:4px solid #e0a040;border-radius:6px;padding:8px 10px;margin-bottom:8px}
@@ -425,12 +428,15 @@ table.grid tr.newrow td:first-child{color:#999;text-align:center}
 .cert .cn{font-size:30px;font-weight:800;color:var(--acc);margin:6px 0;border-bottom:2px solid #b8962e;display:inline-block;padding:0 24px 4px}
 .cert .cl{font-size:19px;font-weight:700;color:#8c6d1f;margin:8px 0}
 .cert .cm{font-size:13px;color:#555;margin-top:6px}
-.cert .csig{display:flex;justify-content:space-around;margin-top:22px;font-size:13px;color:#444;gap:10px}
+.cert .csig{display:flex;justify-content:space-around;align-items:flex-end;margin-top:14px;font-size:13px;color:#444;gap:10px}
+.cert .csig>div{text-align:center}
+.cert .csig .sig{display:block;height:54px;margin:0 auto -14px;object-fit:contain}
+.cert .csig .stamp{display:block;width:150px;margin:0 auto;opacity:.92;transform:rotate(-6deg)}
 .cert .csig .line{width:150px;border-top:1px solid #777;margin:0 auto 6px}
 .cert .cc{font-family:monospace;font-size:12px;color:#888;margin-top:14px}
 .certbtns{display:flex;gap:8px}
 @media print{ body *{visibility:hidden} .certwrap,.certwrap *{visibility:visible} .certwrap{position:fixed;inset:0;background:#fff;padding:0;align-items:flex-start} .certbtns{display:none!important} .cert{box-shadow:none;max-width:none} }
-@media (max-width:600px){ .cert .cn{font-size:24px} .cert .ct{font-size:24px} .cert .cb{padding:14px 10px} .cert .csig .line{width:90px} }
+@media (max-width:600px){ .cert .cn{font-size:24px} .cert .ct{font-size:24px} .cert .cb{padding:14px 10px} .cert .csig .line{width:90px} .cert .csig .sig{height:40px} .cert .csig .stamp{width:96px} }
 .donebar{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#e6f4ea;border:1px solid #9ccc9c;color:#1e5c2a;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-weight:600}
 .nextbtn{margin-inline-start:8px;padding:4px 12px;font-size:13px}
 .chk-list div{padding:5px 0;border-bottom:1px dotted #e5e5e5}
@@ -585,8 +591,10 @@ var STATIONS = [
   {n:3,name:"العلاقات",icon:"🔗",mission:"من تدرّس من؟ اربطي الجداول لتظهر الصورة",badge:"محترفة العلاقات",bicon:"🔗"},
   {n:4,name:"الاستعلامات",icon:"🔍",mission:"المديرة تسأل سؤالين… استخرجي الإجابات",badge:"محققة البيانات",bicon:"🕵️‍♀️"},
   {n:5,name:"التقارير",icon:"📋",mission:"جهّزي تقرير الطالبات ودرجاتهن للمديرة",badge:"مصممة التقارير",bicon:"📊"},
-  {n:6,name:"اكتشفي الخطأ",icon:"🧩",mission:"زميلتك صممت جدولًا واحدًا ضخمًا… أنقذي الموقف",badge:"منقذة قواعد البيانات",bicon:"🦸‍♀️"}
+  {n:6,name:"اكتشفي الخطأ",icon:"🧩",mission:"زميلتك صممت جدول المواد وفيه 3 أخطاء… صحّحيها",badge:"منقذة قواعد البيانات",bicon:"🦸‍♀️"}
 ];
+/* توقيعات وختم الشهادة (ملفات في المستودع) */
+var SIG_TEACHER="sig_teacher.png", SIG_PRINCIPAL="sig_principal.png", SIG_STAMP="stamp.png";
 var SCHOOL="المتوسطة الثانية والأربعون", TEACHER="أ. بثينة البرادعي", PRINCIPAL="أ. عفاف الحارثي";
 var HINTS = {
   auto:"ترقيم تلقائي: البرنامج يولّد رقمًا فريدًا لكل سجل، فلا تدخلينه ولا يتكرر.",
@@ -688,7 +696,7 @@ function remaining(n){
     L.push([!!S.s5.report,"اختيار حقلي التقرير"]);
     L.push([false,"الضغط على «إنهاء المهمة» بعد معاينة التقرير"]);
   }
-  if(n===6){ L.push([false,"تحديد المشاكل الثلاث الصحيحة"]); L.push([false,"توزيع الحقول السبعة على جداولها"]); L.push([false,"الضغط على «تحقق»"]); }
+  if(n===6){ L.push([false,"تصحيح الأخطاء الثلاثة في جدول المواد"]); L.push([false,"الضغط على «تحقق»"]); }
   return L;
 }
 function nextStep(){
@@ -915,7 +923,7 @@ function showCertificateFor(c,withConfetti){
   +'<div class="cp">ونمنحها بكل فخر لقب</div><div class="cl">خبيرة قواعد البيانات</div>'
   +'<div class="cbadges2">'+STATIONS.map(function(s,i){return '<div><span class="bi">'+ico(BADGE_ICONS[i],26)+'</span><small>'+esc(s.badge)+'</small></div>';}).join("")+'</div>'
   +'<div class="cm">التقييم: <b>'+c.pts+'</b> / 60 &nbsp;•&nbsp; التاريخ: '+d+'</div>'
-  +'<div class="csig"><div><div class="line"></div>معلمة المهارات الرقمية<br><b>'+esc(TEACHER)+'</b></div><div><div class="line"></div>مديرة المدرسة<br><b>'+esc(PRINCIPAL)+'</b></div></div>'
+  +'<div class="csig"><div><img class="sig" src="'+SIG_TEACHER+'" alt=""><div class="line"></div>معلمة المهارات الرقمية<br><b>'+esc(TEACHER)+'</b></div><div><img class="stamp" src="'+SIG_STAMP+'" alt=""></div><div><img class="sig" src="'+SIG_PRINCIPAL+'" alt=""><div class="line"></div>مديرة المدرسة<br><b>'+esc(PRINCIPAL)+'</b></div></div>'
   +'<div class="cc">رمز التحقق: '+c.code+'</div></div></div>'
   +'<div class="certbtns"><button class="btn" onclick="window.print()">🖨️ حفظ PDF / طباعة</button><button class="btn" onclick="saveCertImage(this)">🖼️ حفظ صورة</button><button class="btn sec" onclick="this.closest(\'.overlay\').remove()">إغلاق</button></div>';
   h.appendChild(o); if(withConfetti) confetti();
@@ -1159,28 +1167,35 @@ function st5(v){
 function s5next5(){ var r=document.querySelector('input[name=s5g]:checked'); if(!r) return; if(r.value!=="sg"){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("هذان الحقلان لا يناسبان تقرير «الطالبات ودرجاتهن».",null,r.parentElement,"اسم التقرير يدل على الحقلين: اسم الطالبة ودرجتها."); return; } S.s5.report=true; save(); s5step=2; render(); }
 
 /* ================= STATION 6: FIND THE ERROR ================= */
-var FLAT=[["نورة","3/1","2012-03-14","المهارات الرقمية","أ. هند","مهارات رقمية",95],["ريم","3/1","2011-11-02","المهارات الرقمية","أ. هند","مهارات رقمية",88],["لمى","3/2","2012-07-21","المهارات الرقمية","أ. هند","مهارات رقمية",92],["جود","3/2","2012-01-09","الرياضيات","أ. منى","رياضيات",79],["نورة","3/1","2012-03-14","الرياضيات","أ. منى","رياضيات",97],["ريم","3/1","2011-11-02","لغتي","أ. عبير","لغة عربية",85]];
-var FCOLS=[["اسم الطالبة","الطالبات"],["الفصل","الطالبات"],["تاريخ الميلاد","الطالبات"],["المادة","المواد"],["اسم المعلمة","المعلمات"],["التخصص","المعلمات"],["الدرجة","المواد"]];
-var PROBS=[["تكرار بيانات المعلمة والطالبة في عدة صفوف",true],["لتعديل اسم معلمة يجب تغييره في كل الصفوف",true],["احتمال أخطاء الكتابة وعدم اتساق البيانات",true],["الجدول يحتوي على أرقام",false],["لا يمكن طباعة الجدول",false],["أسماء الحقول بالعربية",false]];
+/* جدول «المواد» كما صممته الزميلة: 3 أخطاء (نوع الدرجة، نوع التاريخ، المفتاح الأساسي + نوعه) */
+var FIX=[{n:"رقم المادة",wrong:"نص قصير",right:"ترقيم تلقائي",pk:true},{n:"اسم المادة",wrong:"نص قصير",right:"نص قصير"},{n:"رقم الطالبة",wrong:"رقم",right:"رقم"},{n:"رقم المعلمة",wrong:"رقم",right:"رقم"},{n:"الدرجة",wrong:"نص قصير",right:"رقم"},{n:"تاريخ التسجيل",wrong:"رقم",right:"تاريخ/وقت"}];
+function s6init(){ if(!S.s6.types){ S.s6.types={}; FIX.forEach(function(f){ S.s6.types[f.n]=f.wrong; }); S.s6.pk=""; save(); } }
 function st6(v){
-  v.innerHTML=taskCard(6,"تحويل الجدول الواحد الضخم إلى ثلاثة جداول صحيحة",["افحصي الجدول: أين تتكرر البيانات؟","حددي <b>المشاكل</b> (كل ما ينطبق).","وزّعي كل حقل على <b>جدوله الصحيح</b>.","اضغطي <b>تحقق</b>."],"اسألي عن كل حقل: هل يصف الطالبة، أم المعلمة، أم تسجيلها في المادة؟")
-  +'<div class="wrap"><table class="grid"><tr>'+FCOLS.map(function(c){return '<th>'+c[0]+'</th>';}).join("")+'</tr>'+FLAT.map(function(r){return '<tr>'+r.map(function(x){return '<td>'+esc(x)+'</td>';}).join("")+'</tr>';}).join("")+'</table></div>'
-  +'<div class="mcq"><p>1) ما مشاكل هذا التصميم؟ (اختاري كل ما ينطبق)</p>'+PROBS.map(function(p,i){return '<label><input type="checkbox" name="s6p" value="'+i+'"> '+p[0]+'</label>';}).join("")+'</div>'
-  +'<div class="mcq"><p>2) إلى أي جدول ينتمي كل حقل؟</p><div class="wrap"><table class="grid">'+FCOLS.map(function(c,i){return '<tr><td>'+c[0]+'</td><td><select id="s6c'+i+'"><option value="">—</option><option>الطالبات</option><option>المعلمات</option><option>المواد</option></select></td></tr>';}).join("")+'</table></div></div>'
+  s6init();
+  v.innerHTML=taskCard(6,"جدول زميلتك فيه 3 أخطاء — صحّحيها",["افحصي <b>نوع البيانات</b> لكل حقل في جدول «المواد».","غيّري النوع الخطأ من القائمة، واضغطي <b>مفتاح</b> للحقل الذي يميّز كل سجل.","اضغطي <b>تحقق</b>."],"فكّري: هل نحسب بهذه القيمة؟ هل هي تاريخ؟ هل هي رقم يولّده البرنامج؟")
+  +'<div class="s6hd">'+ico("warn",20)+'<span>زميلتك صممت جدول <b>المواد</b> هكذا، وفيه <b>3 أخطاء</b>. أصلحيها:</span></div>'
+  +'<div id="s6grid"></div>'
   +'<div class="row"><button class="btn" onclick="s6check()">✔ تحقق</button><span id="s6msg"></span></div>';
+  s6grid();
 }
+function s6grid(){
+  var html='<table class="grid"><tr><th></th><th>اسم الحقل</th><th>نوع البيانات</th><th>الوصف (اختياري)</th></tr>';
+  FIX.forEach(function(f){ var t=S.s6.types[f.n], pk=S.s6.pk===f.n, st=S.s6.res?(S.s6.res[f.n]?' s6ok':' s6bad'):'';
+    html+='<tr class="'+st+'"><td class="keycell '+(pk?'on':'')+'" title="مفتاح أساسي" onclick="s6pk(\''+esc(f.n)+'\')">🔑</td><td>'+esc(f.n)+'</td><td><select onchange="s6type(\''+esc(f.n)+'\',this.value)">'+TYPES.map(function(o){return '<option '+(o===t?'selected':'')+'>'+o+'</option>';}).join("")+'</select></td><td><input placeholder="…"></td></tr>'; });
+  $("s6grid").innerHTML=html+'</table>';
+}
+function s6type(n,val){ S.s6.types[n]=val; S.s6.res=null; save(); }
+function s6pk(n){ S.s6.pk=n; S.s6.res=null; save(); s6grid(); }
 function s6check(){
-  var picked=[].slice.call(document.querySelectorAll('input[name=s6p]:checked')).map(function(x){return +x.value;});
-  var okP=PROBS.every(function(p,i){return p[1]===(picked.indexOf(i)>=0);});
-  var wrongC=FCOLS.filter(function(c,i){return $("s6c"+i).value!==c[1];}).map(function(c){return c[0];});
-  if(okP && !wrongC.length){ hint("norm",true); complete(6); return; }
+  var res={}, bad=0;
+  FIX.forEach(function(f){ var ok=S.s6.types[f.n]===f.right && (f.pk ? S.s6.pk===f.n : S.s6.pk!==f.n); res[f.n]=ok; if(!ok) bad++; });
+  S.s6.res=res; save(); s6grid();
+  if(!bad){ hint("norm",true); complete(6); return; }
   err(6); setStatus(null,"أخطاء هذه المحطة: "+S.errs[6]);
-  var els=[]; if(!okP) els.push(document.querySelectorAll(".mcq")[0]);
-  FCOLS.forEach(function(c,i){ if($("s6c"+i).value!==c[1]) els.push($("s6c"+i)); });
-  accessError((okP?"":"اختيار المشاكل غير دقيق (خيار ناقص أو زائد).\n")+(wrongC.length?"توزيع غير صحيح للحقول: "+wrongC.join("، ")+".":""),null,els,"اسألي عن كل حقل مظلل: هل يصف الطالبة، أم المعلمة، أم تسجيلها في المادة؟");
+  var rows=[].slice.call(document.querySelectorAll("#s6grid tr")).slice(1), els=[];
+  FIX.forEach(function(f,i){ if(!res[f.n]) els.push(rows[i]); });
+  accessError("ما زال في الجدول "+bad+" "+(bad===1?"خطأ":"أخطاء")+" (الصفوف الحمراء).",null,els,"لكل صف أحمر: هل النوع مناسب للقيمة؟ وهل الحقل الذي يميّز كل سجل عليه مفتاح وترقيم تلقائي؟");
 }
-
-
 
 /* ================= LESSON CARDS ================= */
 var LICON={
@@ -1246,6 +1261,17 @@ function figReport(){
   +'<g font-size="11" fill="#333"><text x="175" y="60" text-anchor="end">ريم</text><text x="40" y="60">91</text><text x="175" y="80" text-anchor="end">سارة</text><text x="40" y="80">95</text><text x="175" y="100" text-anchor="end">هند</text><text x="40" y="100">82</text></g><text x="30" y="138" font-size="9" fill="#999">صفحة 1</text></g>'
   +'<text x="100" y="164" font-size="11.5" fill="#1e88e5" text-anchor="middle">للعرض والطباعة</text></svg>';
 }
+function figFix(){
+  function row(y,n,t,bad){ return '<rect x="250" y="'+y+'" width="200" height="22" fill="'+(bad?'#fdecea':'#fff')+'" stroke="#ddd"/><text x="440" y="'+(y+15)+'" font-size="11.5" fill="#333" text-anchor="end">'+n+'</text><text x="335" y="'+(y+15)+'" font-size="11.5" fill="'+(bad?'#c62828':'#333')+'" text-anchor="middle" font-weight="'+(bad?'800':'400')+'">'+t+'</text>'+(bad?'<text x="262" y="'+(y+15)+'" font-size="12" fill="#c62828" font-weight="900">✗</text>':''); }
+  return '<svg viewBox="0 0 470 170" class="lfig"><rect x="250" y="10" width="200" height="22" fill="#A4373A"/><text x="350" y="25" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">المواد — تصميم زميلتك</text>'
+  +row(32,'رقم المادة','نص قصير',true)+row(54,'اسم المادة','نص قصير',false)+row(76,'الدرجة','نص قصير',true)+row(98,'تاريخ التسجيل','رقم',true)
+  +'<g class="la l1"><path d="M245 70 L185 70" stroke="#2e7d32" stroke-width="2.5"/><polygon points="185,64 173,70 185,76" fill="#2e7d32"/><rect x="178" y="84" width="80" height="24" rx="6" fill="#2e7d32"/><text x="218" y="100" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">صحّحي</text></g>'
+  +'<g class="la l2"><rect x="10" y="10" width="160" height="22" fill="#2e7d32"/><text x="90" y="25" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">بعد التصحيح</text>'
+  +'<g font-size="11.5" fill="#333"><rect x="10" y="32" width="160" height="22" fill="#e6f4e8" stroke="#ddd"/><text x="160" y="47" text-anchor="end">🔑 رقم المادة</text><text x="55" y="47" text-anchor="middle" fill="#2e7d32" font-weight="800">ترقيم تلقائي</text>'
+  +'<rect x="10" y="54" width="160" height="22" fill="#e6f4e8" stroke="#ddd"/><text x="160" y="69" text-anchor="end">الدرجة</text><text x="55" y="69" text-anchor="middle" fill="#2e7d32" font-weight="800">رقم</text>'
+  +'<rect x="10" y="76" width="160" height="22" fill="#e6f4e8" stroke="#ddd"/><text x="160" y="91" text-anchor="end">تاريخ التسجيل</text><text x="55" y="91" text-anchor="middle" fill="#2e7d32" font-weight="800">تاريخ/وقت</text></g></g>'
+  +'<text x="235" y="160" font-size="11.5" fill="#555" text-anchor="middle">3 أخطاء في أنواع البيانات والمفتاح الأساسي</text></svg>';
+}
 function figSplit(){
   return '<svg viewBox="0 0 470 170" class="lfig"><g class="la l1">'+miniTable(100,6,'جدول واحد كبير',['الطالبة','المعلمة','المادة','الدرجة'],[['نورة','أ. هند','رقمية','95'],['ريم','أ. هند','رقمية','88']],1)+'<rect x="360" y="20" width="100" height="22" rx="6" fill="#c62828"/><text x="410" y="35" font-size="11.5" fill="#fff" text-anchor="middle" font-weight="700">تكرار + أخطاء</text></g>'
   +'<g class="la l2"><path d="M235 80 L235 96 M235 96 L80 96 L80 104 M235 96 L390 96 L390 104" stroke="#2e7d32" stroke-width="2" fill="none"/>'+miniTable(300,104,'الطالبات',['رقم','الاسم'],[['1','نورة']],0)+miniTable(150,104,'المواد',['طالبة','معلمة','درجة'],[['1','1','95']],-1)+miniTable(10,104,'المعلمات',['رقم','الاسم'],[['1','أ. هند']],0)+'</g></svg>';
@@ -1271,10 +1297,10 @@ var LESSONS={
     goal:"جهّزي تقرير «الطالبات ودرجاتهن» للمديرة",
     steps:["اختاري "+lsel("اسم الطالبة + الدرجة"),"اضغطي "+lbtn("معاينة التقرير"),"اضغطي "+lbtn("إنهاء المهمة")],
     tipTitle:"الفرق بين الاستعلام والتقرير",tips:[["الاستعلام","يجيب عن سؤال"],["التقرير","يعرض النتيجة للطباعة"]]},
-  6:{title:"اكتشفي الخطأ",fig:figSplit,defs:[["t3","warn","التكرار","اسم المعلمة يتكرر في كل صف","أ. هند × 3"],["t1","split","التقسيم","جدول لكل شيء، ثم نربطها","الطالبات، المعلمات، المواد"],["t2","link","الفائدة","تعديل واحد يكفي، وأخطاء أقل","اسم المعلمة في مكان واحد"]],
-    goal:"أصلحي جدول زميلتك: حددي مشاكله ووزّعي حقوله على 3 جداول",
-    steps:["حددي <b>المشاكل</b> الصحيحة (كل ما ينطبق)","أمام كل حقل اختاري "+lsel("جدوله الصحيح"),"اضغطي "+lbtn("تحقق")],
-    tipTitle:"كيف أعرف جدول الحقل؟",tips:[["يصف الطالبة","الطالبات"],["يصف المعلمة","المعلمات"],["يصف تسجيلها في المادة","المواد"]]}
+  6:{title:"اكتشفي الخطأ",fig:figFix,defs:[["t3","warn","نوع خاطئ","قيمة لا تناسب نوع الحقل","الدرجة ← <b>نص</b> ✗"],["t2","col","النوع الصحيح","نحسب بالدرجة فهي رقم","الدرجة ← <b>رقم</b> ✓"],["t4","key","المفتاح الأساسي","رقم يولّده البرنامج ولا يتكرر","رقم المادة ← <b>ترقيم تلقائي</b> + مفتاح"]],
+    goal:"جدول زميلتك فيه 3 أخطاء في أنواع البيانات والمفتاح<br>اكتشفيها وصحّحيها",
+    steps:["افحصي كل حقل: هل "+lsel("نوع البيانات")+" مناسب؟","غيّري النوع الخطأ، واضغطي "+lbtn("مفتاح",true,"key")+" لحقل رقم المادة","اضغطي "+lbtn("تحقق")+" — الصف الأحمر ما زال خطأ"],
+    tipTitle:"تذكير بالأنواع",tips:[["اسم أو كلمة","نص"],["شيء نحسبه","رقم"],["يوم وشهر وسنة","تاريخ"],["رقم يولّده البرنامج","ترقيم تلقائي"]]}
 };
 function lessonHTML(n){
   var L=LESSONS[n];
