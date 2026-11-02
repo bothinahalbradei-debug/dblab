@@ -331,6 +331,16 @@ table.grid tr.newrow td:first-child{color:#999;text-align:center}
 .qcol select,.qcol input{width:100%;padding:5px;border:1px solid var(--line);border-radius:4px;background:#fff}
 .qcol .chk{display:flex;gap:6px;align-items:center;margin-top:6px}
 .chal{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.qwiz{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;max-width:560px}
+.qq{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;color:var(--acc);background:#fff8ee;border-inline-start:4px solid #e0a040;border-radius:6px;padding:8px 10px;margin-bottom:8px}
+.qq .qok{margin-inline-start:auto;color:#2e7d32;font-size:14px}
+.qrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px dashed #eee;flex-wrap:wrap}
+.qrow:last-child{border:0}
+.qrow .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--acc);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px}
+.qrow label{font-weight:700;min-width:120px}
+.qsel{padding:7px 10px;border:1px solid #bbb;border-radius:6px;background:#fff;font-size:15px}
+.qhint{color:#8a5a00;background:#fff8dc;border:1px solid #f0d9b0;border-radius:6px;padding:1px 8px;font-size:12.5px}
+
 .chal button{border:1px solid var(--line);background:#fff;padding:5px 10px;border-radius:14px;font-size:13px}
 .chal button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
 .chal button.done{background:#e6f4ea;border-color:#9ccc9c;color:var(--ok)}
@@ -481,10 +491,10 @@ table.grid tr.newrow td:first-child{color:#999;text-align:center}
   </div>
   <div id="s2w" class="hidden">
     <div class="idc" id="step2">
-      <div class="top"><span>بطاقة المنقذة</span><small>قاعدة بيانات المدرسة</small></div>
+      <div class="top"><span>بطاقة مسؤولة الإنقاذ</span><small>قاعدة بيانات المدرسة</small></div>
       <div class="main">
         <div class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/><path d="M8 7c1-2 7-2 8 0"/></svg><span class="star"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z"/></svg></span></div>
-        <div class="fields"><div class="hero">المنقذة<b id="heroName">&nbsp;</b></div>
+        <div class="fields"><div class="hero">مسؤولة الإنقاذ<b id="heroName">&nbsp;</b></div>
           <label>الاسم</label><input id="inName" placeholder="الاسم الثلاثي" autocomplete="off" oninput="heroSync()">
           <label>الفصل</label>
         </div>
@@ -674,7 +684,7 @@ function elapsed(){ var m=Math.floor((Date.now()-S.started)/60000); return m<1?"
 setInterval(function(){ if(S&&!$("app").classList.contains("hidden")) setStatus($("statusL").textContent, "أخطاء هذه المحطة: "+(S.errs[S.cur]||0)); },30000);
 
 /* ================= SHELL ================= */
-var INTRO_MSG="ضاعت سجلات المدرسة ولم يبقَ منها إلا أوراق مبعثرة. أحتاج منقذة تبني قاعدة بيانات المدرسة من جديد.";
+var INTRO_MSG="ضاعت سجلات المدرسة ولم يبقَ منها إلا أوراق مبعثرة. أحتاج مسؤولة إنقاذ تبني قاعدة بيانات المدرسة من جديد.";
 var introTimer=null;
 function phoneClock(){ var d=new Date(), t=d.getHours()%12||12, m=("0"+d.getMinutes()).slice(-2);
   document.querySelectorAll(".ipclock").forEach(function(e){ e.textContent=t+":"+m; });
@@ -709,7 +719,7 @@ function showIntro(){
   var lock='<span class="lk"><svg viewBox="0 0 24 24" width="9" height="9" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span>';
   var star='<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z"/></svg>';
   var rows=STATIONS.map(function(st,i){ var on=i===0; return '<div class="ms'+(on?' on':'')+'"><div class="c">'+ico(MAP_ICONS[i],20)+(on?'':lock)+'</div><div class="t"><small>المهمة '+ORD[i+1]+':</small> '+esc(st.name)+'</div><span class="pt">'+star+'10 نقاط</span></div>'; }).join("");
-  o.innerHTML='<div class="scene" id="sceneM"></div><div class="mp"><div class="top">منقذة قاعدة بيانات المدرسة: '+esc(S.name)+'<small>'+esc(S.cls)+' · '+esc(SCHOOL)+'</small></div><div class="h2">المهام</div><div class="list">'+rows+'</div>'
+  o.innerHTML='<div class="scene" id="sceneM"></div><div class="mp"><div class="top">مسؤولة إنقاذ قاعدة بيانات المدرسة: '+esc(S.name)+'<small>'+esc(S.cls)+' · '+esc(SCHOOL)+'</small></div><div class="h2">المهام</div><div class="list">'+rows+'</div>'
     +'<div class="fin"><div class="c">'+ico("cert",22)+'</div><div class="t">النهاية: الشهادة</div></div>'
     +'<div class="foot"><button class="btn" onclick="this.closest(\'.overlay\').remove();S.intro=true;save();showLesson(S.cur);">ابدئي المهمة</button></div></div>';
   h.appendChild(o); buildScene($("sceneM"),2);
@@ -1036,50 +1046,52 @@ function s3answer(){
 
 /* ================= STATION 4: QUERIES ================= */
 var QF=[["الطالبات.الاسم","sname"],["الطالبات.الفصل","scls"],["المعلمات.الاسم","tname"],["المعلمات.التخصص","tspec"],["المواد.اسم المادة","sub"],["المواد.الدرجة","g"]];
-function joined(){ return D.subjects.map(function(s){ var st=D.students[s.sid-1], t=D.teachers[s.tid-1]; return {sname:st.name,scls:st.cls,tname:t.name,tspec:t.spec,sub:s.sub,g:s.g}; }); }
+function qlabel(k){ return QF.filter(function(q){return q[1]===k;})[0][0]; }
+/* بيانات الطالبة نفسها (ما أدخلته في المهمة 2) */
+function joined(){ var R=S.s2.rows; return R.subjects.map(function(x){ var st=R.students[+x.sid-1]||{}, t=R.teachers[+x.tid-1]||{}; return {sname:st.name||"؟",scls:st.cls||"",tname:t.name||"؟",tspec:t.spec||"",sub:x.sub,g:+x.g}; }); }
 var CHAL=[
-  {t:"1. كل مادة والمعلمة التي تدرّسها",need:["tname","sub"],ordered:false,exp:function(){return [{tname:"أ. هند",sub:"المهارات الرقمية"},{tname:"أ. منى",sub:"الرياضيات"},{tname:"أ. عبير",sub:"لغتي"}];},tip:"عمودان فقط: المعلمات.الاسم ثم المواد.اسم المادة، بلا معايير"},
-  {t:"2. الطالبات ودرجاتهن",need:["sname","g"],ordered:false,exp:function(){return joined().map(function(r){return {sname:r.sname,g:r.g};});},tip:"عمودان فقط: الطالبات.الاسم ثم المواد.الدرجة، بلا معايير"}
+  {t:"السؤال الأول",q:"ما المادة التي تدرّسها كل معلمة؟ (رتّبي أسماء المعلمات أبجديًا)",need:["tname","sub"],sort:"tname"},
+  {t:"السؤال الثاني",q:"من الطالبات اللاتي درجتهن أكبر من 90؟",need:["sname","g"],crit:{f:"g",n:90}}
 ];
 var s4cur=0;
+function qsel(id){ return '<select id="'+id+'" class="qsel"><option value="">— اختاري —</option>'+QF.map(function(f){return '<option value="'+f[1]+'">'+f[0]+'</option>';}).join("")+'</select>'; }
 function st4(v){
-  v.innerHTML=taskCard(4,"خمس إجابات صحيحة لأسئلة المديرة",["اختاري <b>التحدي</b> من الأزرار بالأعلى.","في كل عمود: اختاري <b>الحقل</b>، ثم <b>الترتيب</b> أو <b>المعيار</b> إن لزم.","اضغطي <b>❗ تشغيل</b> وتحققي من النتيجة.","تعثرتِ؟ اضغطي <b>تلميح التحدي</b>."],"ألغي «إظهار» لعمود تستخدمينه كشرط فقط ولا تريدين عرضه.")
-  +'<div class="chal">'+CHAL.map(function(c,i){return '<button class="'+(s4cur===i?'on':'')+(S.s4.done[i]?' done':'')+'" onclick="s4cur='+i+';render()">'+(S.s4.done[i]?"✓ ":"")+esc(c.t)+'</button>';}).join("")+'</div>'
-  +'<div class="qbe-top">'+["students","subjects","teachers"].map(function(k){return '<div class="tbox"><h5>'+SCHEMA[k].title+'</h5>'+SCHEMA[k].fields.map(function(f){return '<div>'+(f.pk?'<span class="k">🔑</span>':'')+esc(f.n)+'</div>';}).join("")+'</div>';}).join("")+'</div>'
-  +'<div class="qbe">'+[0,1,2,3].map(function(i){return '<div class="qcol"><label>الحقل</label><select id="qf'+i+'"><option value="">—</option>'+QF.map(function(f){return '<option value="'+f[1]+'">'+f[0]+'</option>';}).join("")+'</select><label>ترتيب</label><select id="qs'+i+'" onchange="hint(\'sort\')"><option value="">(بلا)</option><option value="asc">تصاعدي</option><option value="desc">تنازلي</option></select><div class="chk"><input type="checkbox" id="qv'+i+'" checked> إظهار</div><label>معايير</label><input id="qc'+i+'" placeholder="مثل: >90 أو 3/1" onfocus="hint(\'crit\')"></div>';}).join("")+'</div>'
-  +'<div class="row"><button class="btn" onclick="runQuery()">❗ تشغيل</button><button class="btn sec sm" onclick="dialog({icon:\'💡\',text:CHAL[s4cur].tip})">تلميح التحدي</button></div><div id="s4res"></div>';
+  var c=CHAL[s4cur];
+  v.innerHTML=taskCard(4,"أجيبي عن سؤالي المديرة",["اختاري <b>السؤال</b> ثم <b>الحقلين</b> المطلوبين.","أضيفي <b>الترتيب</b> (السؤال الأول) أو <b>المعيار</b> (السؤال الثاني).","اضغطي <b>تشغيل</b> وانظري النتيجة."],"النتيجة تُعرض من البيانات التي أدخلتِها أنتِ.")
+  +'<div class="chal">'+CHAL.map(function(ch,i){return '<button class="'+(s4cur===i?'on':'')+(S.s4.done[i]?' done':'')+'" onclick="s4cur='+i+';render()">'+(S.s4.done[i]?"✓ ":"")+esc(ch.t)+'</button>';}).join("")+'</div>'
+  +'<div class="qwiz"><div class="qq">'+ico("search",22)+'<span>'+esc(c.q)+'</span>'+(S.s4.done[s4cur]?'<b class="qok">✓ تمت</b>':'')+'</div>'
+  +'<div class="qrow"><span class="n">1</span><label>الحقل الأول</label>'+qsel("qf0")+'</div>'
+  +'<div class="qrow"><span class="n">2</span><label>الحقل الثاني</label>'+qsel("qf1")+'</div>'
+  +(c.sort?'<div class="qrow"><span class="n">3</span><label>ترتيب '+esc(qlabel(c.sort))+'</label><select id="qs" class="qsel"><option value="">(بلا)</option><option value="asc">تصاعدي</option><option value="desc">تنازلي</option></select><small class="qhint">تصاعدي = من أ إلى ي</small></div>'
+          :'<div class="qrow"><span class="n">3</span><label>المعيار على '+esc(qlabel(c.crit.f))+'</label><input id="qc" class="qsel" placeholder="اكتبي: > 90" style="direction:ltr;text-align:left;width:120px"><small class="qhint">&gt; 90 تعني أكبر من 90</small></div>')
+  +'<div class="qrow"><span class="n">4</span><button class="btn" onclick="runQuery()">تشغيل</button></div></div><div id="s4res"></div>';
   hint("q");
 }
 function parseCrit(c){
-  c=String(c||"").trim().replace(/^["']|["']$/g,"").replace(/^=/,"").trim(); if(!c) return null;
-  var m=c.match(/^(>=|<=|<>|>|<)\s*(.+)$/);
-  if(m){ var n=parseFloat(m[2]); return function(v){ v=parseFloat(v); return {">":v>n,"<":v<n,">=":v>=n,"<=":v<=n,"<>":v!==n}[m[1]]; }; }
-  return function(v){ return String(v).trim()===c; };
+  c=String(c||"").trim().replace(/[٠-٩]/g,function(d){return "٠١٢٣٤٥٦٧٨٩".indexOf(d);}).replace(/\s+/g,"");
+  var m=c.match(/^(>=|<=|>|<)(\d+)$/); return m?{op:m[1],n:+m[2]}:null;
 }
 function runQuery(){
   if(S.cur!==4) return;
-  var cols=[]; for(var i=0;i<4;i++){ var f=$("qf"+i).value; if(f) cols.push({f:f,sort:$("qs"+i).value,show:$("qv"+i).checked,crit:parseCrit($("qc"+i).value)}); }
-  if(!cols.length){ dialog({text:"أضيفي حقلًا واحدًا على الأقل إلى الشبكة.",icon:"⚠️"}); return; }
-  var rows=joined().filter(function(r){ return cols.every(function(c){ return !c.crit||c.crit(r[c.f]); }); });
-  var sorts=cols.filter(function(c){return c.sort;});
-  if(sorts.length) rows.sort(function(a,b){ for(var i=0;i<sorts.length;i++){ var k=sorts[i].f, x=a[k], y=b[k]; var cmp=(typeof x==="number")?x-y:String(x).localeCompare(String(y),"ar"); if(cmp) return sorts[i].sort==="desc"?-cmp:cmp; } return 0; });
-  var shown=cols.filter(function(c){return c.show;});
-  var seen={}; rows=rows.filter(function(r){ var k=shown.map(function(c){return r[c.f];}).join("|"); if(seen[k]) return false; seen[k]=true; return true; }); // قيم فريدة
-  var html='<div class="wrap"><table class="grid"><tr>'+shown.map(function(c){return '<th>'+QF.filter(function(q){return q[1]===c.f;})[0][0].split(".")[1]+'</th>';}).join("")+'</tr>'+rows.map(function(r){return '<tr>'+shown.map(function(c){return '<td>'+esc(r[c.f])+'</td>';}).join("")+'</tr>';}).join("")+'</table></div><div style="font-size:12px;color:#666;margin:4px">السجلات: '+rows.length+' (قيم فريدة: نعم)</div>';
-  var ch=CHAL[s4cur], shownKeys=shown.map(function(c){return c.f;});
-  var ok=ch.need.every(function(k){return shownKeys.indexOf(k)>=0;});
-  if(ok){ var exp=ch.exp(), got=rows.map(function(r){var o={};ch.need.forEach(function(k){o[k]=r[k];});return JSON.stringify(o);}); var ex=exp.map(function(o){return JSON.stringify(o);});
-    if(ch.ordered) ok=got.join("|")===ex.join("|"); else ok=got.length===ex.length&&ex.every(function(e){return got.indexOf(e)>=0;}); }
-  if(ok){ S.s4.done[s4cur]=true; save(); html='<div class="msg ok">نتيجة صحيحة ✔ التحدي '+(s4cur+1)+' مكتمل.</div>'+html; renderProgress();
+  var c=CHAL[s4cur], f0=$("qf0").value, f1=$("qf1").value, fields=[f0,f1].filter(Boolean);
+  if(fields.length<2||f0===f1){ accessError("اختاري حقلين مختلفين أولًا.",null,[$("qf0"),$("qf1")],"الحقل الأول من جدول، والحقل الثاني من جدول آخر."); return; }
+  var rows=joined(), sortv=c.sort?$("qs").value:"", crit=c.crit?parseCrit($("qc").value):null;
+  if(crit){ rows=rows.filter(function(r){ var v=r[c.crit.f]; return {">":v>crit.n,"<":v<crit.n,">=":v>=crit.n,"<=":v<=crit.n}[crit.op]; }); }
+  if(sortv){ rows=rows.slice().sort(function(a,b){ var k=c.sort, x=String(a[k]).replace(/^أ\.\s*/,""), y=String(b[k]).replace(/^أ\.\s*/,""); var cmp=x.localeCompare(y,"ar"); return sortv==="desc"?-cmp:cmp; }); }
+  var seen={}; rows=rows.filter(function(r){ var k=fields.map(function(f){return r[f];}).join("|"); if(seen[k]) return false; seen[k]=true; return true; });
+  var html='<div class="wrap"><table class="grid"><tr>'+fields.map(function(f){return '<th>'+qlabel(f).split(".")[1]+'</th>';}).join("")+'</tr>'+(rows.length?rows.map(function(r){return '<tr>'+fields.map(function(f){return '<td>'+esc(r[f])+'</td>';}).join("")+'</tr>';}).join(""):'<tr><td colspan="2" style="color:#777;text-align:center">لا توجد سجلات تحقق الشرط</td></tr>')+'</table></div><div style="font-size:12px;color:#666;margin:4px">عدد السجلات: '+rows.length+'</div>';
+  var okFields=c.need.every(function(k){return fields.indexOf(k)>=0;});
+  var okSort=!c.sort||sortv==="asc", okCrit=!c.crit||(crit&&crit.op===">"&&crit.n===90);
+  var ok=okFields&&okSort&&okCrit;
+  if(ok){ S.s4.done[s4cur]=true; save(); html='<div class="msg ok">إجابة صحيحة ✔'+(c.crit&&!rows.length?' (لا توجد طالبة درجتها أكبر من 90 في بياناتك، والاستعلام صحيح)':'')+'</div>'+html; renderProgress();
     if(Object.keys(S.s4.done).length===CHAL.length){ $("s4res").innerHTML=html; complete(4); return; } }
-  else { err(4); setStatus(null,"أخطاء هذه المحطة: "+S.errs[4]); html='<div class="msg err">النتيجة لا تطابق المطلوب في التحدي '+(s4cur+1)+'.</div>'+html;
-    var badCols=[]; for(var j=0;j<4;j++){ var fj=$("qf"+j).value; if(fj&&ch.need.indexOf(fj)>=0&&!$("qv"+j).checked) badCols.push($("qv"+j).parentElement); }
-    var missing=ch.need.filter(function(k){return shownKeys.indexOf(k)<0;}).map(function(k){return QF.filter(function(q){return q[1]===k;})[0][0];});
-    var msg=missing.length?"ينقص الاستعلام الحقل: "+missing.join("، ")+".":"الحقول صحيحة لكن النتيجة مختلفة: راجعي المعايير والترتيب في الأعمدة المظللة.";
-    if(!missing.length) for(var j=0;j<4;j++){ if($("qf"+j).value) badCols.push(document.querySelectorAll(".qcol")[j]); }
-    accessError("النتيجة لا تطابق التحدي "+(s4cur+1)+". "+msg,null,badCols.length?badCols:document.querySelector(".qbe"),missing.length?"أضيفي الحقل الناقص في عمود فارغ وتأكدي أن «إظهار» مفعّل.":"قارني الأعمدة المظللة مع «تلميح التحدي»، ثم اضغطي تشغيل مرة أخرى."); }
+  else { err(4); setStatus(null,"أخطاء هذه المحطة: "+S.errs[4]);
+    var missing=c.need.filter(function(k){return fields.indexOf(k)<0;}).map(qlabel), bad=[], msg, fix;
+    if(missing.length){ msg="ينقص الاستعلام الحقل: "+missing.join("، ")+"."; fix="اختاري "+missing.join(" و ")+" في الحقلين."; bad=[$("qf0"),$("qf1")]; }
+    else if(!okSort){ msg="الحقول صحيحة، لكن المديرة تريد أسماء المعلمات مرتبة أبجديًا."; fix="اختاري الترتيب «تصاعدي» (من أ إلى ي)."; bad=[$("qs")]; }
+    else { msg="الحقول صحيحة، لكن المعيار غير صحيح."; fix="اكتبي في خانة المعيار: > 90"; bad=[$("qc")]; }
+    html='<div class="msg err">'+msg+'</div>'+html; accessError(msg,null,bad,fix); }
   $("s4res").innerHTML=html;
-  var btns=document.querySelectorAll(".chal button"); if(btns[s4cur]&&S.s4.done[s4cur]) btns[s4cur].classList.add("done");
 }
 
 /* ================= STATION 5: FORMS & REPORTS ================= */
@@ -1178,10 +1190,10 @@ function figRel(){
   +'<text x="235" y="162" font-size="11.5" fill="#555" text-anchor="middle">طالبة واحدة (1) ← عدة مواد (∞)</text></svg>';
 }
 function figQuery(){
-  return '<svg viewBox="0 0 470 170" class="lfig">'+miniTable(300,20,'المواد + المعلمات',['المادة','المعلمة'],[['رقمية','أ. هند'],['رياضيات','أ. منى'],['لغتي','أ. عبير']],-1)
-  +'<g class="la l1"><path d="M170 60 L295 60" stroke="#1e88e5" stroke-width="2.5"/><rect x="200" y="90" width="90" height="26" rx="6" fill="#1e88e5"/><text x="245" y="107" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">نختار الحقول</text></g>'
-  +'<g class="la l2">'+miniTable(10,20,'النتيجة',['المادة','المعلمة'],[['رقمية','أ. هند'],['رياضيات','أ. منى'],['لغتي','أ. عبير']],-1)+'</g>'
-  +'<text x="235" y="160" font-size="11.5" fill="#555" text-anchor="middle">سؤال: ما المادة التي تدرّسها كل معلمة؟</text></svg>';
+  return '<svg viewBox="0 0 470 170" class="lfig">'+miniTable(290,14,'الطالبات ودرجاتهن',['الاسم','الدرجة'],[['سارة','95'],['هند','82'],['ريم','91']],-1)
+  +'<g class="la l1"><path d="M285 70 L185 70" stroke="#ef6c00" stroke-width="2.5" marker-end="none"/><polygon points="185,64 173,70 185,76" fill="#ef6c00"/><rect x="178" y="84" width="112" height="26" rx="6" fill="#ef6c00"/><text x="234" y="101" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">المعيار: الدرجة &gt; 90</text></g>'
+  +'<g class="la l2">'+miniTable(10,14,'النتيجة',['الاسم','الدرجة'],[['سارة','95'],['ريم','91']],-1)+'</g>'
+  +'<text x="235" y="158" font-size="11.5" fill="#555" text-anchor="middle">سؤال: من الطالبات اللاتي درجتهن أكبر من 90؟</text></svg>';
 }
 function figForm(){
   return '<svg viewBox="0 0 470 170" class="lfig"><g class="la l1"><rect x="250" y="12" width="200" height="130" rx="6" fill="#f3f3f3" stroke="#bbb"/><rect x="250" y="12" width="200" height="24" fill="#A4373A"/><text x="350" y="29" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">نموذج: تسجيل مادة</text>'
@@ -1207,10 +1219,10 @@ var LESSONS={
     goal:"اربطي جدول المواد بجدول الطالبات وجدول المعلمات",
     steps:["اضغطي "+lsel("رقم الطالبة")+" في الطالبات ثم "+lsel("رقم الطالبة")+" في المواد","اضغطي "+lsel("رقم المعلمة")+" في المعلمات ثم "+lsel("رقم المعلمة")+" في المواد","في النافذة اضغطي "+lbtn("إنشاء")+" ثم أجيبي عن السؤال"],
     tipTitle:"كيف أعرف الحقلين؟",tips:[["اسم الحقل نفسه في الجدولين","اربطيهما"],["مفتاح أساسي","طرف 1"],["مفتاح أجنبي","طرف ∞"]]},
-  4:{title:"الاستعلامات",fig:figQuery,defs:[["t1","search","الاستعلام","سؤال نطرحه على قاعدة البيانات","ما مادة كل معلمة؟"],["t2","col","الحقول المختارة","نعرض فقط الأعمدة التي نحتاجها","المعلمة + المادة"],["t3","row","النتيجة","جدول جديد فيه الإجابة فقط","3 صفوف"]],
-    goal:"أجيبي عن سؤالي المديرة باستعلامين",
-    steps:["اختاري التحدي من الأزرار بالأعلى","في العمود الأول اختاري "+lsel("المعلمات.الاسم")+" وفي الثاني "+lsel("المواد.اسم المادة"),"اضغطي "+lbtn("تشغيل","", "")+" وتحققي من النتيجة"],
-    tipTitle:"كيف أختار الحقل؟",tips:[["الاسم قبل النقطة","اسم الجدول"],["بعد النقطة","اسم الحقل"],["لا نحتاج شرطًا","اتركي المعايير فارغة"]]},
+  4:{title:"الاستعلامات",fig:figQuery,defs:[["t1","search","الاستعلام","سؤال نطرحه على قاعدة البيانات","من درجتها أكبر من 90؟"],["t2","col","الحقول المختارة","الأعمدة التي نعرضها فقط","الاسم + الدرجة"],["t3","row","المعيار","شرط يُبقي الصفوف المطابقة فقط","الدرجة <b>&gt; 90</b>"],["t4","key","الترتيب","تصاعدي من أ إلى ي، أو تنازلي","الاسم ← <b>تصاعدي</b>"]],
+    goal:"أجيبي عن سؤالي المديرة:<br>مادة كل معلمة (أسماء المعلمات مرتبة أبجديًا)، ومن درجتها أكبر من 90",
+    steps:["اختاري <b>السؤال</b> ثم اختاري "+lsel("الحقل الأول")+" و "+lsel("الحقل الثاني"),"أضيفي "+lsel("تصاعدي")+" للسؤال الأول، أو اكتبي <b>&gt; 90</b> للسؤال الثاني","اضغطي "+lbtn("تشغيل")+" وانظري النتيجة"],
+    tipTitle:"رموز المعيار والترتيب",tips:[["أكبر من 90","> 90"],["أصغر من 80","< 80"],["من أ إلى ي","تصاعدي"],["من ي إلى أ","تنازلي"]]},
   5:{title:"النماذج والتقارير",fig:figForm,defs:[["t2","form","النموذج","شاشة سهلة لإدخال سجل جديد","تسجيل مادة لطالبة"],["t1","doc","التقرير","عرض مرتب للطباعة، لا نعدّل فيه","الطالبات ودرجاتهن"],["t4","key","القائمة المنسدلة","تختارين الاسم ويُحفظ الرقم","الطالبة: نورة ← 1"]],
     goal:"أنشئي نموذج تسجيل مادة، ثم تقرير الطالبات ودرجاتهن",
     steps:["اتبعي معالج النماذج واضغطي "+lbtn("التالي")+" في كل خطوة","في النموذج أدخلي مادة ودرجة ثم "+lbtn("حفظ السجل"),"اختاري حقلي التقرير ثم "+lbtn("إنهاء المحطة")],
