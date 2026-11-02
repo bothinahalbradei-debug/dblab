@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>معمل قواعد البيانات — قاعدة بيانات مدرستي</title>
+<style>
+:root{--acc:#A4373A;--acc2:#8c2c2f;--bg:#f3f3f3;--pane:#ffffff;--line:#d4d4d4;--txt:#222;--muted:#666;--ok:#2e7d32;--warn:#c62828;--hint:#fff7d6;--sel:#dbe7f7;--key:#d4a017}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:"Segoe UI",Tahoma,"Noto Naskh Arabic",Arial,sans-serif;background:var(--bg);color:var(--txt);font-size:15px}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+input,select{font-family:inherit;font-size:inherit}
+.hidden{display:none!important}
+/* ===== Start screen ===== */
+#start{min-height:100%;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(135deg,var(--acc) 0%,#5a1d1f 100%)}
+.card{background:#fff;border-radius:12px;padding:28px 24px;width:100%;max-width:420px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.card h1{margin:0 0 4px;font-size:22px;color:var(--acc)}
+.card p{margin:0 0 18px;color:var(--muted)}
+.card label{display:block;margin:10px 0 4px;font-weight:600}
+.card input,.card select{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px}
+.btn{background:var(--acc);color:#fff;border:0;padding:10px 16px;border-radius:8px;font-weight:600}
+.btn.sec{background:#fff;color:var(--acc);border:1px solid var(--acc)}
+.btn.sm{padding:6px 10px;font-size:14px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.w{width:100%;margin-top:16px}
+.teacher-link{display:block;text-align:center;margin-top:14px;color:var(--muted);background:none;border:0;text-decoration:underline}
+/* ===== Story scenes ===== */
+#start{position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 30%,#4a2325 0%,#2a1415 55%,#160a0b 100%)}
+.scene{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.paper{position:absolute;width:150px;height:200px;background:#fbf7ee;border:1px solid #d9d2c0;box-shadow:0 6px 18px rgba(0,0,0,.45);padding:10px;font-size:11px;color:#6b5b3a;transform:rotate(var(--r)) translate(0,0);animation:float var(--d) ease-in-out infinite alternate;opacity:.95}
+.paper.torn{clip-path:polygon(0 0,100% 0,100% 72%,88% 80%,96% 90%,80% 100%,0 100%)}
+.paper.faded{opacity:.6}
+.paper .ph{font-weight:800;font-size:12px;color:#8a3a3c;border-bottom:1px solid #c9b98f;padding-bottom:4px;margin-bottom:6px}
+.paper .pl{height:9px;margin:5px 0;background:repeating-linear-gradient(90deg,#d8cfb8 0 30px,transparent 30px 36px);opacity:.8}
+.paper .pl.b{width:60%}
+.paper .stain{position:absolute;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle,rgba(120,80,20,.28),rgba(120,80,20,0) 70%);inset-inline-end:8px;bottom:14px}
+.paper .x{position:absolute;inset-inline-start:12px;top:60px;color:#c62828;font-size:34px;font-weight:900;opacity:.5;transform:rotate(-15deg)}
+@keyframes float{from{transform:rotate(var(--r)) translate(0,0)}to{transform:rotate(calc(var(--r) + 4deg)) translate(6px,-12px)}}
+.card.story{position:relative;z-index:2;max-width:460px;animation:pop .5s}
+.st-tag{display:inline-block;background:#fff3dc;color:#8a5a00;border:1px solid #f0d9b0;border-radius:12px;padding:2px 10px;font-size:12px;font-weight:700;margin-bottom:8px}
+.st-msg{color:#333!important;line-height:1.9;background:#fff8ee;border-inline-start:4px solid #e0a040;padding:8px 10px;border-radius:6px}
+.st-sig{font-size:12px;color:#777!important}
+/* ending */
+.overlay.endwrap{background:radial-gradient(ellipse at 50% 30%,#2b3d2e 0%,#15201a 60%,#0b120e 100%);flex-direction:column;overflow:hidden}
+.endwrap .scene .paper{transition:all 1.6s cubic-bezier(.4,0,.2,1);animation:none}
+.endwrap.tidy .scene .paper{opacity:0;transform:rotate(0) scale(.4)}
+.tidyview{position:relative;z-index:2;opacity:0;transform:translateY(20px);transition:all .9s .9s;text-align:center;color:#fff;width:100%;max-width:760px;padding:10px}
+.endwrap.tidy .tidyview{opacity:1;transform:none}
+.tidyview h1{margin:6px 0 4px;color:#ffd54f;font-size:26px}
+.tidyview .tbl{display:inline-block;background:#fff;color:#222;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,.4);overflow:hidden;width:200px;text-align:right;font-size:12px;vertical-align:top;margin:6px}
+.tidyview .tbl h5{margin:0;background:var(--acc);color:#fff;padding:5px 8px;font-size:13px}
+.tidyview .tbl div{padding:3px 8px;border-bottom:1px solid #eee;display:flex;gap:4px;align-items:center}
+.tidyview .tbl .k{color:var(--key)}
+.tidyview .tables{position:relative;display:flex;justify-content:center;flex-wrap:wrap;gap:4px;margin:10px 0}
+.tidyview .msg2{background:rgba(255,255,255,.12);border-inline-start:4px solid #ffd54f;padding:8px 12px;border-radius:6px;display:inline-block;max-width:560px;line-height:1.8;text-align:right;margin-top:6px}
+.tidyview .chk{display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:#2e7d32;color:#fff;font-size:32px;box-shadow:0 0 0 8px rgba(46,125,50,.25);animation:pop .6s 1.4s both}
+.tidyview .btns{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+@media (max-width:700px){.tidyview .tbl{width:150px;font-size:11px}.tidyview h1{font-size:21px}}
+/* ===== App shell ===== */
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh}
+.title{background:var(--acc);color:#fff;padding:6px 12px;display:flex;align-items:center;gap:10px;font-size:14px}
+.title .logo{background:#fff;color:var(--acc);font-weight:800;border-radius:4px;padding:1px 6px}
+.title .who{margin-inline-start:auto;opacity:.95}
+.ribbon-tabs{background:var(--acc);display:flex;gap:2px;padding:0 8px}
+.ribbon-tabs span{color:#fff;padding:6px 12px;font-size:14px;border-radius:4px 4px 0 0}
+.ribbon-tabs span.on{background:#fff;color:var(--txt)}
+.ribbon{background:#fff;border-bottom:1px solid var(--line);padding:6px 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;min-height:46px}
+.ribbon .grp{display:flex;gap:6px;align-items:center;padding-inline-end:10px;border-inline-end:1px solid var(--line)}
+.ribbon .grp:last-child{border:0}
+.rb{background:#fff;border:1px solid transparent;border-radius:4px;padding:4px 8px;display:flex;gap:4px;align-items:center;font-size:14px}
+.rb:hover{border-color:var(--line);background:#f7f7f7}
+.rb.run{color:var(--warn);font-weight:800}
+.progress{background:#fafafa;border-bottom:1px solid var(--line);padding:6px 10px;display:flex;gap:6px;align-items:center;font-size:13px;overflow-x:auto}
+.progress .st{display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:14px;border:1px solid var(--line);white-space:nowrap;background:#fff}
+.progress .st{cursor:pointer;transition:transform .12s,box-shadow .12s,background .12s}
+.progress .st:hover{background:#fbeeee;border-color:var(--acc);color:var(--acc);transform:translateY(-1px);box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.progress .st.lock{opacity:.45;cursor:not-allowed}
+.progress .st.lock:hover{background:#fff;border-color:var(--line);color:inherit;transform:none;box-shadow:none}
+.progress .st.done{background:#e6f4ea;border-color:#9ccc9c;color:var(--ok)}
+.progress .st.cur{border-color:var(--acc);color:var(--acc);font-weight:700}
+.progress .pts{margin-inline-start:auto;font-weight:700;color:var(--acc);white-space:nowrap}
+.main{flex:1;display:flex;min-height:0}
+.nav{width:230px;background:var(--pane);border-inline-end:1px solid var(--line);overflow:auto;flex-shrink:0}
+.nav h3{margin:0;padding:8px 10px;font-size:13px;background:#efefef;border-bottom:1px solid var(--line);color:#444}
+.nav .sec{padding:4px 0}
+.nav .sec h4{margin:0;padding:6px 10px;font-size:13px;color:var(--acc);display:flex;gap:6px;align-items:center}
+.nav .obj{padding:5px 22px;font-size:14px;display:flex;gap:6px;align-items:center;color:#333;cursor:pointer}
+.nav .obj:hover{background:#fbeeee;color:var(--acc)}
+.nav .obj.lock:hover{background:none;color:#aaa}
+.rb,.btn,.tabs2 button,.chal button{cursor:pointer}
+.rb:hover,.tabs2 button:hover,.chal button:hover{box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.btn:hover{filter:brightness(1.08);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+#mnav button:hover{background:#fbeeee;color:var(--acc)}
+.nav .obj.on{background:var(--sel)}
+.nav .obj.lock{color:#aaa;cursor:not-allowed}
+.work{flex:1;display:flex;flex-direction:column;min-width:0}
+.doctabs{display:flex;background:#eaeaea;border-bottom:1px solid var(--line);overflow-x:auto}
+.doctabs span{padding:7px 14px;font-size:14px;border-inline-end:1px solid var(--line);white-space:nowrap;cursor:pointer}
+.doctabs span.on{background:#fff;font-weight:700;border-bottom:2px solid var(--acc)}
+.view{flex:1;overflow:auto;padding:14px;background:#fff}
+.status{background:#eee;border-top:1px solid var(--line);padding:4px 10px;font-size:13px;color:#444;display:flex;gap:10px}
+.status .right{margin-inline-start:auto}
+/* ===== Station blocks ===== */
+.task{background:#fff8ee;border:1px solid #f0d9b0;border-inline-start:4px solid #e0a040;border-radius:6px;padding:10px 12px;margin-bottom:12px}
+.task b{color:#8a5a00}
+.tabs2{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+.tabs2 button{border:1px solid var(--line);background:#f7f7f7;padding:6px 12px;border-radius:6px 6px 0 0}
+.tabs2 button.on{background:#fff;border-bottom-color:#fff;font-weight:700;color:var(--acc)}
+table.grid{border-collapse:collapse;width:100%;background:#fff;font-size:14px}
+table.grid th{background:#f3f3f3;border:1px solid var(--line);padding:6px 8px;font-weight:600;text-align:right;white-space:nowrap}
+table.grid td{border:1px solid var(--line);padding:4px 8px;vertical-align:middle}
+table.grid td input,table.grid td select{width:100%;border:1px solid transparent;padding:5px 6px;border-radius:3px;background:transparent;min-width:90px}
+table.grid td input:focus,table.grid td select:focus{border-color:var(--acc);outline:0;background:#fff}
+table.grid tr.newrow td{background:#fbfbfb}
+table.grid tr.newrow td:first-child{color:#999;text-align:center}
+.keycell{width:36px;text-align:center;cursor:pointer;font-size:18px;user-select:none}
+.keycell{filter:grayscale(1);opacity:.35}
+.keycell.on{filter:none;opacity:1}
+.props{margin-top:10px;border:1px solid var(--line);background:#fafafa;padding:8px 10px;font-size:13px;color:#555}
+.wrap{overflow-x:auto}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.msg{padding:8px 10px;border-radius:6px;margin:8px 0;font-size:14px}
+.msg.ok{background:#e6f4ea;color:var(--ok)}
+.msg.err{background:#fdecea;color:var(--warn)}
+.datacard{border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:10px 0;background:#fafcff}
+.datacard h4{margin:0 0 6px;font-size:14px;color:#345}
+.datacard table{font-size:13px}
+.datacard tr{cursor:pointer}
+.datacard tr:hover td{background:#eef4ff}
+.datacard tr.got td{color:#999;text-decoration:line-through}
+.mcq{border:1px solid var(--line);border-radius:6px;padding:10px;margin:10px 0}
+.mcq p{margin:0 0 6px;font-weight:600}
+.mcq label{display:block;padding:5px 0;cursor:pointer}
+/* relationships */
+.relcanvas{position:relative;min-height:380px;background:#fff;border:1px solid var(--line);background-image:linear-gradient(#f4f4f4 1px,transparent 1px),linear-gradient(90deg,#f4f4f4 1px,transparent 1px);background-size:20px 20px;border-radius:6px;overflow:hidden}
+.relcanvas svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.tbox{position:absolute;width:150px;background:#fff;border:1px solid #999;border-radius:4px;box-shadow:0 2px 6px rgba(0,0,0,.15);font-size:13px}
+.tbox h5{margin:0;background:var(--acc);color:#fff;padding:5px 8px;font-size:13px;border-radius:4px 4px 0 0}
+.tbox div{padding:4px 8px;border-bottom:1px solid #eee;cursor:pointer;display:flex;gap:4px;align-items:center}
+.tbox div:hover{background:#f0f4ff}
+.tbox div.sel{background:var(--sel);outline:2px solid var(--acc)}
+.tbox div .k{color:var(--key)}
+/* QBE */
+.qbe-top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.qbe-top .tbox{position:static;width:140px}
+.qbe{display:flex;gap:8px;flex-wrap:wrap}
+.qcol{border:1px solid var(--line);border-radius:6px;padding:8px;width:190px;background:#fafafa;font-size:13px}
+.qcol label{display:block;color:#555;margin:6px 0 2px}
+.qcol select,.qcol input{width:100%;padding:5px;border:1px solid var(--line);border-radius:4px;background:#fff}
+.qcol .chk{display:flex;gap:6px;align-items:center;margin-top:6px}
+.chal{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.chal button{border:1px solid var(--line);background:#fff;padding:5px 10px;border-radius:14px;font-size:13px}
+.chal button.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.chal button.done{background:#e6f4ea;border-color:#9ccc9c;color:var(--ok)}
+/* form / report preview */
+.formprev{border:1px solid #bbb;background:#f0f0f0;padding:0;border-radius:4px;max-width:420px}
+.formprev .fh{background:var(--acc);color:#fff;padding:6px 10px;font-weight:700}
+.formprev .fb{padding:10px}
+.formprev .fr{display:flex;align-items:center;gap:8px;margin:6px 0}
+.formprev .fr label{width:110px;color:#333}
+.formprev .fr input,.formprev .fr select{flex:1;padding:5px;border:1px solid #bbb;background:#fff}
+.report{border:1px solid #ccc;padding:14px;background:#fff;max-width:560px;font-size:14px}
+.report h3{margin:0 0 10px;color:var(--acc);border-bottom:2px solid var(--acc);padding-bottom:4px}
+.report .g{font-weight:700;background:#f3f3f3;padding:4px 6px;margin-top:8px}
+.report .r{display:flex;gap:16px;padding:2px 12px;border-bottom:1px dotted #ddd}
+.steps{display:flex;gap:4px;margin-bottom:8px;font-size:13px}
+.steps span{padding:3px 8px;border-radius:12px;background:#eee}
+.steps span.on{background:var(--acc);color:#fff}
+/* dialogs */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.dlg{background:#fff;border:1px solid #888;border-radius:8px;min-width:280px;max-width:500px;max-height:92vh;overflow:auto;width:100%;box-shadow:0 8px 30px rgba(0,0,0,.3);font-size:14px}
+.dlg .dh{background:#f0f0f0;border-bottom:1px solid #ccc;padding:7px 10px;font-weight:700;display:flex;align-items:center;gap:8px}
+.dlg .db{padding:14px 12px;display:flex;gap:10px;align-items:flex-start;line-height:1.6;white-space:pre-line}
+.dlg .ic{font-size:28px;line-height:1}
+.dlg .ic:empty{display:none}
+.dlg .df{padding:8px 12px;border-top:1px solid #eee;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.dlg .df .btn{padding:6px 14px}
+/* hint bubble */
+#hint{position:fixed;bottom:16px;inset-inline-start:16px;max-width:340px;background:var(--hint);border:1px solid #e8d48b;border-radius:10px;padding:10px 12px;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:40;font-size:14px;display:flex;gap:8px;align-items:flex-start;animation:pop .25s}
+#hint .ic{font-size:20px}
+#hint button{background:none;border:0;color:#8a6d00;font-weight:700;margin-inline-start:auto}
+@keyframes pop{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+.hintlist div{padding:6px 0;border-bottom:1px dotted #ddd}
+/* story / badges / certificate */
+.doctabs .mission{padding:7px 14px;font-size:13px;color:#8a5a00;white-space:nowrap}
+.cbadges{display:flex;gap:8px;justify-content:center;font-size:26px;margin:10px 0}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:100}
+.certwrap{background:rgba(0,0,0,.6);flex-direction:column;gap:10px;overflow:auto}
+.cert{background:#fffdf7;border:10px double #b8962e;padding:8px;width:100%;max-width:720px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.cert .cb{border:2px solid #b8962e;padding:22px 20px;text-align:center;background:radial-gradient(circle at 50% 0,#fff 0,#fffdf7 60%)}
+.cert .ch{color:#b8962e;margin-bottom:2px}
+.cert .cbody{font-size:14px;color:#333;line-height:1.9;max-width:560px;margin:8px auto 10px}
+.cbadges2{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:8px 0 4px}
+.cbadges2 div{display:flex;flex-direction:column;align-items:center;gap:2px;width:84px}
+.cbadges2 .bi{width:44px;height:44px;border-radius:50%;background:#fff;border:1.5px solid #d9c68a;color:#b8962e;display:flex;align-items:center;justify-content:center}
+.cbadges2 small{font-size:10.5px;color:#666;line-height:1.3}
+.cert .ct{font-size:30px;font-weight:800;color:#8c6d1f;letter-spacing:1px}
+.cert .cs{color:#666;margin-bottom:14px;font-size:14px}
+.cert .cp{font-size:15px;color:#333;margin:4px 0}
+.cert .cn{font-size:30px;font-weight:800;color:var(--acc);margin:6px 0;border-bottom:2px solid #b8962e;display:inline-block;padding:0 24px 4px}
+.cert .cl{font-size:19px;font-weight:700;color:#8c6d1f;margin:8px 0}
+.cert .cm{font-size:13px;color:#555;margin-top:6px}
+.cert .csig{display:flex;justify-content:space-around;margin-top:22px;font-size:13px;color:#444;gap:10px}
+.cert .csig .line{width:150px;border-top:1px solid #777;margin:0 auto 6px}
+.cert .cc{font-family:monospace;font-size:12px;color:#888;margin-top:14px}
+.certbtns{display:flex;gap:8px}
+@media print{ body *{visibility:hidden} .certwrap,.certwrap *{visibility:visible} .certwrap{position:fixed;inset:0;background:#fff;padding:0;align-items:flex-start} .certbtns{display:none!important} .cert{box-shadow:none;max-width:none} }
+@media (max-width:600px){ .cert .cn{font-size:24px} .cert .ct{font-size:24px} .cert .cb{padding:14px 10px} .cert .csig .line{width:90px} }
+.donebar{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#e6f4ea;border:1px solid #9ccc9c;color:#1e5c2a;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-weight:600}
+.nextbtn{margin-inline-start:8px;padding:4px 12px;font-size:13px}
+.chk-list div{padding:5px 0;border-bottom:1px dotted #e5e5e5}
+.chk-list .ok{color:#2e7d32}
+#mnav button.nx{color:var(--acc);font-weight:700}
+.ic-svg{display:inline-flex;vertical-align:-.17em;line-height:1}
+.ic-svg svg{width:1.1em;height:1.1em}
+.emo{display:inline}
+/* task card */
+.tc{background:#fff;border:1px solid #eadfc8;border-radius:10px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.tc .tch{background:linear-gradient(90deg,#fff3dc,#fff9ee);padding:10px 12px;display:flex;gap:10px;align-items:center}
+.tc .tcn{background:var(--acc);color:#fff;border-radius:8px;padding:2px 9px;font-size:12px;font-weight:700;white-space:nowrap}
+.tc h4{margin:0;font-size:15px;color:#5a3c00}
+.tc .tcb{padding:8px 12px 10px;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:14px}
+.tc .goal{grid-column:1/-1;background:#eef7f0;color:#1e5c2a;border-radius:6px;padding:6px 9px;font-weight:600}
+.tc ol{margin:0;padding-inline-start:20px;line-height:1.75}
+.tc .tip{font-size:13px;color:#666;background:#fafafa;border-radius:6px;padding:6px 9px;align-self:start}
+@media (max-width:700px){.tc .tcb{grid-template-columns:1fr}}
+/* structured dialogs */
+.dlg .dh.err{background:#fdecea;color:#b71c1c;border-bottom-color:#f5c6c2}
+.dlg .lbl{font-size:12px;color:#888;font-weight:700;margin:8px 0 2px;letter-spacing:.2px}
+.dlg .lbl:first-child{margin-top:0}
+.dlg .fix{background:#e9f3ff;border-inline-start:3px solid #1e88e5;padding:6px 9px;border-radius:4px}
+.dlg .where{font-size:12px;color:#b71c1c;margin-top:8px}
+.dlg .db>div{flex:1;min-width:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.mini{background:#f7f7f9;border-radius:8px;padding:8px 10px;font-size:13px;line-height:1.5}
+.mini b{display:block;color:var(--acc);margin-bottom:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:12px;padding:3px 9px;font-size:12px}
+.stats{display:flex;gap:8px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.stat{background:#f7f7f9;border-radius:8px;padding:6px 12px;font-size:13px;min-width:80px}
+.stat b{display:block;font-size:17px;color:var(--acc)}
+.msgbox{background:#fff8ee;border-inline-start:4px solid #e0a040;padding:8px 10px;border-radius:6px;margin-bottom:10px}
+@media (max-width:480px){.grid2{grid-template-columns:1fr}}
+/* error highlight */
+.bad{outline:2px solid #c62828!important;outline-offset:1px;background:#fdecea!important;animation:shake .4s;border-radius:4px}
+.tbox div.bad,.tabs2 button.bad,.mcq label.bad{background:#fdecea!important}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+/* teacher */
+.tt{width:100%;border-collapse:collapse;font-size:14px}
+.tt th,.tt td{border:1px solid var(--line);padding:5px 8px;text-align:center}
+.tt th{background:#f3f3f3}
+.tt td.n{text-align:right;font-weight:600}
+.tt .y{color:var(--ok);font-weight:700}.tt .x{color:#bbb}
+/* badge */
+.badge{text-align:center;padding:20px}
+.badge .big{font-size:64px}
+.badge h2{color:var(--acc);margin:6px 0}
+.badge .code{font-family:monospace;font-size:22px;background:#f3f3f3;padding:6px 12px;border-radius:6px;display:inline-block;margin-top:8px;letter-spacing:2px}
+/* ===== Mobile ===== */
+@media (max-width:900px){
+  .nav{display:none}
+  .ribbon-tabs{display:none}
+  .ribbon{overflow-x:auto;flex-wrap:nowrap}
+  .view{padding:10px}
+  .qcol{width:100%}
+  .relcanvas{min-height:480px}
+  .tbox{width:120px;font-size:12px}
+  #tb_subjects{top:250px!important;margin-left:-60px!important}
+  #mnav{display:flex}
+}
+#mnav{display:none;background:#fff;border-top:1px solid var(--line);justify-content:space-around;padding:4px 2px;padding-bottom:max(4px,env(safe-area-inset-bottom))}
+#mnav button{background:none;border:0;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px;color:#555;padding:4px 6px;border-radius:8px}
+#mnav button.on{color:var(--acc);font-weight:700;background:#fbeeee}
+#mnav button.lock{color:#bbb}
+#mnav button .i{font-size:18px}
+</style>
+</head>
+<body>
+
+<!-- ===== Start ===== -->
+<div id="start">
+  <div class="scene" id="scene0"></div>
+  <div class="card story" id="step1">
+    <div class="st-tag">رسالة عاجلة من مديرة المدرسة</div>
+    <h1>فقدنا سجلات المدرسة!</h1>
+    <p class="st-msg">«ضاعت السجلات الورقية لمدرستنا، ولم يبقَ منها إلا أوراق مبعثرة. نحتاج قاعدة بيانات جديدة تُعيد ترتيب كل شيء… <b>هل تستطيعين مساعدتنا؟</b>»</p>
+    <p class="st-sig">— <span id="pName"></span>، مديرة <span id="pSchool"></span></p>
+    <button class="btn w" onclick="$('step1').classList.add('hidden');$('step2').classList.remove('hidden');$('inName').focus()">نعم، سأساعد!</button>
+  </div>
+  <div class="card story hidden" id="step2">
+    <div class="st-tag">قاعدة بيانات مدرستي — ثالث متوسط</div>
+    <h1>عرّفينا بنفسك</h1>
+    <p>سنكتب اسمك في سجل المنقذات.</p>
+    <label>اسمك</label>
+    <input id="inName" placeholder="الاسم الثلاثي" autocomplete="off">
+    <label>الفصل</label>
+    <select id="inCls"><option>ثالث/1</option><option>ثالث/2</option><option>ثالث/3</option><option>ثالث/4</option><option>ثالث/5</option><option>ثالث/6</option></select>
+    <button class="btn w" onclick="startLab()">ابدئي المهمة</button>
+  </div>
+</div>
+
+<!-- ===== App ===== -->
+<div id="app" class="hidden">
+  <div class="title"><span class="logo">A</span> <span>قاعدة بيانات مدرستي : قاعدة بيانات</span> <span class="who" id="who"></span></div>
+  <div class="ribbon-tabs"><span>ملف</span><span class="on">الصفحة الرئيسية</span><span>إنشاء</span><span>بيانات خارجية</span><span>أدوات قاعدة البيانات</span></div>
+  <div class="ribbon" id="ribbon"></div>
+  <div class="progress" id="progress"></div>
+  <div class="main">
+    <div class="work">
+      <div class="doctabs" id="doctabs"></div>
+      <div class="view" id="view"></div>
+      <div class="status"><span id="statusL">جاهز</span><span class="right" id="statusR"></span></div>
+    </div>
+    <div class="nav" id="nav"></div>
+  </div>
+  <div id="mnav"></div>
+</div>
+
+<div id="dlgHost"></div>
+<div id="hintHost"></div>
+
+<script>
+/* ================= CONFIG ================= */
+var EXEC_URL = "https://script.google.com/macros/s/AKfycby--yJWGiwmYOq_N7FsJHzyHjbcT91WdnsBffX0Vx-mjDdBcgPNLcJujydHAnqzwVcx6Q/exec";
+var TEACHER_PIN = "4242";
+// نموذج Google لتسجيل الإنجاز (رابط مُعبّأ مسبقًا، تُستبدل القيم X0..X7)
+var FORM_PREFILL = "https://docs.google.com/forms/d/e/1FAIpQLScJzikI8FRgk401oTvyv8mEAVrWMixTqFKYS3RMImY0HqYKOg/viewform?usp=pp_url&entry.2034596590=X0&entry.1904609220=X1&entry.1522335294=X2&entry.595481430=X3&entry.1250260281=X4&entry.560450216=X5&entry.1459720748=X6&entry.292462737=X7";
+var HAS_GS = (typeof google !== "undefined" && google.script && google.script.run);
+
+/* ================= DATA ================= */
+var D = {
+  students:[{id:1,name:"نورة",cls:"3/1",dob:"2012-03-14"},{id:2,name:"ريم",cls:"3/1",dob:"2011-11-02"},{id:3,name:"لمى",cls:"3/2",dob:"2012-07-21"},{id:4,name:"جود",cls:"3/2",dob:"2012-01-09"}],
+  teachers:[{id:1,name:"أ. هند",spec:"مهارات رقمية"},{id:2,name:"أ. منى",spec:"رياضيات"},{id:3,name:"أ. عبير",spec:"لغة عربية"}],
+  subjects:[{id:1,sub:"المهارات الرقمية",sid:1,tid:1,g:95},{id:2,sub:"المهارات الرقمية",sid:2,tid:1,g:88},{id:3,sub:"المهارات الرقمية",sid:3,tid:1,g:92},{id:4,sub:"الرياضيات",sid:4,tid:2,g:79},{id:5,sub:"الرياضيات",sid:1,tid:2,g:97},{id:6,sub:"لغتي",sid:2,tid:3,g:85}]
+};
+var TYPES = ["","ترقيم تلقائي","نص قصير","رقم","تاريخ/وقت"];
+var SCHEMA = {
+  students:{title:"الطالبات",fields:[{n:"رقم الطالبة",t:"ترقيم تلقائي",pk:true,hint:"auto"},{n:"الاسم",t:"نص قصير",hint:"text"},{n:"الفصل",t:"نص قصير",hint:"cls"},{n:"تاريخ الميلاد",t:"تاريخ/وقت",hint:"date"}]},
+  teachers:{title:"المعلمات",fields:[{n:"رقم المعلمة",t:"ترقيم تلقائي",pk:true,hint:"auto"},{n:"الاسم",t:"نص قصير",hint:"text"},{n:"التخصص",t:"نص قصير",hint:"text"}]},
+  subjects:{title:"المواد",fields:[{n:"رقم التسجيل",t:"ترقيم تلقائي",pk:true,hint:"auto"},{n:"اسم المادة",t:"نص قصير",hint:"text"},{n:"رقم الطالبة",t:"رقم",hint:"fk"},{n:"رقم المعلمة",t:"رقم",hint:"fk"},{n:"الدرجة",t:"رقم",hint:"num"}]}
+};
+var STATIONS = [
+  {n:1,name:"التصميم",icon:"🛠️",mission:"الملفات الورقية ضاعت! صمّمي جداول النظام الجديد",badge:"مصممة الجداول",bicon:"🏗️"},
+  {n:2,name:"الإدخال",icon:"⌨️",mission:"المديرة تنتظر البيانات اليوم — أدخليها بدقة",badge:"خبيرة الإدخال",bicon:"⌨️"},
+  {n:3,name:"العلاقات",icon:"🔗",mission:"من تدرّس من؟ اربطي الجداول لتظهر الصورة",badge:"محترفة العلاقات",bicon:"🔗"},
+  {n:4,name:"الاستعلامات",icon:"🔍",mission:"المديرة تسأل 5 أسئلة… استخرجي الإجابات",badge:"محققة البيانات",bicon:"🕵️‍♀️"},
+  {n:5,name:"النماذج والتقارير",icon:"📋",mission:"جهّزي النموذج للسكرتيرة والتقرير للمديرة",badge:"مصممة التقارير",bicon:"📊"},
+  {n:6,name:"اكتشفي الخطأ",icon:"🧩",mission:"زميلتك صممت جدولًا واحدًا ضخمًا… أنقذي الموقف",badge:"منقذة قواعد البيانات",bicon:"🦸‍♀️"}
+];
+var SCHOOL="المتوسطة الثانية والأربعون", TEACHER="أ. بثينة البرادعي", PRINCIPAL="أ. عفاف الحارثي";
+var HINTS = {
+  auto:"ترقيم تلقائي: البرنامج يولّد رقمًا فريدًا لكل سجل، فلا تدخلينه ولا يتكرر.",
+  pk:"المفتاح الأساسي: قيمة فريدة لا تتكرر ولا تُترك فارغة.",
+  text:"نص قصير: للأسماء والكلمات التي لا نحسب بها.",
+  cls:"الفصل مثل 3/1 نص وليس رقمًا، ويمكن تحويله لقائمة اختيار لتقليل الأخطاء.",
+  date:"نوع تاريخ/وقت: يسمح بالترتيب والحساب على التواريخ.",
+  num:"رقم: نحتاجه في المقارنة والجمع والمتوسط.",
+  fk:"المفتاح الأجنبي: مفتاح أساسي من جدول آخر نضعه هنا لنربط الجدولين.",
+  rec:"السجل = صف واحد يمثل كيانًا واحدًا (طالبة واحدة).",
+  ri:"التكامل المرجعي: لا نشير إلى سجل غير موجود في الجدول الآخر.",
+  type:"رُفض الإدخال لأن القيمة لا تطابق نوع البيانات المحدد للحقل.",
+  rel:"العلاقة تربط جدولين عبر حقل مشترك، فنتجنب تكرار البيانات.",
+  mid:"جدول المواد هو الوسيط: يربط كل طالبة بمعلمتها، فتصبح العلاقة بين الطالبات والمعلمات متعدد لمتعدد.",
+  q:"الاستعلام: سؤال نطرحه على القاعدة ونختار ما يُعرض فقط.",
+  crit:"المعايير تصفّي السجلات: مثل >90 أو 3/1.",
+  sort:"تصاعدي للأصغر أولًا، تنازلي للأكبر أولًا.",
+  form:"النموذج: واجهة سهلة لإدخال البيانات بدل الجدول الخام.",
+  combo:"مربع التحرير والسرد: قائمة منسدلة تعرض الأسماء وتخزن الأرقام، فتقل الأخطاء.",
+  rep:"التقرير: عرض منسّق للطباعة، لا يُعدَّل فيه.",
+  norm:"تقسيم الجدول الكبير إلى جداول مرتبطة يسمى التطبيع، وهو يمنع التكرار."
+};
+
+/* ================= STATE ================= */
+var S = null;
+function defaultState(name,cls){
+  return {name:name,cls:cls,started:Date.now(),cur:1,done:{},pts:{},errs:{},hints:[],logged:{},
+    s1:{types:{},pk:{}}, s2:{rows:{students:[],teachers:[],subjects:[]},tests:{}}, s3:{rels:[]}, s4:{done:{}}, s5:{form:false,report:false}, s6:{}};
+}
+function save(){ try{ localStorage.setItem("dblab", JSON.stringify(S)); }catch(e){} }
+function load(){ try{ var s=localStorage.getItem("dblab"); return s?JSON.parse(s):null; }catch(e){ return null; } }
+function err(n){ S.errs[n]=(S.errs[n]||0)+1; save(); }
+function totalPts(){ var t=0; for(var k in S.pts) t+=S.pts[k]; return t; }
+function device(){ return /Mobi|Android|iPhone/i.test(navigator.userAgent)?"جوال":(/iPad|Macintosh.*Mobile|Tablet/i.test(navigator.userAgent)&&'ontouchend' in document?"آيباد":"حاسوب"); }
+
+/* ================= LOGGING ================= */
+function logRow(station,status,points){
+  var o={name:S.name,cls:S.cls,station:station,status:status,points:points||0,errors:S.errs[station]||0,minutes:Math.round((Date.now()-S.started)/60000),device:device()};
+  try{
+    if(HAS_GS){ google.script.run.withFailureHandler(function(){}).logRow(o); }
+    else if(EXEC_URL){ var q=Object.keys(o).map(function(k){return k+"="+encodeURIComponent(o[k]);}).join("&"); fetch(EXEC_URL+"?action=add&"+q,{mode:"no-cors"}).catch(function(){}); }
+    // نسخة احتياطية عبر نموذج Google (للأجهزة التي تمنع Apps Script)
+    if(FORM_PREFILL){ var fd=new FormData(), ids=FORM_PREFILL.match(/entry\.\d+/g), vals=[o.name,o.cls,String(o.station),String(o.points),String(o.errors),String(o.minutes),o.device,o.status];
+      ids.forEach(function(id,i){ fd.append(id,vals[i]); }); fetch(FORM_PREFILL.split("/viewform")[0]+"/formResponse",{method:"POST",mode:"no-cors",body:fd}).catch(function(){}); }
+  }catch(e){}
+}
+function fetchRows(cb,fail){
+  if(HAS_GS){ google.script.run.withSuccessHandler(function(r){cb(r.rows||r);}).withFailureHandler(fail).listRows(); }
+  else { fetch(EXEC_URL+"?action=list").then(function(r){return r.json();}).then(function(j){cb(j.rows);}).catch(fail); }
+}
+
+/* ================= HELPERS ================= */
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+function dialog(opts){
+  var h=$("dlgHost");
+  var d=document.createElement("div"); d.className="overlay";
+  var btns=(opts.buttons||[{t:"موافق"}]).map(function(b,i){return '<button class="btn '+(b.sec?'sec':'')+'" data-i="'+i+'">'+esc(b.t)+'</button>';}).join("");
+  d.innerHTML='<div class="dlg"><div class="dh">'+esc(opts.title||"Microsoft Access")+'</div><div class="db"><span class="ic">'+(opts.icon==null?"ℹ️":opts.icon)+'</span><div>'+(opts.html||esc(opts.text))+'</div></div><div class="df">'+btns+'</div></div>';
+  d.querySelectorAll("button[data-i]").forEach(function(b){ b.onclick=function(){ d.remove(); var f=(opts.buttons||[{}])[+b.dataset.i].f; if(f) f(d); }; });
+  h.appendChild(d); return d;
+}
+function clearBad(){ document.querySelectorAll(".bad").forEach(function(e){ e.classList.remove("bad"); }); }
+function markBad(els){
+  clearBad(); var list=[].concat(els||[]).filter(Boolean);
+  list.forEach(function(e){ e.classList.add("bad"); });
+  if(list[0]) try{ list[0].scrollIntoView({block:"center",behavior:"smooth"}); }catch(e){}
+}
+function accessError(text,hintKey,els,fix){
+  if(els) markBad(els);
+  var html='<div class="lbl">ما الخطأ؟</div><div>'+esc(text).replace(/\n/g,"<br>")+'</div>'
+    +(fix?'<div class="lbl">كيف تصلحينه؟</div><div class="fix">'+esc(fix)+'</div>':'')
+    +(els?'<div class="where">📍 المكان المظلل بالأحمر هو موضع الخطأ</div>':'');
+  var d=dialog({title:"Microsoft Access — تنبيه",icon:"⛔",html:html}); d.querySelector(".dh").classList.add("err");
+  if(hintKey) hint(hintKey);
+}
+function remaining(n){
+  var L=[], ok;
+  if(n===1){
+    var typesOk=["students","teachers","subjects"].every(function(k){return SCHEMA[k].fields.every(function(f){return S.s1.types[k+"."+f.n]===f.t;});});
+    var pkOk=["students","teachers","subjects"].every(function(k){return S.s1.pk[k]===SCHEMA[k].fields.filter(function(f){return f.pk;})[0].n;});
+    L.push([typesOk,"اختيار نوع البيانات الصحيح لكل حقل في الجداول الثلاثة"]);
+    L.push([pkOk,"تحديد المفتاح الأساسي 🔑 في كل جدول"]);
+    L.push([!!S.s1.ok,"الضغط على «تحقق من التصميم»"]);
+    L.push([false,"الإجابة الصحيحة عن سؤال التحقق"]);
+  }
+  if(n===2){
+    ["students","teachers","subjects"].forEach(function(k){ var cols=S2COLS[k]; var c=S.s2.rows[k].length; L.push([c>=S2REQ,"إدخال 3 صفوف في جدول "+SCHEMA[k].title+" ("+c+"/3)"]); });
+    L.push([!!S.s2.tests[1],"الضغط على زر التجربة «طالبة رقم 9» في جدول المواد"]);
+    L.push([!!S.s2.tests[2],"الضغط على زر التجربة «الدرجة = ممتاز» في جدول المواد"]);
+  }
+  if(n===3){
+    L.push([S.s3.rels.some(function(r){return r.a.t==="students";}),"ربط الطالبات ↔ المواد عبر «رقم الطالبة»"]);
+    L.push([S.s3.rels.some(function(r){return r.a.t==="teachers";}),"ربط المعلمات ↔ المواد عبر «رقم المعلمة»"]);
+    L.push([false,"الإجابة الصحيحة عن سؤال التحقق"]);
+  }
+  if(n===4){ CHAL.forEach(function(c,i){ L.push([!!S.s4.done[i],"التحدي "+c.t]); }); }
+  if(n===5){
+    L.push([s5step>=4||S.s5.form,"إكمال معالج النماذج (الجدول، الحقول، طريقة الإدخال)"]);
+    L.push([!!S.s5.form,"حفظ سجل واحد من النموذج"]);
+    L.push([!!S.s5.report,"اختيار حقل التجميع في معالج التقارير"]);
+    L.push([false,"الضغط على «إنهاء المحطة» بعد معاينة التقرير"]);
+  }
+  if(n===6){ L.push([false,"تحديد المشاكل الثلاث الصحيحة"]); L.push([false,"توزيع الحقول السبعة على جداولها"]); L.push([false,"الضغط على «تحقق»"]); }
+  return L;
+}
+function nextStep(){
+  var n=S.cur;
+  if(S.done[n]){ if(n<6) go(n+1); else showCertificate(); return; }
+  var L=remaining(n);
+  dialog({title:"⏸️ قبل الانتقال للمهمة التالية",icon:"",html:'<div class="lbl">بقي عليك في هذه المهمة</div><div class="chk-list">'+L.map(function(x){return '<div class="'+(x[0]?'ok':'todo')+'">'+(x[0]?'✅':'⬜')+' '+esc(x[1])+'</div>';}).join("")+'</div><div style="font-size:12px;color:#666;margin-top:8px">أكملي البنود غير المكتملة وستُفتح المهمة التالية تلقائيًا.</div>',
+    buttons:[{t:"فهمت، أكمل"}]});
+}
+function taskCard(n,goal,steps,tip){
+  var st=STATIONS[n-1];
+  return '<div class="tc"><div class="tch"><span class="tcn">المهمة '+n+' من 6</span><h4>'+esc(st.mission)+'</h4></div>'
+    +'<div class="tcb"><div class="goal">🎯 الهدف: '+esc(goal)+'</div><ol>'+steps.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ol>'+(tip?'<div class="tip">💡 '+tip+'</div>':'')+'</div></div>';
+}
+document.addEventListener("input",clearBad); document.addEventListener("change",clearBad);
+function hint(key,force){
+  if(!HINTS[key]) return;
+  if(!force && S.hints.indexOf(key)>=0) return;
+  if(S.hints.indexOf(key)<0){ S.hints.push(key); save(); }
+  var h=$("hintHost"); h.innerHTML='<div id="hint"><span class="ic">💡</span><span>'+esc(HINTS[key])+'</span><button onclick="$(\'hintHost\').innerHTML=\'\'">✕</button></div>';
+  clearTimeout(hint.t); hint.t=setTimeout(function(){ h.innerHTML=""; },9000);
+}
+function showHints(){
+  var html=S.hints.length?'<div class="hintlist">'+S.hints.map(function(k){return '<div>💡 '+esc(HINTS[k])+'</div>';}).join("")+'</div>':'لم تظهر تلميحات بعد.';
+  dialog({title:"تذكير بالتلميحات",icon:"",html:html});
+}
+function setStatus(l,r){ $("statusL").textContent=l||""; $("statusR").textContent=(r||"")+"  ⏱ "+elapsed(); }
+function elapsed(){ var m=Math.floor((Date.now()-S.started)/60000); return m<1?"أقل من دقيقة":m+" د"; }
+setInterval(function(){ if(S&&!$("app").classList.contains("hidden")) setStatus($("statusL").textContent, "أخطاء هذه المحطة: "+(S.errs[S.cur]||0)); },30000);
+
+/* ================= SHELL ================= */
+function startLab(){
+  var name=$("inName").value.trim(), cls=$("inCls").value;
+  if(name.length<2){ $("inName").focus(); return; }
+  var old=load();
+  if(old && old.name===name && old.cls===cls){ S=old; }
+  else { S=defaultState(name,cls); save(); logRow(0,"بدأت",0); }
+  $("start").classList.add("hidden"); $("app").classList.remove("hidden");
+  render();
+  if(!S.intro) showIntro();
+}
+function showIntro(){
+  dialog({title:"📩 رسالة عاجلة من مديرة المدرسة",icon:"",html:
+    '<div class="msgbox">«'+esc(S.name)+'، سجلات المدرسة الورقية ضاعت! أحتاج منك بناء <b>قاعدة بيانات</b> للمدرسة قبل نهاية اليوم. أعتمد عليك.»<br><span style="color:#666;font-size:12px">— '+esc(PRINCIPAL)+'، مديرة '+esc(SCHOOL)+'</span></div>'
+    +'<div class="lbl">قبل أن تبدئي: ما قاعدة البيانات؟</div>'
+    +'<div style="font-size:13px;color:#444">مكان منظم نحفظ فيه المعلومات لنجدها بسرعة، مثل سجلات المدرسة. أهم 4 مفاهيم:</div>'
+    +'<div class="grid2">'
+    +'<div class="mini"><b>▦ الجداول والحقول</b>كل جدول فيه حقول (أعمدة) وسجلات (صفوف، كل صف طالبة).</div>'
+    +'<div class="mini"><b>🔑 المفتاح الأساسي</b>قيمة فريدة تميّز كل سجل ولا تتكرر.</div>'
+    +'<div class="mini"><b>🔗 العلاقات</b>تربط الجداول ببعضها بدل تكرار البيانات.</div>'
+    +'<div class="mini"><b>🔍 الاستعلامات والنماذج والتقارير</b>نسأل القاعدة، نُدخل البيانات، ونعرضها بشكل جميل.</div>'
+    +'</div>'
+    +'<div class="lbl">رحلتك: 6 مهام</div>'
+    +'<div class="chips">'+STATIONS.map(function(s){return '<span class="chip">'+s.icon+' '+esc(s.name)+'</span>';}).join("")+'</div>'
+    +'<div style="font-size:13px;color:#444;margin-top:8px">كل مهمة = شارة + نقاط، ومع كل خطوة 💡 تلميح قصير. أنهي المهام الست لتحصلي على <b>شهادة موقّعة</b> 🎓</div>',
+    buttons:[{t:"أقبل المهمة 🚀",f:function(){ S.intro=true; save(); }}]});
+}
+function unlocked(n){ return n===1 || S.done[n-1]; }
+function go(n){ if(!unlocked(n)) return; S.cur=n; save(); render(); }
+function render(){
+  $("who").textContent=S.name+" — "+S.cls;
+  renderProgress(); renderNav(); renderRibbon(); renderMnav();
+  var v=$("view"); v.innerHTML="";
+  var dt=$("doctabs"); dt.innerHTML="";
+  var st=STATIONS[S.cur-1];
+  dt.innerHTML='<span class="on">'+st.icon+' المحطة '+st.n+': '+esc(st.name)+'</span><span class="mission">🎯 '+esc(st.mission)+'</span>';
+  ({1:st1,2:st2,3:st3,4:st4,5:st5,6:st6})[S.cur](v);
+  if(S.done[S.cur]){ var bar=document.createElement("div"); bar.className="donebar"; bar.innerHTML='<span>✅ أنجزتِ هذه المهمة</span>'+(S.cur<6?'<button class="btn sm" onclick="go('+(S.cur+1)+')">المهمة التالية ‹</button>':'<button class="btn sm" onclick="showCertificate()">🎓 شهادتي</button>'); v.insertBefore(bar,v.firstChild); }
+  setStatus("طريقة العرض: "+({1:"تصميم",2:"ورقة البيانات",3:"العلاقات",4:"تصميم الاستعلام",5:"المعالج",6:"تحليل"})[S.cur], "أخطاء هذه المحطة: "+(S.errs[S.cur]||0));
+}
+function renderProgress(){
+  var p=$("progress"); p.innerHTML=STATIONS.map(function(s){
+    var c="st"+(S.done[s.n]?" done":"")+(S.cur===s.n?" cur":"")+(unlocked(s.n)?"":" lock");
+    return '<span class="'+c+'" title="'+(unlocked(s.n)?'انتقلي إلى مهمة '+esc(s.name):'تُفتح بعد إنجاز المهمة السابقة')+'" onclick="go('+s.n+')">'+(S.done[s.n]?"✓":s.n)+' '+esc(s.name)+'</span>';
+  }).join("")+'<span class="pts">⭐ '+totalPts()+' / 60</span><button class="btn sm nextbtn" onclick="nextStep()">التالي ‹</button>';
+}
+function renderNav(){
+  var secs={"الجداول":["الطالبات","المعلمات","المواد"],"الاستعلامات":["استعلام1"],"النماذج":["نموذج المواد"],"التقارير":["تقرير المعلمات"]};
+  var html='<h3>كافة كائنات Access ⌄</h3>';
+  for(var k in secs){ html+='<div class="sec"><h4>▸ '+k+'</h4>'+secs[k].map(function(o){return '<div class="obj">'+({"الجداول":"▦","الاستعلامات":"🔍","النماذج":"📋","التقارير":"📄"})[k]+' '+o+'</div>';}).join("")+'</div>'; }
+  html+='<div class="sec"><h4>▸ محطات المعمل</h4>'+STATIONS.map(function(s){return '<div class="obj'+(S.cur===s.n?' on':'')+(unlocked(s.n)?'':' lock')+'" onclick="go('+s.n+')">'+(S.done[s.n]?"✅":s.icon)+' '+s.n+'. '+esc(s.name)+'</div>';}).join("")+'</div>';
+  $("nav").innerHTML=html;
+}
+function renderMnav(){
+  $("mnav").innerHTML=STATIONS.map(function(s){return '<button class="'+(S.cur===s.n?'on':'')+(unlocked(s.n)?'':' lock')+'" onclick="go('+s.n+')"><span class="i">'+(S.done[s.n]?"✅":s.icon)+'</span>'+s.n+'</button>';}).join("")+'<button class="nx" onclick="nextStep()"><span class="i">⏭️</span>التالي</button>';
+}
+function renderRibbon(){
+  var common='<div class="grp"><button class="rb" onclick="showHints()">💡 تذكير</button><button class="rb" onclick="showBadge()">🏅 شاراتي</button></div>';
+  var per={1:'<div class="grp"><span class="rb">🔑 مفتاح أساسي</span><span class="rb">📋 طريقة العرض</span></div>',
+    2:'<div class="grp"><span class="rb">➕ جديد</span><span class="rb">💾 حفظ</span><span class="rb">🗑 حذف</span></div>',
+    3:'<div class="grp"><span class="rb">📐 تحرير علاقات</span><span class="rb">🧹 مسح التخطيط</span></div>',
+    4:'<div class="grp"><button class="rb run" onclick="runQuery()">❗ تشغيل</button><span class="rb">📊 ورقة البيانات</span></div>',
+    5:'<div class="grp"><span class="rb">📋 معالج النماذج</span><span class="rb">📄 معالج التقارير</span></div>',
+    6:'<div class="grp"><span class="rb">🧪 تحليل الجدول</span></div>'};
+  $("ribbon").innerHTML=per[S.cur]+common;
+}
+function complete(n){
+  if(S.done[n]) return;
+  var e=S.errs[n]||0; var pts=e<=1?10:(e<=3?8:6);
+  S.done[n]=true; S.pts[n]=pts; save();
+  logRow(n,"مكتملة",pts);
+  var all=Object.keys(S.done).length===6;
+  confetti();
+  var st=STATIONS[n-1];
+  if(all){ logRow(7,"أنهت المعمل",totalPts()); setTimeout(showEnding,600); renderProgress(); renderNav(); renderMnav(); return; }
+  dialog({title:"🎉 مهمة منجزة — "+n+" من 6",icon:"",html:'<div style="text-align:center"><div style="color:#b8962e;margin:4px 0">'+ico(BADGE_ICONS[n-1],56)+'</div><div class="lbl">حصلتِ على شارة</div><div style="font-weight:800;color:var(--acc);font-size:18px">«'+esc(st.badge)+'»</div>'
+    +'<div class="stats"><div class="stat"><b>+'+pts+'</b>نقاط</div><div class="stat"><b>'+totalPts()+'</b>المجموع</div><div class="stat"><b>'+elapsed()+'</b>الوقت</div></div>'
+    +(all?'<div class="msgbox" style="text-align:right">🏆 أنهيتِ كل المهام! «شكرًا '+esc(S.name)+'، أنقذتِ المدرسة. شهادتك جاهزة.» — '+esc(PRINCIPAL)+'</div>':'<div class="lbl">المهمة التالية</div><div style="color:#444">'+esc(STATIONS[n].mission)+'</div>')+'</div>',
+    buttons:all?[{t:"🎓 شهادتي",f:showCertificate}]:[{t:"المهمة التالية ‹",f:function(){go(n+1);}},{t:"البقاء",sec:true,f:render}]});
+  renderProgress(); renderNav(); renderMnav();
+}
+function certCode(){ var s=S.name+S.cls+totalPts()+Object.keys(S.done).length; var h=0; for(var i=0;i<s.length;i++) h=(h*31+s.charCodeAt(i))>>>0; return h.toString(36).toUpperCase().slice(-4); }
+function confetti(){
+  var c=document.createElement("canvas"); c.className="confetti"; document.body.appendChild(c);
+  c.width=innerWidth; c.height=innerHeight; var x=c.getContext("2d"), ps=[], cols=["#A4373A","#f4c20d","#2e7d32","#1e88e5","#ff7043","#ab47bc"];
+  for(var i=0;i<140;i++) ps.push({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,r:4+Math.random()*6,c:cols[i%cols.length],v:2+Math.random()*3,a:Math.random()*6});
+  var t0=Date.now(); (function f(){ x.clearRect(0,0,c.width,c.height); ps.forEach(function(p){ p.y+=p.v; p.x+=Math.sin(p.a+=.05); x.fillStyle=p.c; x.fillRect(p.x,p.y,p.r,p.r*1.6); }); if(Date.now()-t0<2600) requestAnimationFrame(f); else c.remove(); })();
+}
+var ICONS={
+  table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/>',
+  keyboard:'<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/>',
+  link:'<path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+  report:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
+  shield:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/>',
+  seal:'<circle cx="12" cy="9" r="6"/><path d="M12 6l1 2 2 .3-1.5 1.4.4 2.1L12 10.8 10.1 11.8l.4-2.1L9 8.3 11 8z"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/>'
+};
+function ico(n,sz){ sz=sz||28; return '<svg viewBox="0 0 24 24" width="'+sz+'" height="'+sz+'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+ICONS[n]+'</svg>'; }
+var BADGE_ICONS=["table","keyboard","link","search","report","shield"];
+/* ===== emoji → SVG icons ===== */
+Object.assign(ICONS,{
+  bulb:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/>',
+  medal:'<circle cx="12" cy="15" r="5"/><path d="M8.5 10.5L6 2h4l2 5 2-5h4l-2.5 8.5"/>',
+  key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M15 8l3 3M18 5l2 2"/>',
+  check:'<path d="M20 6L9 17l-5-5"/>',
+  square:'<rect x="4" y="4" width="16" height="16" rx="3"/>',
+  alert:'<circle cx="12" cy="12" r="10"/><path d="M12 8v5M12 16h.01"/>',
+  warn:'<path d="M12 3l10 18H2z"/><path d="M12 10v4M12 17h.01"/>',
+  star:'<path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z"/>',
+  party:'<path d="M4 20l5-14 9 9zM13 5l1-2M18 10l2-1M16 7l3-3"/>',
+  mail:'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 7l10 7 10-7"/>',
+  lock:'<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+  print:'<path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7"/>',
+  cap:'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5M22 9v6"/>',
+  trophy:'<path d="M8 21h8M12 17v4M6 3h12v6a6 6 0 0 1-12 0z"/><path d="M6 5H3v2a4 4 0 0 0 4 4M18 5h3v2a4 4 0 0 1-4 4"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
+  pin:'<path d="M12 22s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
+  flask:'<path d="M9 3h6M10 3v6L4 20a1 1 0 0 0 1 1.5h14A1 1 0 0 0 20 20L14 9V3"/><path d="M7 15h10"/>',
+  trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  save:'<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/>',
+  play:'<path d="M6 4l14 8-14 8z"/>',
+  doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+  form:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>',
+  puzzle:'<path d="M4 7h4a2 2 0 1 1 4 0h4v4a2 2 0 1 0 0 4v5h-5a2 2 0 1 0-4 0H4v-5a2 2 0 1 1 0-4z"/>',
+  refresh:'<path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v6h-6"/>',
+  clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  next:'<path d="M5 4l10 8-10 8zM19 4v16"/>',
+  pause:'<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>',
+  rocket:'<path d="M5 15l-2 6 6-2M14 4c3-1 6-1 6-1s0 3-1 6-5 7-9 9l-3-3c2-4 4-8 7-11z"/><circle cx="15" cy="9" r="1.5"/>',
+  wrench:'<path d="M14.7 6.3a4 4 0 0 0 5 5L22 14l-8 8-2.7-2.7a4 4 0 0 0-5-5L2 10l8-8z"/>',
+  sparkle:'<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2zM19 15l1 2 2 1-2 1-1 2-1-2-2-1 2-1z"/>'
+});
+var EMO={"🛠️":"wrench","⌨️":"keyboard","🔗":"link","🔍":"search","📋":"form","🧩":"puzzle","💡":"bulb","🏅":"medal","🔑":"key","✅":"check","✓":"check","✔":"check","⛔":"alert","⚠️":"warn","🎉":"party","📩":"mail","🔒":"lock","⬜":"square","🖨️":"print","🎓":"cap","🏆":"trophy","🎯":"target","📍":"pin","🧪":"flask","🗑":"trash","➕":"plus","💾":"save","❗":"play","📊":"report","📄":"doc","▦":"table","🏗️":"table","🕵️‍♀️":"search","🦸‍♀️":"shield","🧹":"trash","📐":"link","🔄":"refresh","⏱":"clock","⭐":"star","⏭️":"next","⏸️":"pause","🚀":"rocket","📘":"doc","ℹ️":"alert","🧑‍🏫":"form"};
+var EMO_RE=new RegExp(Object.keys(EMO).sort(function(a,b){return b.length-a.length;}).map(function(k){return k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}).join("|"),"g");
+function iconize(root){
+  if(!root||root.nodeType!==1&&root.nodeType!==9) return;
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,null), list=[];
+  while(w.nextNode()){ var t=w.currentNode; var pn=t.parentNode; if(!pn||/^(SCRIPT|STYLE|TITLE|TEXTAREA|OPTION)$/.test(pn.tagName)) continue; EMO_RE.lastIndex=0; if(EMO_RE.test(t.nodeValue)) list.push(t); }
+  list.forEach(function(t){ var span=document.createElement("span"); span.className="emo"; EMO_RE.lastIndex=0;
+    span.innerHTML=esc(t.nodeValue).replace(EMO_RE,function(m){ return '<i class="ic-svg">'+ico(EMO[m],"1em")+'</i>'; });
+    t.parentNode.replaceChild(span,t); });
+}
+new MutationObserver(function(ms){ ms.forEach(function(m){ if(m.type==="characterData"){ iconize(m.target.parentNode); } else m.addedNodes.forEach(function(n){ if(n.nodeType===1) iconize(n); else if(n.nodeType===3&&n.parentNode) iconize(n.parentNode); }); }); }).observe(document.body,{childList:true,subtree:true,characterData:true});
+document.addEventListener("DOMContentLoaded",function(){ iconize(document.body); });
+function showCertificate(){
+  var done=Object.keys(S.done).length;
+  if(done<6){ showBadge(); return; }
+  showCertificateFor({name:S.name,cls:S.cls,pts:totalPts(),code:certCode()},true);
+}
+function showCertificateFor(c,withConfetti){
+  var d=new Date().toLocaleDateString("ar-SA",{year:"numeric",month:"long",day:"numeric"});
+  var h=$("dlgHost"); var o=document.createElement("div"); o.className="overlay certwrap";
+  o.innerHTML='<div class="cert" id="cert"><div class="cb">'
+  +'<div class="ch">'+ico("seal",54)+'</div>'
+  +'<div class="ct">شهادة شكر وتقدير</div><div class="cs">'+esc(SCHOOL)+'</div>'
+  +'<div class="cp">تتقدم إدارة المدرسة بخالص الشكر والتقدير للطالبة</div>'
+  +'<div class="cn">'+esc(c.name)+'</div><div class="cp" style="color:#666">الفصل '+esc(c.cls)+'</div>'
+  +'<div class="cbody">لإسهامها في بناء قاعدة بيانات المدرسة بعد فقدان السجلات الورقية، وإجابتها عن استعلامات الإدارة، وإعدادها النماذج والتقارير بدقة واحترافية.</div>'
+  +'<div class="cp">ونمنحها بكل فخر لقب</div><div class="cl">خبيرة قواعد البيانات</div>'
+  +'<div class="cbadges2">'+STATIONS.map(function(s,i){return '<div><span class="bi">'+ico(BADGE_ICONS[i],26)+'</span><small>'+esc(s.badge)+'</small></div>';}).join("")+'</div>'
+  +'<div class="cm">التقييم: <b>'+c.pts+'</b> / 60 &nbsp;•&nbsp; التاريخ: '+d+'</div>'
+  +'<div class="csig"><div><div class="line"></div>معلمة المهارات الرقمية<br><b>'+esc(TEACHER)+'</b></div><div><div class="line"></div>مديرة المدرسة<br><b>'+esc(PRINCIPAL)+'</b></div></div>'
+  +'<div class="cc">رمز التحقق: '+c.code+'</div></div></div>'
+  +'<div class="certbtns"><button class="btn" onclick="window.print()">🖨️ حفظ PDF / طباعة</button><button class="btn sec" onclick="this.closest(\'.overlay\').remove()">إغلاق</button></div>';
+  h.appendChild(o); if(withConfetti) confetti();
+}
+function showBadge(){
+  if(Object.keys(S.done).length===6){ showCertificate(); return; }
+  var done=Object.keys(S.done).length, t=totalPts();
+  var code=(function(s){var h=0;for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h.toString(36).toUpperCase().slice(-4);})(S.name+S.cls+t+done);
+  dialog({title:"بطاقة الإنجاز",icon:"",html:'<div class="badge"><div class="big">'+(done===6?"🏅":"📘")+'</div><h2>'+esc(S.name)+'</h2><div>'+esc(S.cls)+'</div><div style="margin:8px 0">المحطات: '+done+' / 6 — النقاط: <b>'+t+'</b> / 60</div>'+'<div class="cbadges2">'+STATIONS.map(function(s,i){return '<div style="'+(S.done[s.n]?'':'opacity:.3')+'" title="'+esc(s.badge)+'"><span class="bi">'+ico(BADGE_ICONS[i],24)+'</span><small>'+esc(s.badge)+'</small></div>';}).join("")+'</div><div class="code">'+code+'</div><div style="color:#888;font-size:12px;margin-top:6px">رمز التحقق</div></div>'});
+}
+
+/* ================= STATION 1: DESIGN ================= */
+var s1tab="students";
+function st1(v){
+  v.innerHTML=taskCard(1,"ثلاثة جداول بأنواع بيانات صحيحة ومفتاح أساسي لكل جدول",["تنقّلي بين التبويبات: <b>الطالبات</b>، <b>المعلمات</b>، <b>المواد</b>.","اختاري <b>نوع البيانات</b> المناسب لكل حقل.","اضغطي 🔑 بجانب الحقل الذي يميّز كل سجل.","اضغطي <b>تحقق من التصميم</b> ثم أجيبي عن سؤال التحقق."],"فكّري: هل سنحسب بهذه القيمة؟ هل هي تاريخ؟ هل تتكرر؟")
+  +'<div class="tabs2">'+["students","teachers","subjects"].map(function(k){return '<button class="'+(s1tab===k?'on':'')+'" onclick="s1tab=\''+k+'\';render()">▦ '+SCHEMA[k].title+'</button>';}).join("")+'</div>'
+  +'<div class="wrap" id="s1grid"></div><div class="props" id="s1props">خصائص الحقل: اختاري حقلًا لعرض خصائصه.</div>'
+  +'<div class="row"><button class="btn" onclick="s1check()">✔ تحقق من التصميم</button><span id="s1msg"></span></div>'
+  +'<div class="mcq" id="s1q"></div>';
+  s1grid();
+  s1quiz();
+}
+function s1grid(){
+  var sc=SCHEMA[s1tab], st=S.s1;
+  var html='<table class="grid"><tr><th style="width:36px"></th><th>اسم الحقل</th><th>نوع البيانات</th><th>الوصف (اختياري)</th></tr>';
+  sc.fields.forEach(function(f,i){
+    var key=s1tab+"."+f.n, t=st.types[key]||"", pk=st.pk[s1tab]===f.n;
+    html+='<tr><td class="keycell '+(pk?'on':'')+'" title="مفتاح أساسي" onclick="s1pk(\''+esc(f.n)+'\')">🔑</td><td>'+esc(f.n)+'</td><td><select onchange="s1type(\''+esc(f.n)+'\',this.value)" onfocus="s1focus(\''+esc(f.n)+'\')">'+TYPES.map(function(o){return '<option '+(o===t?'selected':'')+'>'+o+'</option>';}).join("")+'</select></td><td><input placeholder="…"></td></tr>';
+  });
+  html+='<tr class="newrow"><td></td><td><input placeholder=""></td><td></td><td></td></tr></table>';
+  $("s1grid").innerHTML=html;
+}
+function s1focus(n){ $("s1props").textContent="خصائص الحقل «"+n+"»: الحجم — مطلوب — القيمة الافتراضية — القاعدة."; }
+function s1type(n,val){ S.s1.types[s1tab+"."+n]=val; save(); var f=SCHEMA[s1tab].fields.filter(function(x){return x.n===n;})[0]; if(f && val===f.t) hint(f.hint); }
+function s1pk(n){ S.s1.pk[s1tab]=n; save(); hint("pk"); s1grid(); }
+function s1check(){
+  var wrong=[];
+  ["students","teachers","subjects"].forEach(function(k){
+    SCHEMA[k].fields.forEach(function(f){ var t=S.s1.types[k+"."+f.n]||""; if(t!==f.t) wrong.push(SCHEMA[k].title+" › "+f.n+(t?" (اخترتِ: "+t+")":" (لم يُحدد)")); });
+    var pk=SCHEMA[k].fields.filter(function(f){return f.pk;})[0].n;
+    if(S.s1.pk[k]!==pk) wrong.push(SCHEMA[k].title+" › المفتاح الأساسي"+(S.s1.pk[k]?" (اخترتِ: "+S.s1.pk[k]+")":" غير محدد"));
+  });
+  var m=$("s1msg");
+  if(wrong.length){ err(1); setStatus(null,"أخطاء هذه المحطة: "+S.errs[1]);
+    // تظليل مكان الخطأ: خلايا الجدول الحالي + تبويبات الجداول الأخرى
+    var els=[]; var rows=document.querySelectorAll("#s1grid table tr"); var tabBtns=document.querySelectorAll(".tabs2 button");
+    ["students","teachers","subjects"].forEach(function(k,ti){
+      var bad=false;
+      SCHEMA[k].fields.forEach(function(f,i){ var t=S.s1.types[k+"."+f.n]||""; if(t!==f.t){ bad=true; if(k===s1tab&&rows[i+1]) els.push(rows[i+1].children[2]); } });
+      var pk=SCHEMA[k].fields.filter(function(f){return f.pk;})[0].n;
+      if(S.s1.pk[k]!==pk){ bad=true; if(k===s1tab) rows.forEach(function(r,i){ if(i>0&&r.children[0].classList.contains("keycell")) els.push(r.children[0]); }); }
+      if(bad&&k!==s1tab&&tabBtns[ti]) els.push(tabBtns[ti]);
+    });
+    var w=wrong[0], hk=/مفتاح/.test(w)?"pk":/تاريخ/.test(w)?"date":/الطالبات › رقم الطالبة|المعلمات › رقم المعلمة|رقم التسجيل/.test(w)?"auto":/الدرجة|رقم الطالبة|رقم المعلمة/.test(w)?"fk":/الفصل/.test(w)?"cls":"text";
+    accessError("التصميم غير مكتمل:\n• "+wrong.slice(0,3).join("\n• ")+(wrong.length>3?"\n… و"+(wrong.length-3)+" أخرى":""),hk,els,"افتحي الجدول المظلل، صحّحي نوع البيانات أو حددي المفتاح 🔑، ثم اضغطي «تحقق» مرة أخرى.");
+    m.innerHTML="";
+    return; }
+  S.s1.ok=true; save(); m.innerHTML='<span class="msg ok">التصميم صحيح ✔ أجيبي عن سؤال التحقق.</span>';
+  $("s1q").scrollIntoView({behavior:"smooth"});
+}
+function s1quiz(){
+  $("s1q").innerHTML='<p>سؤال التحقق: لماذا جعلنا «رقم الطالبة» مفتاحًا أساسيًا ولم نستخدم «الاسم»؟</p>'
+  +[["a","لأن الاسم طويل"],["b","لأن الاسم قد يتكرر بين طالبتين، والرقم فريد"],["c","لأن الأرقام أسهل في الكتابة"]].map(function(o){return '<label><input type="radio" name="s1q" value="'+o[0]+'"> '+o[1]+'</label>';}).join("")
+  +'<button class="btn sm" onclick="s1answer()">إجابة</button>';
+}
+function s1answer(){
+  var r=document.querySelector('input[name=s1q]:checked'); if(!r) return;
+  if(!S.s1.ok){ dialog({text:"تحققي من التصميم أولًا ثم أجيبي.",icon:"⚠️"}); return; }
+  if(r.value==="b"){ complete(1); } else { err(1); accessError("ليست الإجابة الصحيحة.","pk",r.parentElement,"اسألي نفسك: ماذا لو كان لدينا طالبتان باسم «نورة»؟ ما القيمة التي لا تتكرر أبدًا؟"); setStatus(null,"أخطاء هذه المحطة: "+S.errs[1]); }
+}
+
+/* ================= STATION 2: ENTRY ================= */
+var s2tab="students";
+var S2COLS={students:[["name","الاسم"],["cls","الفصل"],["dob","تاريخ الميلاد"]],teachers:[["name","الاسم"],["spec","التخصص"]],subjects:[["sub","اسم المادة"],["sid","رقم الطالبة"],["tid","رقم المعلمة"],["g","الدرجة"]]};
+var S2PK={students:"رقم الطالبة",teachers:"رقم المعلمة",subjects:"رقم التسجيل"};
+var S2REQ=3; // عدد الصفوف المطلوب إدخالها في كل جدول
+function s2src(k){ return D[k].slice(0,S2REQ); }
+function st2(v){
+  v.innerHTML=taskCard(2,"3 سجلات صحيحة في كل جدول",["ابدئي بـ <b>الطالبات</b> ثم <b>المعلمات</b> ثم <b>المواد</b> (3 صفوف لكل جدول).","اكتبي البيانات بنفسك (أي أسماء وقيم مناسبة) ثم <b>إضافة</b>، أو اضغطي صفًا من «بيانات مقترحة» لنسخه.","في جدول المواد جرّبي <b>زرَي التجربة</b> لترَي كيف يرفض البرنامج الخطأ."],"المهم أن تكون القيم من النوع الصحيح: التاريخ تاريخ، والدرجة رقم بين 0 و100.")
+  +'<div class="tabs2">'+["students","teachers","subjects"].map(function(k){return '<button class="'+(s2tab===k?'on':'')+'" onclick="s2tab=\''+k+'\';render()">▦ '+SCHEMA[k].title+' ('+S.s2.rows[k].length+')</button>';}).join("")+'</div>'
+  +'<div class="wrap" id="s2grid"></div><div id="s2msg"></div>'
+  +(s2tab==="subjects"?'<div class="row"><button class="btn sec" onclick="s2test(1)">🧪 جرّبي: طالبة رقم 9</button><button class="btn sec" onclick="s2test(2)">🧪 جرّبي: الدرجة = ممتاز</button><span>'+(S.s2.tests[1]?"✅":"")+(S.s2.tests[2]?"✅":"")+'</span></div>':'')
+  +'<div class="datacard" id="s2data"></div>';
+  s2grid(); s2data();
+}
+function s2grid(){
+  var cols=S2COLS[s2tab], rows=S.s2.rows[s2tab];
+  var html='<table class="grid"><tr><th>'+S2PK[s2tab]+'</th>'+cols.map(function(c){return '<th>'+c[1]+'</th>';}).join("")+'<th></th></tr>';
+  rows.forEach(function(r,i){ html+='<tr><td style="text-align:center;color:#555">'+(i+1)+'</td>'+cols.map(function(c){return '<td>'+esc(r[c[0]])+'</td>';}).join("")+'<td style="text-align:center"><button class="btn sm sec" onclick="s2del('+i+')">🗑</button></td></tr>'; });
+  html+='<tr class="newrow"><td>(جديد)</td>'+cols.map(function(c){return '<td><input id="s2_'+c[0]+'" placeholder="'+c[1]+'"'+(c[0]==="dob"?' type="date"':'')+'></td>';}).join("")+'<td style="text-align:center"><button class="btn sm" onclick="s2add()">إضافة</button></td></tr></table>';
+  $("s2grid").innerHTML=html;
+}
+function s2data(){
+  var cols=S2COLS[s2tab], src=s2src(s2tab), rows=S.s2.rows[s2tab];
+  var html='<h4>بيانات مقترحة (اختياري) — '+SCHEMA[s2tab].title+'</h4><div class="wrap"><table class="grid"><tr>'+cols.map(function(c){return '<th>'+c[1]+'</th>';}).join("")+'</tr>';
+  src.forEach(function(r,i){ var got=i<rows.length;
+    html+='<tr class="'+(got?'got':'')+'" onclick="s2fill('+i+')">'+cols.map(function(c){return '<td>'+esc(r[c[0]])+'</td>';}).join("")+'</tr>'; });
+  html+='</table></div>';
+  if(s2tab==="subjects") html+='<div style="font-size:12px;color:#666;margin-top:4px">الطالبات: 1 نورة، 2 ريم، 3 لمى — المعلمات: 1 أ. هند، 2 أ. منى، 3 أ. عبير</div>';
+  $("s2data").innerHTML=html;
+}
+function s2fill(i){ var r=s2src(s2tab)[i]; S2COLS[s2tab].forEach(function(c){ $("s2_"+c[0]).value=r[c[0]]; }); }
+function s2validate(vals,quiet){
+  var cols=S2COLS[s2tab];
+  for(var i=0;i<cols.length;i++){ var k=cols[i][0], val=String(vals[k]||"").trim();
+    if(!val){ if(!quiet) accessError("الحقل «"+cols[i][1]+"» مطلوب ولا يمكن تركه فارغًا.",null,$("s2_"+k),"اكتبي قيمة في الحقل المظلل."); return false; }
+    if(k==="dob" && isNaN(Date.parse(val))){ if(!quiet) accessError("القيمة التي أدخلتِها لا تتطابق مع نوع البيانات «تاريخ/وقت» للحقل «تاريخ الميلاد».","type",$("s2_"+k),"اختاري التاريخ من المنتقي أو اكتبيه بصيغة سنة-شهر-يوم."); return false; }
+    if((k==="g"||k==="sid"||k==="tid") && !/^\d+$/.test(val)){ if(!quiet) accessError("القيمة «"+val+"» لا تتطابق مع نوع البيانات «رقم» للحقل «"+cols[i][1]+"».","type",$("s2_"+k),"اكتبي رقمًا فقط بدون حروف أو رموز."); return false; }
+    if(k==="sid" && !S.s2.rows.students[+val-1]){ if(!quiet) accessError("لا يمكنك إضافة السجل أو تغييره لأن السجل المرتبط مطلوب في الجدول «الطالبات» (لا توجد طالبة رقم "+val+").","ri",$("s2_"+k),"استخدمي رقم طالبة موجودة (1–3)، أو أضيفي الطالبة أولًا في جدول الطالبات."); return false; }
+    if(k==="tid" && !S.s2.rows.teachers[+val-1]){ if(!quiet) accessError("لا يمكنك إضافة السجل أو تغييره لأن السجل المرتبط مطلوب في الجدول «المعلمات» (لا توجد معلمة رقم "+val+").","ri",$("s2_"+k),"استخدمي رقم معلمة موجودة (1–3)، أو أضيفي المعلمة أولًا في جدول المعلمات."); return false; }
+    if(k==="g" && (+val<0||+val>100)){ if(!quiet) accessError("الدرجة يجب أن تكون بين 0 و100 (قاعدة التحقق من الصحة).",null,$("s2_"+k),"اكتبي درجة بين 0 و100."); return false; }
+  }
+  return true;
+}
+function s2add(){
+  var vals={}; S2COLS[s2tab].forEach(function(c){ vals[c[0]]=$("s2_"+c[0]).value.trim(); });
+  if(!s2validate(vals)){ err(2); setStatus(null,"أخطاء هذه المحطة: "+S.errs[2]); return; }
+  if(s2tab==="subjects"){ vals.sid=+vals.sid; vals.tid=+vals.tid; vals.g=+vals.g; }
+  S.s2.rows[s2tab].push(vals); save();
+  if(S.s2.rows[s2tab].length===1) hint(s2tab==="students"?"rec":"auto");
+  render(); s2checkDone();
+}
+function s2del(i){ S.s2.rows[s2tab].splice(i,1); save(); render(); }
+function s2test(n){
+  var t=n===1?"لا يمكنك إضافة السجل أو تغييره لأن السجل المرتبط مطلوب في الجدول «الطالبات» (لا توجد طالبة رقم 9).":"القيمة «ممتاز» لا تتطابق مع نوع البيانات «رقم» للحقل «الدرجة».";
+  S.s2.tests[n]=true; save();
+  dialog({title:"Microsoft Access",icon:"⛔",text:t,buttons:[{t:"موافق",f:function(){ render(); s2checkDone(); }}]});
+  hint(n===1?"ri":"type");
+}
+function s2checkDone(){
+  var ok=["students","teachers","subjects"].every(function(k){ return S.s2.rows[k].length>=S2REQ; });
+  if(ok && S.s2.tests[1] && S.s2.tests[2]) complete(2);
+  else if(ok) $("s2msg").innerHTML='<div class="msg ok">اكتملت البيانات ✔ جرّبي الزرين في جدول المواد لتكتمل المحطة.</div>';
+}
+
+/* ================= STATION 3: RELATIONSHIPS ================= */
+var s3sel=null;
+var REL_TABLES=[{k:"students",x:"right:20px",y:40},{k:"subjects",x:"left:50%;margin-left:-75px",y:120},{k:"teachers",x:"left:20px",y:40}];
+function st3(v){
+  v.innerHTML=taskCard(3,"علاقتان تربطان جدول المواد بالطالبات والمعلمات",["اضغطي <b>رقم الطالبة</b> في الطالبات، ثم <b>رقم الطالبة</b> في المواد.","اضغطي <b>رقم المعلمة</b> في المعلمات، ثم <b>رقم المعلمة</b> في المواد.","في نافذة «تحرير علاقات» اتركي التكامل المرجعي مفعّلًا واضغطي <b>إنشاء</b>.","أجيبي عن سؤال التحقق."],"الخط بين الجدولين: 1 عند المفتاح الأساسي و∞ عند المفتاح الأجنبي.")
+  +'<div class="relcanvas" id="relc"><svg id="relsvg"></svg>'+REL_TABLES.map(function(t){ var sc=SCHEMA[t.k];
+    return '<div class="tbox" style="'+t.x+';top:'+t.y+'px" id="tb_'+t.k+'"><h5>'+sc.title+'</h5>'+sc.fields.map(function(f){return '<div data-t="'+t.k+'" data-f="'+esc(f.n)+'" onclick="s3click(this)">'+(f.pk?'<span class="k">🔑</span>':'')+esc(f.n)+'</div>';}).join("")+'</div>'; }).join("")+'</div>'
+  +'<div id="s3msg" class="row">العلاقات المنشأة: '+S.s3.rels.length+' / 2</div>'
+  +'<div class="mcq" id="s3q"'+(S.s3.rels.length<2?' style="display:none"':'')+'><p>سؤال التحقق: بعد الربط، أي الطالبات تدرس عند أكثر من معلمة؟</p>'
+  +[["a","نورة وريم"],["b","لمى وجود"],["c","كل الطالبات"]].map(function(o){return '<label><input type="radio" name="s3q" value="'+o[0]+'"> '+o[1]+'</label>';}).join("")+'<button class="btn sm" onclick="s3answer()">إجابة</button></div>';
+  setTimeout(s3draw,50); window.onresize=function(){ if(S&&S.cur===3) s3draw(); };
+}
+function s3click(el){
+  document.querySelectorAll(".tbox div.sel").forEach(function(x){x.classList.remove("sel");});
+  var t=el.dataset.t, f=el.dataset.f;
+  if(!s3sel || s3sel.t===t){ s3sel={t:t,f:f,el:el}; el.classList.add("sel"); return; }
+  var a=s3sel, b={t:t,f:f}, aEl=s3sel.el; s3sel=null;
+  var pair=(a.t==="subjects")?[b,a]:[a,b]; // pair[0] = جدول الطرف "1"، pair[1] = المواد
+  var valid=pair[1].t==="subjects"&&((pair[0].t==="students"&&pair[0].f==="رقم الطالبة"&&pair[1].f==="رقم الطالبة")||(pair[0].t==="teachers"&&pair[0].f==="رقم المعلمة"&&pair[1].f==="رقم المعلمة"));
+  if(!valid){ err(3); setStatus(null,"أخطاء هذه المحطة: "+S.errs[3]); accessError("لا يمكن إنشاء العلاقة: الحقلان المظللان لا يحملان المعنى نفسه.","fk",[aEl,el],"اربطي المفتاح الأساسي 🔑 بالحقل الذي يحمل الاسم نفسه في جدول المواد (مفتاح أساسي ↔ مفتاح أجنبي)."); return; }
+  if(S.s3.rels.some(function(r){return r.a.t===pair[0].t&&r.b.t===pair[1].t;})){ dialog({text:"هذه العلاقة موجودة مسبقًا.",icon:"⚠️"}); return; }
+  var one=pair[0], many=pair[1];
+  dialog({title:"تحرير علاقات",icon:"",html:'<table class="grid"><tr><th>الجدول/الاستعلام</th><th>الجدول/الاستعلام المرتبط</th></tr><tr><td>'+SCHEMA[one.t].title+'</td><td>'+SCHEMA[many.t].title+'</td></tr><tr><td>'+esc(one.f)+'</td><td>'+esc(many.f)+'</td></tr></table><label style="display:block;margin-top:10px"><input type="checkbox" checked id="ri"> فرض التكامل المرجعي</label><div style="margin-top:6px;color:#555">نوع العلاقة: واحد إلى متعدد</div>',
+    buttons:[{t:"إنشاء",f:function(){ S.s3.rels.push({a:pair[0],b:pair[1]}); save(); render(); hint(S.s3.rels.length===1?"rel":"mid",true); }},{t:"إلغاء",sec:true}]});
+}
+function s3draw(){
+  var c=$("relc"), svg=$("relsvg"); if(!c) return; var cr=c.getBoundingClientRect(); var out="";
+  S.s3.rels.forEach(function(r){
+    var ea=document.querySelector('#tb_'+r.a.t+' div[data-f="'+r.a.f+'"]'), eb=document.querySelector('#tb_'+r.b.t+' div[data-f="'+r.b.f+'"]'); if(!ea||!eb) return;
+    var ra=ea.getBoundingClientRect(), rb=eb.getBoundingClientRect();
+    var ax=(ra.left+ra.width/2<rb.left+rb.width/2)?ra.right-cr.left:ra.left-cr.left, bx=(ra.left+ra.width/2<rb.left+rb.width/2)?rb.left-cr.left:rb.right-cr.left;
+    var ay=ra.top+ra.height/2-cr.top, by=rb.top+rb.height/2-cr.top;
+    var oneIsA=r.a.t!=="subjects";
+    out+='<path d="M'+ax+','+ay+' C'+((ax+bx)/2)+','+ay+' '+((ax+bx)/2)+','+by+' '+bx+','+by+'" stroke="#333" stroke-width="2" fill="none"/>';
+    out+='<text x="'+(ax+(bx>ax?6:-14))+'" y="'+(ay-6)+'" font-size="13" font-weight="700">'+(oneIsA?"1":"∞")+'</text><text x="'+(bx+(bx>ax?-16:6))+'" y="'+(by-6)+'" font-size="13" font-weight="700">'+(oneIsA?"∞":"1")+'</text>';
+  });
+  svg.innerHTML=out;
+}
+function s3answer(){
+  var r=document.querySelector('input[name=s3q]:checked'); if(!r) return;
+  if(r.value==="a") complete(3); else { err(3); setStatus(null,"أخطاء هذه المحطة: "+S.errs[3]); accessError("ليست الإجابة الصحيحة.",null,r.parentElement,"ابحثي في جدول المواد عن رقم طالبة يظهر مع رقمي معلمتين مختلفتين."); }
+}
+
+/* ================= STATION 4: QUERIES ================= */
+var QF=[["الطالبات.الاسم","sname"],["الطالبات.الفصل","scls"],["المعلمات.الاسم","tname"],["المعلمات.التخصص","tspec"],["المواد.اسم المادة","sub"],["المواد.الدرجة","g"]];
+function joined(){ return D.subjects.map(function(s){ var st=D.students[s.sid-1], t=D.teachers[s.tid-1]; return {sname:st.name,scls:st.cls,tname:t.name,tspec:t.spec,sub:s.sub,g:s.g}; }); }
+var CHAL=[
+  {t:"1. طالبات فصل 3/1 مرتبات بالاسم",need:["sname"],ordered:true,exp:function(){return [{sname:"ريم"},{sname:"نورة"}];},tip:"اختاري الطالبات.الاسم مع ترتيب تصاعدي، والطالبات.الفصل بمعيار 3/1"},
+  {t:"2. طالبات أ. هند",need:["sname"],ordered:false,exp:function(){return [{sname:"نورة"},{sname:"ريم"},{sname:"لمى"}];},tip:"اختاري الطالبات.الاسم، والمعلمات.الاسم بمعيار أ. هند"},
+  {t:"3. درجات المهارات الرقمية الأعلى من 90 تنازليًا",need:["sname","g"],ordered:true,exp:function(){return [{sname:"نورة",g:95},{sname:"لمى",g:92}];},tip:"الطالبات.الاسم + المواد.الدرجة بمعيار >90 وترتيب تنازلي + المواد.اسم المادة بمعيار المهارات الرقمية"},
+  {t:"4. كل مادة والمعلمة التي تدرّسها",need:["sub","tname"],ordered:false,exp:function(){return [{sub:"المهارات الرقمية",tname:"أ. هند"},{sub:"الرياضيات",tname:"أ. منى"},{sub:"لغتي",tname:"أ. عبير"}];},tip:"عمودان فقط: المواد.اسم المادة + المعلمات.الاسم، بلا معايير"},
+  {t:"5. كشف كامل: الطالبة والمادة والمعلمة والدرجة",need:["sname","sub","tname","g"],ordered:false,exp:function(){return joined().map(function(r){return {sname:r.sname,sub:r.sub,tname:r.tname,g:r.g};});},tip:"أربعة أعمدة بلا معايير"}
+];
+var s4cur=0;
+function st4(v){
+  v.innerHTML=taskCard(4,"خمس إجابات صحيحة لأسئلة المديرة",["اختاري <b>التحدي</b> من الأزرار بالأعلى.","في كل عمود: اختاري <b>الحقل</b>، ثم <b>الترتيب</b> أو <b>المعيار</b> إن لزم.","اضغطي <b>❗ تشغيل</b> وتحققي من النتيجة.","تعثرتِ؟ اضغطي <b>تلميح التحدي</b>."],"ألغي «إظهار» لعمود تستخدمينه كشرط فقط ولا تريدين عرضه.")
+  +'<div class="chal">'+CHAL.map(function(c,i){return '<button class="'+(s4cur===i?'on':'')+(S.s4.done[i]?' done':'')+'" onclick="s4cur='+i+';render()">'+(S.s4.done[i]?"✓ ":"")+esc(c.t)+'</button>';}).join("")+'</div>'
+  +'<div class="qbe-top">'+["students","subjects","teachers"].map(function(k){return '<div class="tbox"><h5>'+SCHEMA[k].title+'</h5>'+SCHEMA[k].fields.map(function(f){return '<div>'+(f.pk?'<span class="k">🔑</span>':'')+esc(f.n)+'</div>';}).join("")+'</div>';}).join("")+'</div>'
+  +'<div class="qbe">'+[0,1,2,3].map(function(i){return '<div class="qcol"><label>الحقل</label><select id="qf'+i+'"><option value="">—</option>'+QF.map(function(f){return '<option value="'+f[1]+'">'+f[0]+'</option>';}).join("")+'</select><label>ترتيب</label><select id="qs'+i+'" onchange="hint(\'sort\')"><option value="">(بلا)</option><option value="asc">تصاعدي</option><option value="desc">تنازلي</option></select><div class="chk"><input type="checkbox" id="qv'+i+'" checked> إظهار</div><label>معايير</label><input id="qc'+i+'" placeholder="مثل: >90 أو 3/1" onfocus="hint(\'crit\')"></div>';}).join("")+'</div>'
+  +'<div class="row"><button class="btn" onclick="runQuery()">❗ تشغيل</button><button class="btn sec sm" onclick="dialog({icon:\'💡\',text:CHAL[s4cur].tip})">تلميح التحدي</button></div><div id="s4res"></div>';
+  hint("q");
+}
+function parseCrit(c){
+  c=String(c||"").trim().replace(/^["']|["']$/g,"").replace(/^=/,"").trim(); if(!c) return null;
+  var m=c.match(/^(>=|<=|<>|>|<)\s*(.+)$/);
+  if(m){ var n=parseFloat(m[2]); return function(v){ v=parseFloat(v); return {">":v>n,"<":v<n,">=":v>=n,"<=":v<=n,"<>":v!==n}[m[1]]; }; }
+  return function(v){ return String(v).trim()===c; };
+}
+function runQuery(){
+  if(S.cur!==4) return;
+  var cols=[]; for(var i=0;i<4;i++){ var f=$("qf"+i).value; if(f) cols.push({f:f,sort:$("qs"+i).value,show:$("qv"+i).checked,crit:parseCrit($("qc"+i).value)}); }
+  if(!cols.length){ dialog({text:"أضيفي حقلًا واحدًا على الأقل إلى الشبكة.",icon:"⚠️"}); return; }
+  var rows=joined().filter(function(r){ return cols.every(function(c){ return !c.crit||c.crit(r[c.f]); }); });
+  var sorts=cols.filter(function(c){return c.sort;});
+  if(sorts.length) rows.sort(function(a,b){ for(var i=0;i<sorts.length;i++){ var k=sorts[i].f, x=a[k], y=b[k]; var cmp=(typeof x==="number")?x-y:String(x).localeCompare(String(y),"ar"); if(cmp) return sorts[i].sort==="desc"?-cmp:cmp; } return 0; });
+  var shown=cols.filter(function(c){return c.show;});
+  var seen={}; rows=rows.filter(function(r){ var k=shown.map(function(c){return r[c.f];}).join("|"); if(seen[k]) return false; seen[k]=true; return true; }); // قيم فريدة
+  var html='<div class="wrap"><table class="grid"><tr>'+shown.map(function(c){return '<th>'+QF.filter(function(q){return q[1]===c.f;})[0][0].split(".")[1]+'</th>';}).join("")+'</tr>'+rows.map(function(r){return '<tr>'+shown.map(function(c){return '<td>'+esc(r[c.f])+'</td>';}).join("")+'</tr>';}).join("")+'</table></div><div style="font-size:12px;color:#666;margin:4px">السجلات: '+rows.length+' (قيم فريدة: نعم)</div>';
+  var ch=CHAL[s4cur], shownKeys=shown.map(function(c){return c.f;});
+  var ok=ch.need.every(function(k){return shownKeys.indexOf(k)>=0;});
+  if(ok){ var exp=ch.exp(), got=rows.map(function(r){var o={};ch.need.forEach(function(k){o[k]=r[k];});return JSON.stringify(o);}); var ex=exp.map(function(o){return JSON.stringify(o);});
+    if(ch.ordered) ok=got.join("|")===ex.join("|"); else ok=got.length===ex.length&&ex.every(function(e){return got.indexOf(e)>=0;}); }
+  if(ok){ S.s4.done[s4cur]=true; save(); html='<div class="msg ok">نتيجة صحيحة ✔ التحدي '+(s4cur+1)+' مكتمل.</div>'+html; renderProgress();
+    if(Object.keys(S.s4.done).length===CHAL.length){ $("s4res").innerHTML=html; complete(4); return; } }
+  else { err(4); setStatus(null,"أخطاء هذه المحطة: "+S.errs[4]); html='<div class="msg err">النتيجة لا تطابق المطلوب في التحدي '+(s4cur+1)+'.</div>'+html;
+    var badCols=[]; for(var j=0;j<4;j++){ var fj=$("qf"+j).value; if(fj&&ch.need.indexOf(fj)>=0&&!$("qv"+j).checked) badCols.push($("qv"+j).parentElement); }
+    var missing=ch.need.filter(function(k){return shownKeys.indexOf(k)<0;}).map(function(k){return QF.filter(function(q){return q[1]===k;})[0][0];});
+    var msg=missing.length?"ينقص الاستعلام الحقل: "+missing.join("، ")+".":"الحقول صحيحة لكن النتيجة مختلفة: راجعي المعايير والترتيب في الأعمدة المظللة.";
+    if(!missing.length) for(var j=0;j<4;j++){ if($("qf"+j).value) badCols.push(document.querySelectorAll(".qcol")[j]); }
+    accessError("النتيجة لا تطابق التحدي "+(s4cur+1)+". "+msg,null,badCols.length?badCols:document.querySelector(".qbe"),missing.length?"أضيفي الحقل الناقص في عمود فارغ وتأكدي أن «إظهار» مفعّل.":"قارني الأعمدة المظللة مع «تلميح التحدي»، ثم اضغطي تشغيل مرة أخرى."); }
+  $("s4res").innerHTML=html;
+  var btns=document.querySelectorAll(".chal button"); if(btns[s4cur]&&S.s4.done[s4cur]) btns[s4cur].classList.add("done");
+}
+
+/* ================= STATION 5: FORMS & REPORTS ================= */
+var s5step=1, s5form={}, s5rep={};
+function st5(v){
+  var html=taskCard(5,"نموذج إدخال سهل للسكرتيرة + تقرير مرتب للمديرة",["اتبعي <b>معالج النماذج</b> خطوة بخطوة.","جرّبي النموذج وسجّلي طالبة في مادة.","اتبعي <b>معالج التقارير</b> واختاري حقل التجميع."],"النموذج للإدخال، والتقرير للعرض والطباعة.");
+  html+='<div class="steps">'+["اختيار الجدول","حقول النموذج","طريقة الإدخال","معاينة النموذج","التقرير","معاينة التقرير"].map(function(s,i){return '<span class="'+(s5step===i+1?'on':'')+'">'+(i+1)+'. '+s+'</span>';}).join("")+'</div>';
+  if(s5step===1){ hint("form"); html+='<div class="mcq"><p>معالج النماذج: أي جدول يناسب نموذج «تسجيل طالبة في مادة»؟</p>'+["الطالبات","المعلمات","المواد"].map(function(t){return '<label><input type="radio" name="s5t" value="'+t+'"> ▦ '+t+'</label>';}).join("")+'<button class="btn sm" onclick="s5next1()">التالي ‹</button></div>'; }
+  if(s5step===2){ html+='<div class="mcq"><p>اختاري الحقول التي ستظهر في النموذج:</p>'+SCHEMA.subjects.fields.map(function(f){return '<label><input type="checkbox" name="s5f" value="'+esc(f.n)+'" '+(f.pk?'':'checked')+'> '+esc(f.n)+(f.pk?' (ترقيم تلقائي — لا يُدخل)':'')+'</label>';}).join("")+'<button class="btn sm" onclick="s5next2()">التالي ‹</button></div>'; }
+  if(s5step===3){ html+='<div class="mcq"><p>كيف تُدخل الطالبة «رقم الطالبة» و«رقم المعلمة» في النموذج؟</p><label><input type="radio" name="s5c" value="txt"> مربع نص: تكتب الرقم يدويًا</label><label><input type="radio" name="s5c" value="combo"> مربع تحرير وسرد: تختار الاسم من قائمة ويُخزَّن الرقم</label><button class="btn sm" onclick="s5next3()">التالي ‹</button></div>'; }
+  if(s5step===4){ html+='<div class="formprev"><div class="fh">📋 تسجيل طالبة في مادة</div><div class="fb"><div class="fr"><label>رقم التسجيل</label><input value="(جديد)" disabled></div><div class="fr"><label>اسم المادة</label><input id="f_sub" placeholder="اسم المادة"></div><div class="fr"><label>الطالبة</label><select id="f_sid">'+D.students.map(function(s){return '<option value="'+s.id+'">'+s.name+'</option>';}).join("")+'</select></div><div class="fr"><label>المعلمة</label><select id="f_tid">'+D.teachers.map(function(t){return '<option value="'+t.id+'">'+t.name+'</option>';}).join("")+'</select></div><div class="fr"><label>الدرجة</label><input id="f_g" type="number" min="0" max="100"></div><div class="row"><button class="btn sm" onclick="s5save()">💾 حفظ السجل</button></div></div></div><div id="s5msg"></div>'; }
+  if(s5step===5){ hint("rep"); html+='<div class="mcq"><p>معالج التقارير: تقرير «درجات كل معلمة» — حسب أي حقل نُجمّع السجلات؟</p>'+[["sub","اسم المادة"],["tname","اسم المعلمة"],["g","الدرجة"],["sname","اسم الطالبة"]].map(function(o){return '<label><input type="radio" name="s5g" value="'+o[0]+'"> '+o[1]+'</label>';}).join("")+'<button class="btn sm" onclick="s5next5()">التالي ‹</button></div>'; }
+  if(s5step===6){ var g={}; joined().forEach(function(r){ (g[r.tname]=g[r.tname]||[]).push(r); });
+    html+='<div class="report"><h3>درجات كل معلمة</h3>'+Object.keys(g).map(function(k){return '<div class="g">'+esc(k)+' — '+esc(g[k][0].tspec)+'</div>'+g[k].map(function(r){return '<div class="r"><span style="flex:1">'+esc(r.sname)+'</span><span style="flex:1">'+esc(r.sub)+'</span><span>'+r.g+'</span></div>';}).join("")+'<div class="r" style="color:#555">المتوسط: '+(g[k].reduce(function(a,r){return a+r.g;},0)/g[k].length).toFixed(1)+'</div>';}).join("")+'<div style="text-align:left;font-size:12px;color:#888;margin-top:8px">'+new Date().toLocaleDateString("ar-SA")+' — صفحة 1</div></div><div class="row"><button class="btn" onclick="complete(5)">✔ إنهاء المحطة</button></div>'; }
+  v.innerHTML=html;
+}
+function s5next1(){ var r=document.querySelector('input[name=s5t]:checked'); if(!r) return; if(r.value!=="المواد"){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("جدول «"+r.value+"» لا يحتوي الطالبة والمادة والمعلمة معًا.","mid",r.parentElement,"اختاري الجدول الذي يجمع رقم الطالبة ورقم المعلمة واسم المادة في صف واحد."); return; } s5step=2; render(); }
+function s5next2(){ var c=[].slice.call(document.querySelectorAll('input[name=s5f]:checked')).map(function(x){return x.value;}); var need=["اسم المادة","رقم الطالبة","رقم المعلمة","الدرجة"]; var ok=need.every(function(n){return c.indexOf(n)>=0;}); if(!ok){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("النموذج ينقصه حقل أو أكثر مما يُدخل يدويًا.",null,[].slice.call(document.querySelectorAll('input[name=s5f]')).filter(function(x){return need.indexOf(x.value)>=0&&!x.checked;}).map(function(x){return x.parentElement;}),"فعّلي الحقول المظللة: اسم المادة، رقم الطالبة، رقم المعلمة، الدرجة."); return; } s5step=3; render(); }
+function s5next3(){ var r=document.querySelector('input[name=s5c]:checked'); if(!r) return; if(r.value!=="combo"){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("كتابة الرقم يدويًا تسبب أخطاء (رقم خاطئ أو غير موجود).","combo",r.parentElement,"اختاري مربع التحرير والسرد: يعرض الأسماء للمستخدم ويخزن الأرقام في الجدول."); return; } hint("combo"); s5step=4; render(); }
+function s5save(){ var sub=$("f_sub").value.trim(), g=$("f_g").value; if(!sub||g===""){ accessError("النموذج غير مكتمل.",null,[!sub?$("f_sub"):null,g===""?$("f_g"):null],"املئي الحقول المظللة ثم اضغطي حفظ."); return; } S.s5.form=true; save(); $("s5msg").innerHTML='<div class="msg ok">حُفظ السجل في جدول المواد عبر النموذج ✔ (الطالبة '+esc(D.students[+$("f_sid").value-1].name)+' — المعلمة '+esc(D.teachers[+$("f_tid").value-1].name)+')</div><div class="row"><button class="btn sm" onclick="s5step=5;render()">التالي: التقرير ‹</button></div>'; }
+function s5next5(){ var r=document.querySelector('input[name=s5g]:checked'); if(!r) return; if(r.value!=="tname"){ err(5); setStatus(null,"أخطاء هذه المحطة: "+S.errs[5]); accessError("هذا الحقل لا يناسب تقرير «درجات كل معلمة».",null,r.parentElement,"اسم التقرير يدل على حقل التجميع: نريد مجموعة لكل معلمة."); return; } S.s5.report=true; save(); s5step=6; render(); }
+
+/* ================= STATION 6: FIND THE ERROR ================= */
+var FLAT=[["نورة","3/1","2012-03-14","المهارات الرقمية","أ. هند","مهارات رقمية",95],["ريم","3/1","2011-11-02","المهارات الرقمية","أ. هند","مهارات رقمية",88],["لمى","3/2","2012-07-21","المهارات الرقمية","أ. هند","مهارات رقمية",92],["جود","3/2","2012-01-09","الرياضيات","أ. منى","رياضيات",79],["نورة","3/1","2012-03-14","الرياضيات","أ. منى","رياضيات",97],["ريم","3/1","2011-11-02","لغتي","أ. عبير","لغة عربية",85]];
+var FCOLS=[["اسم الطالبة","الطالبات"],["الفصل","الطالبات"],["تاريخ الميلاد","الطالبات"],["المادة","المواد"],["اسم المعلمة","المعلمات"],["التخصص","المعلمات"],["الدرجة","المواد"]];
+var PROBS=[["تكرار بيانات المعلمة والطالبة في عدة صفوف",true],["لتعديل اسم معلمة يجب تغييره في كل الصفوف",true],["احتمال أخطاء الكتابة وعدم اتساق البيانات",true],["الجدول يحتوي على أرقام",false],["لا يمكن طباعة الجدول",false],["أسماء الحقول بالعربية",false]];
+function st6(v){
+  v.innerHTML=taskCard(6,"تحويل الجدول الواحد الضخم إلى ثلاثة جداول صحيحة",["افحصي الجدول: أين تتكرر البيانات؟","حددي <b>المشاكل</b> (كل ما ينطبق).","وزّعي كل حقل على <b>جدوله الصحيح</b>.","اضغطي <b>تحقق</b>."],"اسألي عن كل حقل: هل يصف الطالبة، أم المعلمة، أم تسجيلها في المادة؟")
+  +'<div class="wrap"><table class="grid"><tr>'+FCOLS.map(function(c){return '<th>'+c[0]+'</th>';}).join("")+'</tr>'+FLAT.map(function(r){return '<tr>'+r.map(function(x){return '<td>'+esc(x)+'</td>';}).join("")+'</tr>';}).join("")+'</table></div>'
+  +'<div class="mcq"><p>1) ما مشاكل هذا التصميم؟ (اختاري كل ما ينطبق)</p>'+PROBS.map(function(p,i){return '<label><input type="checkbox" name="s6p" value="'+i+'"> '+p[0]+'</label>';}).join("")+'</div>'
+  +'<div class="mcq"><p>2) إلى أي جدول ينتمي كل حقل؟</p><div class="wrap"><table class="grid">'+FCOLS.map(function(c,i){return '<tr><td>'+c[0]+'</td><td><select id="s6c'+i+'"><option value="">—</option><option>الطالبات</option><option>المعلمات</option><option>المواد</option></select></td></tr>';}).join("")+'</table></div></div>'
+  +'<div class="row"><button class="btn" onclick="s6check()">✔ تحقق</button><span id="s6msg"></span></div>';
+}
+function s6check(){
+  var picked=[].slice.call(document.querySelectorAll('input[name=s6p]:checked')).map(function(x){return +x.value;});
+  var okP=PROBS.every(function(p,i){return p[1]===(picked.indexOf(i)>=0);});
+  var wrongC=FCOLS.filter(function(c,i){return $("s6c"+i).value!==c[1];}).map(function(c){return c[0];});
+  if(okP && !wrongC.length){ hint("norm",true); complete(6); return; }
+  err(6); setStatus(null,"أخطاء هذه المحطة: "+S.errs[6]);
+  var els=[]; if(!okP) els.push(document.querySelectorAll(".mcq")[0]);
+  FCOLS.forEach(function(c,i){ if($("s6c"+i).value!==c[1]) els.push($("s6c"+i)); });
+  accessError((okP?"":"اختيار المشاكل غير دقيق (خيار ناقص أو زائد).\n")+(wrongC.length?"توزيع غير صحيح للحقول: "+wrongC.join("، ")+".":""),null,els,"اسألي عن كل حقل مظلل: هل يصف الطالبة، أم المعلمة، أم تسجيلها في المادة؟");
+}
+
+
+/* ================= STORY SCENES ================= */
+var PAPERS=[["سجل الطالبات","torn"],["جدول المعلمات",""],["توزيع المواد","faded"],["درجات الفصل الأول","torn"],["قائمة الفصول",""],["جدول الحصص","faded"],["بيانات الطالبات — ثالث/2",""],["كشف المعلمات","torn"],["المواد والمعلمات","faded"]];
+function buildScene(host,seed){
+  var w=host.clientWidth||innerWidth, h=host.clientHeight||innerHeight, n=w<600?6:9, html='';
+  for(var i=0;i<n;i++){ var p=PAPERS[i], x=(i*37+seed*13)%85, y=(i*53+seed*7)%80, r=((i*47)%50)-25, d=(6+(i%4)*1.5);
+    html+='<div class="paper '+p[1]+'" style="left:'+x+'%;top:'+y+'%;--r:'+r+'deg;--d:'+d+'s"><div class="ph">'+esc(p[0])+'</div><div class="pl"></div><div class="pl b"></div><div class="pl"></div><div class="pl b"></div><div class="pl"></div>'+(i%3===0?'<div class="stain"></div>':'')+(i%4===1?'<div class="x">✗</div>':'')+'</div>'; }
+  host.innerHTML=html;
+}
+function showEnding(){
+  var h=$("dlgHost"); var o=document.createElement("div"); o.className="overlay endwrap";
+  function tbl(k){ var sc=SCHEMA[k]; return '<div class="tbl"><h5>'+sc.title+'</h5>'+sc.fields.map(function(f){return '<div>'+(f.pk?'<span class="k">🔑</span>':'')+esc(f.n)+'</div>';}).join("")+'</div>'; }
+  o.innerHTML='<div class="scene" id="scene9"></div><div class="tidyview"><div class="chk">✓</div><h1>عادت بيانات المدرسة مرتبة ومحمية!</h1><div style="opacity:.85">تحوّلت الأوراق المبعثرة إلى قاعدة بيانات مترابطة</div>'
+    +'<div class="tables">'+tbl("students")+tbl("subjects")+tbl("teachers")+'</div>'
+    +'<div class="msg2">«'+esc(S.name)+'، بفضلك عادت سجلات '+esc(SCHOOL)+' أفضل مما كانت: مرتبة، مترابطة، ولا تضيع بعد اليوم. شكرًا لك.»<br><span style="font-size:12px;opacity:.8">— '+esc(PRINCIPAL)+'، مديرة المدرسة</span></div>'
+    +'<div class="btns"><button class="btn" style="background:#ffd54f;color:#333;font-size:16px" onclick="this.closest(\'.overlay\').remove();showCertificate()">🎓 استلام شهادتي</button></div><div style="font-size:12px;opacity:.8;margin-top:6px">تم توثيق إنجازك لدى معلمتك تلقائيًا ✓</div></div>';
+  h.appendChild(o); buildScene($("scene9"),3);
+  setTimeout(function(){ o.classList.add("tidy"); },900);
+  setTimeout(confetti,2400);
+}
+(function(){ $("pName").textContent=PRINCIPAL; $("pSchool").textContent=SCHOOL; buildScene($("scene0"),1); })();
+
+/* ================= TEACHER ================= */
+function teacherLogin(){
+  dialog({title:"دخول المعلمة",icon:"🔒",html:'<label>رمز الدخول</label><input id="pin" type="password" style="width:100%;padding:8px;border:1px solid #ccc;border-radius:6px;margin-top:4px">',
+    buttons:[{t:"دخول",f:function(){ if($("pin")&&$("pin").value===TEACHER_PIN) teacherView(); else dialog({text:"الرمز غير صحيح.",icon:"⛔"}); }},{t:"إلغاء",sec:true}]});
+  setTimeout(function(){ var p=$("pin"); if(p) p.focus(); },50);
+}
+function teacherView(){
+  var st=$("start"); st.innerHTML='<div class="card" style="max-width:960px"><h1>لوحة المعلمة</h1><p>تقدم الطالبات في المعمل</p><div class="row"><select id="tcls"><option value="">كل الفصول</option><option>ثالث/1</option><option>ثالث/2</option><option>ثالث/3</option><option>ثالث/4</option><option>ثالث/5</option><option>ثالث/6</option></select><button class="btn sm" onclick="teacherLoad()">🔄 تحديث</button><button class="btn sm sec" onclick="location.reload()">خروج</button></div><div id="tbody">جارٍ التحميل…</div></div>';
+  $("tcls").onchange=teacherLoad; teacherLoad();
+}
+var TLIST=[];
+function teacherCert(i){ var o=TLIST[i]; var str=o.name+o.cls+o.pts+6, h=0; for(var k=0;k<str.length;k++) h=(h*31+str.charCodeAt(k))>>>0; showCertificateFor({name:o.name,cls:o.cls,pts:o.pts,code:h.toString(36).toUpperCase().slice(-4)},false); }
+function teacherLoad(){
+  $("tbody").textContent="جارٍ التحميل…";
+  fetchRows(function(rows){
+    var f=$("tcls").value, m={};
+    (rows||[]).forEach(function(r){ if(f&&r.cls!==f) return; var k=r.name+"|"+r.cls; var o=m[k]=m[k]||{name:r.name,cls:r.cls,st:{},pts:0,errs:0,last:"",dev:r.device};
+      var s=+r.station; if(s>=1&&s<=6&&r.status==="مكتملة"){ if(!o.st[s]){ o.st[s]=true; o.pts+=+r.points||0; } o.errs+=+r.errors||0; }
+      o.last=String(r.time||"").slice(0,16).replace("T"," "); });
+    var list=Object.keys(m).map(function(k){return m[k];}).sort(function(a,b){return a.cls.localeCompare(b.cls)||a.name.localeCompare(b.name,"ar");});
+    if(!list.length){ $("tbody").innerHTML='<p style="color:#888">لا توجد سجلات بعد.</p>'; return; }
+    var stuck={}; list.forEach(function(o){ for(var i=1;i<=6;i++){ if(!o.st[i]){ stuck[i]=(stuck[i]||0)+1; break; } } });
+    var html='<div class="wrap"><table class="tt"><tr><th>الطالبة</th><th>الفصل</th>'+STATIONS.map(function(s){return '<th title="'+s.name+'">'+s.n+'</th>';}).join("")+'<th>النقاط</th><th>الأخطاء</th><th>الجهاز</th><th>آخر نشاط</th><th>الشهادة</th></tr>';
+    list.forEach(function(o,i){ var d=Object.keys(o.st).length; html+='<tr><td class="n">'+esc(o.name)+(d===6?' 🏅':'')+'</td><td>'+esc(o.cls)+'</td>'+STATIONS.map(function(s){return '<td class="'+(o.st[s.n]?'y':'x')+'">'+(o.st[s.n]?'✓':'—')+'</td>';}).join("")+'<td><b>'+o.pts+'</b></td><td>'+o.errs+'</td><td>'+esc(o.dev||"")+'</td><td style="font-size:12px">'+esc(o.last)+'</td><td>'+(d===6?'<button class="btn sm" onclick="teacherCert('+i+')">🎓 الشهادة</button>':'<span style="color:#bbb;font-size:12px">'+d+'/6</span>')+'</td></tr>'; });
+    TLIST=list;
+    html+='</table></div><p style="font-size:13px;color:#555;margin-top:10px">الطالبات: '+list.length+' — أنهين المعمل: '+list.filter(function(o){return Object.keys(o.st).length===6;}).length+' — أكثر محطة توقف عندها الطالبات: '+(Object.keys(stuck).length?STATIONS[(+Object.keys(stuck).sort(function(a,b){return stuck[b]-stuck[a];})[0])-1].name:"—")+'</p>';
+    $("tbody").innerHTML=html;
+  },function(){ $("tbody").innerHTML='<p style="color:#c00">تعذر جلب البيانات. تأكدي من الاتصال بالإنترنت، أو افتحي جدول Google مباشرة.</p>'; });
+}
+
+/* ================= INIT ================= */
+function teacherGate(){
+  $("start").innerHTML='<div class="card"><h1>لوحة المعلمة</h1><p>قاعدة بيانات مدرستي — متابعة تقدم الطالبات</p><label>رمز الدخول</label><input id="pin" type="password" autocomplete="off"><button class="btn w" onclick="teacherCheck()">دخول</button></div>';
+  $("pin").onkeydown=function(e){ if(e.key==="Enter") teacherCheck(); }; $("pin").focus();
+}
+function teacherCheck(){ if($("pin").value===TEACHER_PIN) teacherView(); else { markBad([$("pin")]); dialog({text:"الرمز غير صحيح.",icon:"⛔"}); } }
+(function(){ if(window.TEACHER_MODE||/[?&]teacher/.test(location.search)) teacherGate(); })();
+</script>
+</body>
+</html>
