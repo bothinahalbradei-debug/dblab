@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>معمل قواعد البيانات — قاعدة بيانات مدرستي</title>
+<title>معمل قواعد البيانات — قاعدة بيانات المدرسة</title>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--acc:#A4373A;--acc2:#8c2c2f;--bg:#f3f3f3;--pane:#ffffff;--line:#d4d4d4;--txt:#222;--muted:#666;--ok:#2e7d32;--warn:#c62828;--hint:#fff7d6;--sel:#dbe7f7;--key:#d4a017}
@@ -57,6 +57,90 @@ input,select{font-family:inherit;font-size:inherit}
 .tidyview .chk{display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;background:#2e7d32;color:#fff;font-size:32px;box-shadow:0 0 0 8px rgba(46,125,50,.25);animation:pop .6s 1.4s both}
 .tidyview .btns{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
 @media (max-width:700px){.tidyview .tbl{width:150px;font-size:11px}.tidyview h1{font-size:21px}}
+/* ===== Intro phone + ID card ===== */
+#s1w,#s2w{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;max-width:520px}
+.ip{width:330px;background:#1a0c0d;border-radius:44px;padding:11px;box-shadow:0 30px 70px rgba(0,0,0,.75),0 0 0 2px #5a3335,0 0 0 8px rgba(164,55,58,.18);animation:pop .5s}
+.ipscr{background:linear-gradient(170deg,#8c2f33 0%,#5e1f22 55%,#3a1416 100%);border-radius:34px;overflow:hidden;position:relative;height:600px}
+.ipnotch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:104px;height:26px;background:#1a0c0d;border-radius:20px;z-index:5}
+.ipstat{display:flex;justify-content:space-between;padding:12px 24px 0;font-size:12px;font-weight:700;color:#f3e4c9}
+.iptime{text-align:center;color:#f7ead2;margin-top:34px}
+.iptime b{display:block;font-size:60px;font-weight:300;line-height:1}
+.iptime small{font-size:14px;opacity:.85}
+.ipnotif{margin:24px 14px 0;background:#fffaf0;border-radius:20px;padding:13px 15px;box-shadow:0 12px 30px rgba(0,0,0,.45);color:#222;text-align:right;animation:slideIn .6s ease-out}
+@keyframes slideIn{from{transform:translateY(-30px);opacity:0}to{transform:none;opacity:1}}
+.ipnotif .nh{display:flex;align-items:center;gap:8px;font-size:12px;color:#6b5b3a;margin-bottom:6px}
+.ipnotif .ic{width:22px;height:22px;border-radius:6px;background:var(--acc);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;flex:none}
+.ipnotif .now{margin-inline-start:auto;color:#aaa}
+.ipnotif .urg{background:#fdecea;color:#b71c1c;border:1px solid #f5c6c2;font-size:11px;font-weight:800;padding:1px 9px;border-radius:8px;display:inline-flex;align-items:center;gap:5px;margin-bottom:6px}
+.ipnotif .urg i{width:7px;height:7px;border-radius:50%;background:#c62828;animation:blink 1.2s infinite}
+.ipnotif .urg.ok{background:#e8f5e9;color:#1b5e20;border-color:#c8e6c9}
+@keyframes blink{50%{opacity:.3}}
+.ipnotif .nt{font-weight:900;font-size:16px;margin-bottom:4px;color:#5a3c00}
+.ipnotif .nb{font-size:15px;line-height:1.75;color:#333;min-height:78px}
+.ipnotif .nb b{color:var(--acc)}
+.ipnotif .nb.typing:after{content:"|";animation:blink .8s infinite;color:var(--acc)}
+.ipq{margin:16px 14px 0;text-align:center;color:#f7ead2;font-weight:800;font-size:18px}
+.ipacts{display:flex;gap:10px;margin:12px 14px 0}
+.ipacts button{border:0;border-radius:16px;padding:14px;font-family:inherit;font-weight:900;font-size:17px}
+.ipacts .ok{flex:2;background:#2e7d32;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.ipacts .later{flex:1;background:rgba(255,255,255,.18);color:#f7ead2;font-weight:700}
+.ipacts .gold{flex:1;background:#ffd54f;color:#4a3300;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.iphome{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:110px;height:5px;background:rgba(255,255,255,.7);border-radius:3px}
+.ipmeta{color:rgba(255,255,255,.6);font-size:12px}
+.ip.shake{animation:shake .5s}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-8px) rotate(-1deg)}75%{transform:translateX(8px) rotate(1deg)}}
+.idc{background:#fff;border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,.45);overflow:hidden;text-align:right;position:relative;width:100%;animation:pop .5s}
+.idc .top{background:var(--acc);color:#fff;padding:10px 18px;font-weight:800;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+.idc .top small{font-weight:400;opacity:.9;font-size:12px}
+.idc .main{display:flex;gap:16px;padding:16px 18px 6px;align-items:flex-start}
+.idc .avatar{width:84px;height:84px;border-radius:14px;background:#fbeeee;border:2px solid #f0d9d9;display:flex;align-items:center;justify-content:center;color:var(--acc);flex:none;position:relative}
+.idc .avatar svg{width:52px;height:52px}
+.idc .star{position:absolute;inset-inline-end:-8px;bottom:-8px;width:28px;height:28px;border-radius:50%;background:#ffd54f;color:#7a5a00;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.idc .star svg{width:16px;height:16px}
+.idc .fields{flex:1;min-width:0}
+.idc .hero{font-size:13px;color:#888}
+.idc .hero b{display:block;font-size:22px;color:var(--acc);border-bottom:2px dashed #e5c9c9;padding-bottom:2px;min-height:36px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.idc label{display:block;font-size:13px;color:#666;margin:12px 0 4px;font-weight:700}
+.idc input{width:100%;padding:10px 12px;border:1.5px solid #ddd;border-radius:10px;font-size:16px}
+.idc .cls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 18px}
+.idc .cls span{border:1.5px solid #ddd;border-radius:10px;padding:8px;text-align:center;font-weight:700;color:#444;background:#fafafa;cursor:pointer;user-select:none}
+.idc .cls span.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.idc .foot{padding:12px 18px 14px;font-size:12px;color:#999;display:flex;justify-content:space-between}
+.idc .okst{position:absolute;inset-inline-start:18px;top:62px;width:96px;height:96px;border-radius:50%;border:3px solid #2e7d32;color:#2e7d32;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;transform:rotate(-14deg);box-shadow:inset 0 0 0 4px #fff,inset 0 0 0 6px #2e7d32;background:rgba(255,255,255,.85);animation:stamp .4s both}
+@keyframes stamp{from{transform:rotate(-14deg) scale(2.2);opacity:0}to{transform:rotate(-14deg) scale(1);opacity:1}}
+.ipbtn{display:block;width:100%;background:var(--acc);color:#fff;border:0;border-radius:12px;padding:14px;font-size:18px;font-weight:800;box-shadow:0 6px 16px rgba(0,0,0,.35)}
+.ipbtn:disabled{background:#9e9e9e;box-shadow:none;opacity:1}
+@media (max-width:760px){.ip{width:84%;max-width:300px;padding:9px;border-radius:36px}.ipscr{height:520px;border-radius:28px}.iptime{margin-top:26px}.iptime b{font-size:48px}.ipnotif{margin-top:16px}.ipnotif .nb{font-size:14px}#start .paper{width:96px;height:120px;padding:6px}#start .paper .ph{font-size:9px}}
+/* ===== Ending v2 ===== */
+.endv{position:relative;z-index:2;opacity:0;transform:translateY(20px);transition:all .9s .9s;display:flex;align-items:center;justify-content:center;gap:40px;width:100%;max-width:1100px;padding:10px}
+.endwrap.tidy .endv{opacity:1;transform:none}
+.endtab{flex:1;text-align:center;max-width:360px}
+.endtag{display:inline-block;background:#2e7d32;color:#fff;font-weight:900;font-size:14px;padding:5px 16px;border-radius:20px;box-shadow:0 6px 16px rgba(0,0,0,.4);margin-bottom:10px}
+.endtab .tb{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 14px 36px rgba(0,0,0,.5);margin:0 auto;width:300px;position:relative;z-index:2;text-align:right;color:#222}
+.endtab .tb .h{background:var(--acc);color:#fff;font-weight:800;font-size:15px;padding:6px 12px}
+.endtab .tb table{width:100%;border-collapse:collapse;font-size:12.5px}
+.endtab .tb th{background:#f3e9e9;color:#6b2a2c;font-weight:800;padding:4px 8px;text-align:right}
+.endtab .tb td{padding:4px 8px;border-top:1px solid #eee}
+.endtab .tb td:first-child{color:var(--acc);font-weight:800;width:28px}
+.endtab .con{position:relative;z-index:1;width:3px;height:30px;background:#ffd54f;margin:-4px auto;box-shadow:0 0 8px #ffd54f}
+.endtab .con:before,.endtab .con:after{content:"";position:absolute;left:50%;transform:translateX(-50%);width:11px;height:11px;border-radius:50%;background:#ffd54f}
+.endtab .con:before{top:-5px}.endtab .con:after{bottom:-5px}
+.endtab .con span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#1a2b1d;color:#ffd54f;font-size:11px;font-weight:800;padding:1px 8px;border-radius:8px;border:1px solid #ffd54f;white-space:nowrap}
+.ach{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.ach span{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:3px 10px;font-size:12.5px;font-weight:700}
+.ach span svg{width:15px;height:15px}
+.ach span i{font-style:normal;color:#8ce99a;font-weight:900}
+.endnext{display:none;width:92%;margin:12px auto 0;background:#ffd54f;color:#4a3300;border:0;border-radius:14px;padding:13px;font-weight:900;font-size:17px}
+.endph{flex:none}
+.endph .ip{width:300px;border-radius:40px;padding:10px;box-shadow:0 30px 70px rgba(0,0,0,.75),0 0 0 2px #5a3335,0 0 0 8px rgba(46,125,50,.22)}
+.endph .ipscr{height:540px;border-radius:31px}
+.endph .iptime{margin-top:26px}.endph .iptime b{font-size:50px}
+.endph .ipnotif{margin-top:20px;animation:none}
+.endph .ipacts{margin-top:16px}
+.endph .ipacts button{width:100%;display:flex;align-items:center;justify-content:center;gap:8px}
+.endph .ipacts svg{width:22px;height:22px}
+.endnote{color:rgba(255,255,255,.6);font-size:12px;text-align:center;margin-top:8px}
+@media (max-width:760px){.endv{flex-direction:column;gap:14px;padding:6px}.endtab{max-width:none;width:100%}.endtab .tb{width:92%}.endtab .tb table{font-size:11px}.endnext{display:block}.endph{display:none;width:100%;text-align:center}.endph .ip{width:84%;max-width:290px;text-align:right}.endph .ipscr{height:470px}.endph .iptime b{font-size:40px}.endv.p2 .endtab{display:none}.endv.p2 .endph{display:block}}
 /* ===== Lesson cards ===== */
 .overlay.lessonwrap{background:rgba(20,8,8,.75);padding:12px;align-items:center;overflow:auto}
 .lc{background:#fff;border-radius:14px;width:100%;max-width:1040px;box-shadow:0 14px 40px rgba(0,0,0,.45);overflow:hidden;font-size:15px;line-height:1.8;color:#222;max-height:96vh;display:flex;flex-direction:column}
@@ -357,28 +441,43 @@ table.grid tr.newrow td:first-child{color:#999;text-align:center}
 <!-- ===== Start ===== -->
 <div id="start">
   <div class="scene" id="scene0"></div>
-  <div class="card story" id="step1">
-    <div class="st-tag">رسالة عاجلة من مديرة المدرسة</div>
-    <h1>فقدنا سجلات المدرسة!</h1>
-    <p class="st-msg">«ضاعت السجلات الورقية لمدرستنا، ولم يبقَ منها إلا أوراق مبعثرة. نحتاج قاعدة بيانات جديدة تُعيد ترتيب كل شيء… <b>هل تستطيعين مساعدتنا؟</b>»</p>
-    <p class="st-sig">— <span id="pName"></span>، مديرة <span id="pSchool"></span></p>
-    <button class="btn w" onclick="$('step1').classList.add('hidden');$('step2').classList.remove('hidden');$('inName').focus()">نعم، سأساعد!</button>
+  <div id="s1w">
+    <div class="ip" id="step1"><div class="ipscr">
+      <div class="ipnotch"></div>
+      <div class="ipstat"><span class="ipclock">7:41</span><span>●●● ▲ ▮</span></div>
+      <div class="iptime"><b class="ipclock">7:41</b><small class="ipdate"></small></div>
+      <div class="ipnotif">
+        <div class="nh"><span class="ic">42</span><span id="pSchool"></span><span class="now">الآن</span></div>
+        <span class="urg"><i></i>عاجل</span>
+        <div class="nt">رسالة من مديرة المدرسة</div>
+        <div class="nb typing" id="ipMsg"></div>
+      </div>
+      <div class="ipq">هل تقبلين المهمة؟</div>
+      <div class="ipacts"><button class="ok" onclick="introAccept()">أقبل المهمة</button><button class="later" onclick="introLater()">لاحقًا</button></div>
+      <div class="iphome"></div>
+    </div></div>
+    <div class="ipmeta">6 مهام · 20 دقيقة · شهادة في النهاية</div>
   </div>
-  <div class="card story hidden" id="step2">
-    <div class="st-tag">قاعدة بيانات مدرستي — ثالث متوسط</div>
-    <h1>عرّفينا بنفسك</h1>
-    <p>سنكتب اسمك في سجل المنقذات.</p>
-    <label>اسمك</label>
-    <input id="inName" placeholder="الاسم الثلاثي" autocomplete="off">
-    <label>الفصل</label>
-    <select id="inCls"><option>ثالث/1</option><option>ثالث/2</option><option>ثالث/3</option><option>ثالث/4</option><option>ثالث/5</option><option>ثالث/6</option></select>
-    <button class="btn w" onclick="startLab()">ابدئي المهمة</button>
+  <div id="s2w" class="hidden">
+    <div class="idc" id="step2">
+      <div class="top"><span>بطاقة المنقذة</span><small>قاعدة بيانات المدرسة</small></div>
+      <div class="main">
+        <div class="avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/><path d="M8 7c1-2 7-2 8 0"/></svg><span class="star"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.5 5.7 21l1.5-7L2 9.3l7-.8z"/></svg></span></div>
+        <div class="fields"><div class="hero">المنقذة<b id="heroName">&nbsp;</b></div>
+          <label>الاسم</label><input id="inName" placeholder="الاسم الثلاثي" autocomplete="off" oninput="heroSync()">
+          <label>الفصل</label>
+        </div>
+      </div>
+      <div class="cls" id="inCls"><span onclick="pickCls(this)">ثالث/1</span><span onclick="pickCls(this)">ثالث/2</span><span onclick="pickCls(this)">ثالث/3</span><span onclick="pickCls(this)">ثالث/4</span><span onclick="pickCls(this)">ثالث/5</span><span onclick="pickCls(this)">ثالث/6</span></div>
+      <div class="foot"><span id="pSchool2"></span><span>ثالث متوسط</span></div>
+    </div>
+    <button class="ipbtn" id="startBtn" disabled onclick="startLab()">ابدئي المهمة</button>
   </div>
 </div>
 
 <!-- ===== App ===== -->
 <div id="app" class="hidden">
-  <div class="title"><span class="logo">A</span> <span>قاعدة بيانات مدرستي : قاعدة بيانات</span> <span class="who" id="who"></span></div>
+  <div class="title"><span class="logo">A</span> <span>قاعدة بيانات المدرسة : قاعدة بيانات</span> <span class="who" id="who"></span></div>
   <div class="ribbon-tabs"><span>ملف</span><span class="on">الصفحة الرئيسية</span><span>إنشاء</span><span>بيانات خارجية</span><span>أدوات قاعدة البيانات</span></div>
   <div class="ribbon" id="ribbon"></div>
   <div class="progress" id="progress"></div>
@@ -554,19 +653,37 @@ function elapsed(){ var m=Math.floor((Date.now()-S.started)/60000); return m<1?"
 setInterval(function(){ if(S&&!$("app").classList.contains("hidden")) setStatus($("statusL").textContent, "أخطاء هذه المحطة: "+(S.errs[S.cur]||0)); },30000);
 
 /* ================= SHELL ================= */
+var INTRO_MSG="ضاعت سجلات المدرسة ولم يبقَ منها إلا أوراق مبعثرة. أحتاج منقذة تبني قاعدة بيانات المدرسة من جديد.";
+var introTimer=null;
+function phoneClock(){ var d=new Date(), t=d.getHours()%12||12, m=("0"+d.getMinutes()).slice(-2);
+  document.querySelectorAll(".ipclock").forEach(function(e){ e.textContent=t+":"+m; });
+  var ds=d.toLocaleDateString("ar",{weekday:"long",day:"numeric",month:"long"});
+  document.querySelectorAll(".ipdate").forEach(function(e){ e.textContent=ds; }); }
+function typeMsg(el,txt,done){ var i=0; el.textContent=""; el.classList.add("typing");
+  introTimer=setInterval(function(){ i++; el.textContent=txt.slice(0,i); if(i>=txt.length){ clearInterval(introTimer); el.classList.remove("typing"); if(done) done(); } },28); }
+function introAccept(){ clearInterval(introTimer); $("s1w").classList.add("hidden"); $("s2w").classList.remove("hidden"); setTimeout(function(){ $("inName").focus(); },100); }
+function introLater(){ var p=$("step1"); p.classList.remove("shake"); void p.offsetWidth; p.classList.add("shake"); var q=document.querySelector(".ipq"); q.textContent="المديرة تنتظرك… هل تقبلين المهمة؟"; }
+function heroSync(){ var v=$("inName").value.trim(); $("heroName").innerHTML=v?esc(v):"&nbsp;"; chkStart(); }
+function pickCls(el){ el.parentNode.querySelectorAll("span").forEach(function(s){ s.classList.remove("on"); }); el.classList.add("on"); chkStart(); }
+function pickedCls(){ var s=document.querySelector("#inCls span.on"); return s?s.textContent:""; }
+function chkStart(){ $("startBtn").disabled=!($("inName").value.trim().length>=2 && pickedCls()); }
 function startLab(){
-  var name=$("inName").value.trim(), cls=$("inCls").value;
+  var name=$("inName").value.trim(), cls=pickedCls();
   if(name.length<2){ $("inName").focus(); return; }
+  if(!cls) return;
   var old=load();
   if(old && old.name===name && old.cls===cls){ S=old; }
   else { S=defaultState(name,cls); save(); logRow(0,"بدأت",0); }
-  $("start").classList.add("hidden"); $("app").classList.remove("hidden");
-  render();
-  if(!S.intro) showIntro();
+  if(!$("okStamp")){ var st=document.createElement("div"); st.className="okst"; st.id="okStamp"; st.textContent="مقبولة"; $("step2").appendChild(st); $("startBtn").disabled=true; }
+  setTimeout(function(){
+    $("start").classList.add("hidden"); $("app").classList.remove("hidden");
+    render();
+    if(!S.intro) showIntro();
+  },900);
 }
 function showIntro(){
-  dialog({title:"📩 رسالة من مديرة المدرسة",icon:"",html:
-    '<div class="msgbox">«'+esc(S.name)+'، سجلات المدرسة الورقية ضاعت! أحتاج منك بناء <b>قاعدة بيانات</b> جديدة للمدرسة. أعتمد عليك.»<br><span style="color:#666;font-size:12px">— '+esc(PRINCIPAL)+'، مديرة '+esc(SCHOOL)+'</span></div>'
+  dialog({title:"رحلتك",icon:"",html:
+    '<div class="msgbox">«'+esc(S.name)+'، أعتمد عليك. ستبنين <b>قاعدة بيانات المدرسة</b> خطوة بخطوة.»<br><span style="color:#666;font-size:12px">— مديرة المدرسة</span></div>'
     +'<div class="lbl">رحلتك: 6 مهام</div>'
     +'<div class="chips">'+STATIONS.map(function(s){return '<span class="chip">'+s.icon+' '+esc(s.name)+'</span>';}).join("")+'</div>'
     +'<div style="font-size:14px;color:#444;margin-top:8px">قبل كل مهمة ستتعلمين <b>فكرة واحدة</b> فقط، ثم تنفذينها. كل مهمة = شارة + نقاط، وفي النهاية <b>شهادة موقّعة</b> 🎓</div>',
@@ -623,7 +740,7 @@ function complete(n){
   if(all){ logRow(7,"أنهت المعمل",totalPts()); setTimeout(showEnding,600); renderProgress(); renderNav(); renderMnav(); return; }
   dialog({title:"🎉 مهمة منجزة — "+n+" من 6",icon:"",html:'<div style="text-align:center"><div style="color:#b8962e;margin:4px 0">'+ico(BADGE_ICONS[n-1],56)+'</div><div class="lbl">حصلتِ على شارة</div><div style="font-weight:800;color:var(--acc);font-size:18px">«'+esc(st.badge)+'»</div>'
     +'<div class="stats"><div class="stat"><b>+'+pts+'</b>نقاط</div><div class="stat"><b>'+totalPts()+'</b>المجموع</div><div class="stat"><b>'+elapsed()+'</b>الوقت</div></div>'
-    +(all?'<div class="msgbox" style="text-align:right">🏆 أنهيتِ كل المهام! «شكرًا '+esc(S.name)+'، أنقذتِ المدرسة. شهادتك جاهزة.» — '+esc(PRINCIPAL)+'</div>':'<div class="lbl">المهمة التالية</div><div style="color:#444">'+esc(STATIONS[n].mission)+'</div>')+'</div>',
+    +(all?'<div class="msgbox" style="text-align:right">🏆 أنهيتِ كل المهام! «شكرًا '+esc(S.name)+'، أنقذتِ المدرسة. شهادتك جاهزة.» — مديرة المدرسة</div>':'<div class="lbl">المهمة التالية</div><div style="color:#444">'+esc(STATIONS[n].mission)+'</div>')+'</div>',
     buttons:all?[{t:"🎓 شهادتي",f:showCertificate}]:[{t:"المهمة التالية ‹",f:function(){go(n+1);}},{t:"البقاء",sec:true,f:render}]});
   renderProgress(); renderNav(); renderMnav();
 }
@@ -641,7 +758,11 @@ var ICONS={
   search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
   report:'<path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/>',
   shield:'<path d="M12 2l8 3v6c0 5-3.5 9-8 11-4.5-2-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/>',
-  seal:'<circle cx="12" cy="9" r="6"/><path d="M12 6l1 2 2 .3-1.5 1.4.4 2.1L12 10.8 10.1 11.8l.4-2.1L9 8.3 11 8z"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/>'
+  seal:'<circle cx="12" cy="9" r="6"/><path d="M12 6l1 2 2 .3-1.5 1.4.4 2.1L12 10.8 10.1 11.8l.4-2.1L9 8.3 11 8z"/><path d="M8.5 14L7 22l5-3 5 3-1.5-8"/>',
+  medal:'<circle cx="12" cy="14" r="6"/><path d="M12 11l1 2 2 .3-1.5 1.4.4 2.1L12 15.8l-1.9 1 .4-2.1L9 13.3l2-.3z"/><path d="M8 2l2 7M16 2l-2 7M8 2h8"/>',
+  rel:'<rect x="2" y="5" width="7" height="6" rx="1"/><rect x="15" y="13" width="7" height="6" rx="1"/><path d="M9 8h3v8h3"/>',
+  query:'<circle cx="10" cy="10" r="6"/><path d="M20 20l-5.5-5.5M8 10h4M10 8v4"/>',
+  form:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/>'
 };
 function ico(n,sz){ sz=sz||28; return '<svg viewBox="0 0 24 24" width="'+sz+'" height="'+sz+'" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+ICONS[n]+'</svg>'; }
 var BADGE_ICONS=["table","keyboard","link","search","report","shield"];
@@ -1102,21 +1223,40 @@ var PAPERS=[["سجل الطالبات","torn"],["جدول المعلمات",""],
 function buildScene(host,seed){
   var w=host.clientWidth||innerWidth, h=host.clientHeight||innerHeight, n=w<600?6:9, html='';
   for(var i=0;i<n;i++){ var p=PAPERS[i], x=(i*37+seed*13)%85, y=(i*53+seed*7)%80, r=((i*47)%50)-25, d=(6+(i%4)*1.5);
+    if(x>26&&x<64){ x=x<45?Math.max(0,x-26):Math.min(85,x+24); }
     html+='<div class="paper '+p[1]+'" style="left:'+x+'%;top:'+y+'%;--r:'+r+'deg;--d:'+d+'s"><div class="ph">'+esc(p[0])+'</div><div class="pl"></div><div class="pl b"></div><div class="pl"></div><div class="pl b"></div><div class="pl"></div>'+(i%3===0?'<div class="stain"></div>':'')+(i%4===1?'<div class="x">✗</div>':'')+'</div>'; }
   host.innerHTML=html;
 }
+var END_SAMPLE={students:[{name:"نورة أحمد",cls:"ثالث/1"},{name:"سارة خالد",cls:"ثالث/1"},{name:"ريم فهد",cls:"ثالث/2"}],teachers:[{name:"منى سعد",spec:"رياضيات"},{name:"هند علي",spec:"علوم"}],subjects:[{sub:"رياضيات",tid:"1",g:"95"},{sub:"علوم",tid:"2",g:"88"}]};
+function endTable(k,cols){
+  var rows=(S.s2.rows[k]&&S.s2.rows[k].length)?S.s2.rows[k].slice(0,3):END_SAMPLE[k];
+  var tn=S.s2.rows.teachers||[];
+  return '<div class="tb"><div class="h">'+SCHEMA[k].title+'</div><table><tr><th>#</th>'+cols.map(function(c){return '<th>'+c[1]+'</th>';}).join("")+'</tr>'
+    +rows.map(function(r,i){ return '<tr><td>'+(i+1)+'</td>'+cols.map(function(c){ var v=r[c[0]]; if(c[0]==="tid"){ var t=tn[+v-1]; v=t?String(t.name).replace(/^أ\.\s*/,"").split(/\s+/).slice(0,2).join(" "):v; } return '<td>'+esc(v)+'</td>'; }).join("")+'</tr>'; }).join("")+'</table></div>';
+}
+function endPhone(){
+  var first=String(S.name).trim().split(/\s+/)[0];
+  return '<div class="ip"><div class="ipscr"><div class="ipnotch"></div><div class="ipstat"><span class="ipclock">8:03</span><span>●●● ▲ ▮</span></div>'
+    +'<div class="iptime"><b class="ipclock">8:03</b><small class="ipdate"></small></div>'
+    +'<div class="ipnotif"><div class="nh"><span class="ic">42</span>'+esc(SCHOOL)+'<span class="now">الآن</span></div><span class="urg ok">تم إنجاز المهمة</span><div class="nt">رسالة من مديرة المدرسة</div>'
+    +'<div class="nb">شكرًا يا <b>'+esc(first)+'</b>! رتبتِ كل شيء، وسجلات المدرسة عادت أفضل مما كانت. أنتِ الآن <b>خبيرة قواعد البيانات</b>.</div></div>'
+    +'<div class="ipacts"><button class="gold" onclick="this.closest(\'.overlay\').remove();showCertificate()">'+ico("medal",22)+'استلام شهادتي</button></div>'
+    +'<div class="iphome"></div></div></div><div class="endnote">تم توثيق إنجازك لدى معلمتك تلقائيًا ✓</div>';
+}
 function showEnding(){
   var h=$("dlgHost"); var o=document.createElement("div"); o.className="overlay endwrap";
-  function tbl(k){ var sc=SCHEMA[k]; return '<div class="tbl"><h5>'+sc.title+'</h5>'+sc.fields.map(function(f){return '<div>'+(f.pk?'<span class="k">🔑</span>':'')+esc(f.n)+'</div>';}).join("")+'</div>'; }
-  o.innerHTML='<div class="scene" id="scene9"></div><div class="tidyview"><div class="chk">✓</div><h1>عادت بيانات المدرسة مرتبة ومحمية!</h1><div style="opacity:.85">تحوّلت الأوراق المبعثرة إلى قاعدة بيانات مترابطة</div>'
-    +'<div class="tables">'+tbl("students")+tbl("subjects")+tbl("teachers")+'</div>'
-    +'<div class="msg2">«'+esc(S.name)+'، بفضلك عادت سجلات '+esc(SCHOOL)+' أفضل مما كانت: مرتبة، مترابطة، ولا تضيع بعد اليوم. شكرًا لك.»<br><span style="font-size:12px;opacity:.8">— '+esc(PRINCIPAL)+'، مديرة المدرسة</span></div>'
-    +'<div class="btns"><button class="btn" style="background:#ffd54f;color:#333;font-size:16px" onclick="this.closest(\'.overlay\').remove();showCertificate()">🎓 استلام شهادتي</button></div><div style="font-size:12px;opacity:.8;margin-top:6px">تم توثيق إنجازك لدى معلمتك تلقائيًا ✓</div></div>';
-  h.appendChild(o); buildScene($("scene9"),3);
+  var ach=[["table","3 جداول"],["rel","علاقتان"],["query","استعلامان"],["form","نموذج"],["report","تقرير"]].map(function(a){return '<span>'+ico(a[0],15)+esc(a[1])+' <i>✓</i></span>';}).join("");
+  o.innerHTML='<div class="scene" id="scene9"></div><div class="endv"><div class="endtab"><div class="endtag">✓ قاعدة بيانات المدرسة جاهزة</div>'
+    +endTable("students",[["name","الاسم"],["cls","الفصل"]])+'<div class="con"><span>علاقة</span></div>'
+    +endTable("subjects",[["sub","المادة"],["tid","المعلمة"],["g","الدرجة"]])+'<div class="con"><span>علاقة</span></div>'
+    +endTable("teachers",[["name","الاسم"],["spec","التخصص"]])
+    +'<div class="ach">'+ach+'</div><button class="endnext" onclick="this.closest(\'.endv\').classList.add(\'p2\')">التالي ←</button></div>'
+    +'<div class="endph">'+endPhone()+'</div></div>';
+  h.appendChild(o); buildScene($("scene9"),3); phoneClock();
   setTimeout(function(){ o.classList.add("tidy"); },900);
   setTimeout(confetti,2400);
 }
-(function(){ $("pName").textContent=PRINCIPAL; $("pSchool").textContent=SCHOOL; buildScene($("scene0"),1); })();
+(function(){ $("pSchool").textContent=SCHOOL; $("pSchool2").textContent=SCHOOL; buildScene($("scene0"),1); phoneClock(); setTimeout(function(){ typeMsg($("ipMsg"),INTRO_MSG); },700); })();
 
 /* ================= TEACHER ================= */
 function teacherLogin(){
@@ -1150,7 +1290,7 @@ function teacherLoad(){
 
 /* ================= INIT ================= */
 function teacherGate(){
-  $("start").innerHTML='<div class="card"><h1>لوحة المعلمة</h1><p>قاعدة بيانات مدرستي — متابعة تقدم الطالبات</p><label>رمز الدخول</label><input id="pin" type="password" autocomplete="off"><button class="btn w" onclick="teacherCheck()">دخول</button></div>';
+  $("start").innerHTML='<div class="card"><h1>لوحة المعلمة</h1><p>قاعدة بيانات المدرسة — متابعة تقدم الطالبات</p><label>رمز الدخول</label><input id="pin" type="password" autocomplete="off"><button class="btn w" onclick="teacherCheck()">دخول</button></div>';
   $("pin").onkeydown=function(e){ if(e.key==="Enter") teacherCheck(); }; $("pin").focus();
 }
 function teacherCheck(){ if($("pin").value===TEACHER_PIN) teacherView(); else { markBad([$("pin")]); dialog({text:"الرمز غير صحيح.",icon:"⛔"}); } }
